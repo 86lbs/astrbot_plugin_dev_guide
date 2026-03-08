@@ -4,41 +4,36 @@
 
 ## 📁 文件说明
 
-| 文件 | 说明 |
-|------|------|
-| [PROMPT.md](./PROMPT.md) | AI 提示词模板，发送给 AI 即可开始开发 |
-| [TUTORIAL.md](./TUTORIAL.md) | 用户教程，详细说明如何使用 AI 开发插件 |
+| 文件 | 说明 | 推荐度 |
+|------|------|--------|
+| [PROMPT_V3_SOURCE_CODE_DRIVEN.md](./PROMPT_V3_SOURCE_CODE_DRIVEN.md) | **v3.0 源码驱动版提示词** - 强制阅读源码，最准确 | ⭐⭐⭐ 推荐 |
+| [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | **源码地图** - AstrBot 核心源码文件索引 | ⭐⭐⭐ 推荐 |
+| [PROMPT_V2.md](./PROMPT_V2.md) | v2.0 文档驱动版提示词 - 强制阅读文档 | ⭐⭐ |
+| [PROMPT.md](./PROMPT.md) | v1.0 基础版提示词 | ⭐ |
+| [TUTORIAL.md](./TUTORIAL.md) | 用户教程，详细说明如何使用 AI 开发插件 | ⭐⭐ |
 
 ## 🚀 快速开始
 
-### 1. 复制提示词
+### 方式一：源码驱动（推荐）
 
-打开 [PROMPT.md](./PROMPT.md)，复制「完整提示词」部分。
+**适用场景**：开发复杂插件，需要准确了解最新 API
 
-### 2. 发送给 AI
+1. 复制 [PROMPT_V3_SOURCE_CODE_DRIVEN.md](./PROMPT_V3_SOURCE_CODE_DRIVEN.md) 中的提示词
+2. 发送给 AI，并提供 AstrBot 源码路径
+3. AI 会先阅读源码，输出阅读报告，再编写代码
 
-将提示词发送给 Claude、ChatGPT 等 AI 工具。
+**优势**：
+- ✅ 源码即真理，不受文档过时影响
+- ✅ 强制阅读验证，不会跳过
+- ✅ API 签名准确，来源可追溯
 
-### 3. 描述需求
+### 方式二：文档驱动
 
-用自然语言描述你想要的插件功能：
+**适用场景**：开发简单插件，快速上手
 
-```
-帮我开发一个天气查询插件：
-1. 用户发送城市名可以查询天气
-2. 支持配置 API 密钥
-```
-
-### 4. 获取代码
-
-AI 会生成完整的插件代码，包括：
-- `main.py` - 主插件代码
-- `metadata.yaml` - 插件元数据
-- `_conf_schema.json` - 配置文件
-
-### 5. 安装插件
-
-将生成的文件放入 AstrBot 的 `data/plugins/插件名/` 目录，重启即可。
+1. 复制 [PROMPT_V2.md](./PROMPT_V2.md) 或 [PROMPT.md](./PROMPT.md) 中的提示词
+2. 发送给 AI
+3. 描述需求，获取代码
 
 ## 📖 详细教程
 
