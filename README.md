@@ -4,51 +4,115 @@
 
 🌐 **在线工具**：[https://86lbs.github.io/astrbot_plugin_dev_guide/](https://86lbs.github.io/astrbot_plugin_dev_guide/)
 
+---
+
 ## 🚀 立即开始
 
-### 方式一：使用提示词生成器（推荐）
+### 使用提示词生成器（推荐）
 
 **打开在线工具：[https://86lbs.github.io/astrbot_plugin_dev_guide/prompt_generator.html](https://86lbs.github.io/astrbot_plugin_dev_guide/prompt_generator.html)**
 
-或者使用本地文件：`prompt_generator.html`
+支持三种模式：
 
-1. 填写插件名称和描述
-2. 选择功能类型
-3. 描述详细需求
+| 模式 | 说明 | 必填项 |
+|------|------|--------|
+| ✨ **创建插件** | 从零开始创建新插件 | 插件描述 |
+| 🔧 **优化插件** | 改进已有插件代码 | 插件来源 + 我的要求 |
+| 📖 **讲解插件** | 解释插件代码原理 | 插件来源 |
+
+**使用步骤：**
+
+1. 选择操作模式
+2. 填写简单描述
+3. （可选）填写 GitHub Token 用于发布
 4. 点击生成提示词
 5. 复制发送给 AI
 
-### 方式二：手动发送
+---
 
-**发送以下内容给 Agent 即可开始开发：**
+## ✨ 创建插件
 
+**最简输入：**
 ```
-开发 AstrBot 插件。
-
-开发指南：https://github.com/86lbs/astrbot_plugin_dev_guide
-源码：https://github.com/AstrBotDevs/AstrBot
-
-需求：[描述你的插件需求]
-
-请阅读 PROMPT_V5_LOCAL_SIMULATION.md 按流程开发。
+插件描述：查天气的插件
 ```
 
-详细说明请查看 [START_HERE.md](./START_HERE.md)
+**完整输入：**
+```
+插件名称：weather_query（可选）
+插件描述：天气查询插件
+详细需求：
+1. 用户发送 /天气 北京 查询天气
+2. 支持 LLM Tool 自动调用
+```
+
+**AI 会自动：**
+- 阅读源码 → 设计结构 → 编写代码 → 测试验证 → 发布（如填写 Token）
+
+---
+
+## 🔧 优化插件
+
+**输入示例：**
+```
+插件来源：https://github.com/xxx/my_plugin
+我的要求：帮我添加错误处理，当 API 调用失败时给用户友好提示
+```
+
+**支持格式：**
+- 粘贴代码
+- GitHub 仓库链接
+
+---
+
+## 📖 讲解插件
+
+**输入示例：**
+```
+插件来源：https://github.com/xxx/my_plugin
+我的问题：这个装饰器是怎么工作的？
+```
+
+**讲解风格：**
+- 简单易懂（适合新手）
+- 详细深入（适合进阶）
+- 技术专业（适合开发者）
+
+---
+
+## 🔑 GitHub Token
+
+**何时需要：**
+- 发布插件到 GitHub 时需要
+
+**如何获取：**
+1. GitHub → Settings → Developer settings → Personal access tokens
+2. 生成 Token，勾选 `repo` 权限
+3. 复制到提示词生成器
+
+**安全说明：**
+- Token 仅用于生成提示词，不会被保存
+- 重置表单时自动清空
 
 ---
 
 ## 📁 文件说明
 
+### 在线工具
+
+| 文件 | 说明 |
+|------|------|
+| [prompt_generator.html](./prompt_generator.html) | **提示词生成器** - 三种模式，支持 Token |
+
 ### 开发指南
 
 | 文件 | 说明 | 推荐度 |
 |------|------|--------|
-| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **v5.0 本地模拟测试版** - 完全自包含测试环境 | ⭐⭐⭐⭐⭐ 强烈推荐 |
-| [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md) | **本地测试环境配置** - Ollama + 模拟消息端 | ⭐⭐⭐⭐ 推荐 |
-| [MESSAGE_SIMULATOR.md](./MESSAGE_SIMULATOR.md) | **消息模拟器详解** - 如何模拟发送消息 | ⭐⭐⭐⭐ 推荐 |
-| [VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md) | **版本管理指南** - 版本号和更新日志 | ⭐⭐⭐⭐ 推荐 |
-| [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md) | **插件发布指南** - Token 和发布流程 | ⭐⭐⭐⭐ 推荐 |
-| [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | AstrBot 核心源码文件索引 | ⭐⭐⭐ |
+| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **v5.0 本地模拟测试版** - 完全自包含测试环境 | ⭐⭐⭐⭐⭐ |
+| [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md) | **本地测试环境配置** - Ollama + 模拟消息端 | ⭐⭐⭐⭐ |
+| [MESSAGE_SIMULATOR.md](./MESSAGE_SIMULATOR.md) | **消息模拟器详解** - 如何模拟发送消息 | ⭐⭐⭐⭐ |
+| [VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md) | **版本管理指南** - 版本号和更新日志 | ⭐⭐⭐⭐ |
+| [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md) | **插件发布指南** - Token 和发布流程 | ⭐⭐⭐⭐ |
 
 ### 测试工具
 
@@ -64,21 +128,9 @@
 | ├── `test_plugin.py` | 自动化测试 |
 | └── `view_log.sh` | 查看日志 |
 
-### 历史版本
+---
 
-| 文件 | 说明 | 推荐度 |
-|------|------|--------|
-| [PROMPT_V4_TEST_DRIVEN.md](./PROMPT_V4_TEST_DRIVEN.md) | v4.0 测试驱动版 | ⭐⭐⭐ |
-| [PROMPT_V3_SOURCE_CODE_DRIVEN.md](./PROMPT_V3_SOURCE_CODE_DRIVEN.md) | v3.0 源码驱动版 | ⭐⭐⭐ |
-| [PROMPT_V2.md](./PROMPT_V2.md) | v2.0 文档驱动版 | ⭐⭐ |
-| [PROMPT.md](./PROMPT.md) | v1.0 基础版 | ⭐ |
-| [TUTORIAL.md](./TUTORIAL.md) | 用户教程 | ⭐⭐ |
-
-## 🚀 快速开始
-
-### 方式一：本地模拟测试（强烈推荐）
-
-**适用场景**：Agent 有虚拟机权限，可实现完全自包含的开发测试闭环
+## 🏗️ 本地测试环境
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -106,37 +158,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**步骤：**
-
-1. 配置本地测试环境（参考 [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md)）
-2. 复制 [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) 中的提示词
-3. 发送给 AI
-4. AI 自动完成：阅读源码 → 编写代码 → 本地测试 → 修复错误 → 交付
-
-### 方式二：远程测试
-
-**适用场景**：使用真实 LLM API 和消息平台
-
-1. 配置测试环境（参考 [TEST_ENVIRONMENT.md](./TEST_ENVIRONMENT.md)）
-2. 复制 [PROMPT_V4_TEST_DRIVEN.md](./PROMPT_V4_TEST_DRIVEN.md) 中的提示词
-3. 发送给 AI
-
-### 方式三：仅源码驱动
-
-**适用场景**：无测试环境，仅开发
-
-1. 复制 [PROMPT_V3_SOURCE_CODE_DRIVEN.md](./PROMPT_V3_SOURCE_CODE_DRIVEN.md) 中的提示词
-2. 发送给 AI，提供源码路径
-
-## 📊 版本对比
-
-| 版本 | 源码阅读 | 测试验证 | LLM 模拟 | 消息模拟 | 适用场景 |
-|------|----------|----------|----------|----------|----------|
-| **v5.0** | ✅ | ✅ 本地 | ✅ Ollama | ✅ 脚本 | 完全自包含 |
-| v4.0 | ✅ | ✅ 远程 | ❌ 需 API | ❌ 需平台 | 有 API 资源 |
-| v3.0 | ✅ | ❌ | - | - | 仅开发 |
-| v2.0 | 文档 | ❌ | - | - | 简单插件 |
-| v1.0 | ❌ | ❌ | - | - | 快速上手 |
+---
 
 ## 🔗 相关链接
 
