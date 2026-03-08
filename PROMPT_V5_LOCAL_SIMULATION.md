@@ -153,9 +153,65 @@ astrbot/core/star/register/star_handler.py   # 装饰器实现
 
 ### 阶段 4：编码实现
 1. 编写插件代码
-2. 编写 metadata.yaml
+2. 编写 metadata.yaml（含版本号）
 3. 编写 _conf_schema.json（如需要）
-4. **输出：完整代码文件**
+4. 编写 CHANGELOG.md（更新日志）⭐
+5. **输出：完整代码文件**
+
+---
+
+## 📦 插件文件结构
+
+```
+my_plugin/
+├── main.py                 # 主代码
+├── metadata.yaml           # 插件元数据（含版本号）
+├── _conf_schema.json       # 配置文件 Schema（可选）
+├── CHANGELOG.md            # 更新日志 ⭐ 必须包含
+└── README.md               # 插件说明（可选）
+```
+
+---
+
+## 📝 metadata.yaml 模板
+
+```yaml
+name: my_plugin
+author: your_name
+description: 插件描述
+version: 1.0.0
+repo: https://github.com/your_name/my_plugin
+astrbot_version: ">=4.0.0"
+```
+
+---
+
+## 📜 CHANGELOG.md 模板
+
+```markdown
+# 更新日志
+
+## [1.0.0] - 2025-01-15
+
+### Added
+- 初始版本发布
+- 功能描述...
+
+### Changed
+- 无
+
+### Fixed
+- 无
+```
+
+---
+
+## 🔢 版本号规则
+
+- 初始版本：1.0.0
+- 新增功能：MINOR +1（如 1.0.0 → 1.1.0）
+- 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
+- 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
 
 ### 阶段 5：本地测试（强制）
 
