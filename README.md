@@ -8,6 +8,7 @@
 |------|------|--------|
 | [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **v5.0 本地模拟测试版** - 完全自包含测试环境 | ⭐⭐⭐⭐⭐ 强烈推荐 |
 | [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md) | **本地测试环境配置** - Ollama + 模拟消息端 | ⭐⭐⭐⭐ 推荐 |
+| [MESSAGE_SIMULATOR.md](./MESSAGE_SIMULATOR.md) | **消息模拟器详解** - 如何模拟发送消息 | ⭐⭐⭐⭐ 推荐 |
 | [PROMPT_V4_TEST_DRIVEN.md](./PROMPT_V4_TEST_DRIVEN.md) | v4.0 测试驱动版 | ⭐⭐⭐ |
 | [TEST_ENVIRONMENT.md](./TEST_ENVIRONMENT.md) | 测试环境配置指南 | ⭐⭐⭐ |
 | [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | AstrBot 核心源码文件索引 | ⭐⭐⭐ |
