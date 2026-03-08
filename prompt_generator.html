@@ -451,9 +451,9 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>插件名称 <span class="required">*</span></label>
-                    <input type="text" id="createName" placeholder="例如：weather_query">
-                    <small>使用英文小写和下划线</small>
+                    <label>插件名称</label>
+                    <input type="text" id="createName" placeholder="例如：weather_query（留空则自动生成）">
+                    <small>使用英文小写和下划线，留空可让 AI 自动命名</small>
                 </div>
                 <div class="form-group">
                     <label>作者名称</label>
@@ -463,7 +463,8 @@
 
             <div class="form-group">
                 <label>插件描述 <span class="required">*</span></label>
-                <textarea id="createDesc" placeholder="例如：一个天气查询插件，支持查询全球城市天气"></textarea>
+                <textarea id="createDesc" placeholder="用一句话描述你想要的插件功能，例如：&#10;- 查天气的插件&#10;- 能搜索网页的插件&#10;- 帮我记备忘录的插件"></textarea>
+                <small>简单描述即可，AI 会帮你完善需求</small>
             </div>
 
             <div class="form-group">
@@ -505,8 +506,9 @@
             </div>
 
             <div class="form-group">
-                <label>详细需求 <span class="required">*</span></label>
-                <textarea id="createDetail" placeholder="详细描述功能需求，例如：&#10;1. 用户发送 /天气 北京 查询天气&#10;2. 支持 LLM Tool，用户问"今天天气怎么样"时自动调用&#10;3. 需要配置 API Key"></textarea>
+                <label>详细需求</label>
+                <textarea id="createDetail" placeholder="更详细的需求描述（可选），例如：&#10;1. 用户发送 /天气 北京 查询天气&#10;2. 支持 LLM Tool，用户问"今天天气怎么样"时自动调用&#10;3. 需要配置 API Key&#10;&#10;留空则 AI 会根据描述自动设计功能"></textarea>
+                <small>可选，留空让 AI 自动设计功能</small>
             </div>
         </div>
 
@@ -759,8 +761,9 @@
             const desc = document.getElementById('createDesc').value.trim();
             const detail = document.getElementById('createDetail').value.trim();
 
-            if (!name || !desc || !detail) {
-                alert('请填写所有必填项！');
+            // 只需要描述
+            if (!desc) {
+                alert('请至少填写插件描述！');
                 return '';
             }
 
@@ -775,17 +778,31 @@
 开发指南：${guidePath}
 源码：${sourcePath}
 
-## 插件信息
-- 插件名称：${name}
-- 插件描述：${desc}
-- 作者：${author}
-
-## 功能类型
-${features.map(f => '- ' + f).join('\n')}
-
-## 详细需求
-${detail}
+## 插件描述
+${desc}
 `;
+
+            if (name) {
+                prompt += `\n## 插件名称\n${name}\n`;
+            } else {
+                prompt += `\n## 插件名称\n（请根据功能自动生成合适的英文名称）\n`;
+            }
+
+            prompt += `\n## 作者\n${author}\n`;
+
+            if (features.length > 0) {
+                prompt += `\n## 功能类型\n${features.map(f => '- ' + f).join('\n')}\n`;
+            }
+
+            if (detail) {
+                prompt += `\n## 详细需求\n${detail}\n`;
+            } else {
+                prompt += `\n## 详细需求\n（请根据插件描述自动设计合理的功能）\n`;
+            }
+
+            if (selectedTags.length > 0) {
+                prompt += `\n## 相关功能\n${selectedTags.map(t => '- ' + t).join('\n')}\n`;
+            }
 
             if (extraNotes) {
                 prompt += `\n## 额外说明\n${extraNotes}\n`;
