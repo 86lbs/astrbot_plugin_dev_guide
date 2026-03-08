@@ -532,22 +532,6 @@
             </div>
 
             <div class="form-group">
-                <label>快速添加功能</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addTag(this, '天气查询')">天气查询</button>
-                    <button type="button" class="tag" onclick="addTag(this, '网络搜索')">网络搜索</button>
-                    <button type="button" class="tag" onclick="addTag(this, '图片生成')">图片生成</button>
-                    <button type="button" class="tag" onclick="addTag(this, '翻译功能')">翻译功能</button>
-                    <button type="button" class="tag" onclick="addTag(this, '提醒/定时')">提醒/定时</button>
-                    <button type="button" class="tag" onclick="addTag(this, '数据存储')">数据存储</button>
-                    <button type="button" class="tag" onclick="addTag(this, 'API调用')">API调用</button>
-                    <button type="button" class="tag" onclick="addTag(this, '群管功能')">群管功能</button>
-                    <button type="button" class="tag" onclick="addTag(this, 'AI对话')">AI对话</button>
-                    <button type="button" class="tag" onclick="addTag(this, '文件处理')">文件处理</button>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <label>详细需求</label>
                 <textarea id="createDetail" placeholder="更详细的需求描述（可选），例如：&#10;1. 用户发送 /天气 北京 查询天气&#10;2. 支持 LLM Tool，用户问"今天天气怎么样"时自动调用&#10;3. 需要配置 API Key&#10;&#10;留空则 AI 会根据描述自动设计功能"></textarea>
                 <small>可选，留空让 AI 自动设计功能</small>
@@ -711,7 +695,6 @@
 
     <script>
         let currentMode = 'learn';
-        let selectedTags = [];
         let optGoals = [];
         let expFocus = [];
         let learnFocus = [];
@@ -744,24 +727,6 @@
                 learnFocus = learnFocus.filter(f => f !== focus);
             } else {
                 learnFocus.push(focus);
-            }
-        }
-
-        // 添加功能标签
-        function addTag(el, tag) {
-            el.classList.toggle('selected');
-            if (selectedTags.includes(tag)) {
-                selectedTags = selectedTags.filter(t => t !== tag);
-            } else {
-                selectedTags.push(tag);
-            }
-            updateDetailFromTags();
-        }
-
-        function updateDetailFromTags() {
-            const detail = document.getElementById('createDetail');
-            if (selectedTags.length > 0 && detail.value === '') {
-                detail.value = '需要的功能：\n' + selectedTags.map(t => '- ' + t).join('\n');
             }
         }
 
@@ -943,10 +908,6 @@ ${desc}
                 prompt += `\n## 详细需求\n${detail}\n`;
             } else {
                 prompt += `\n## 详细需求\n（请根据插件描述自动设计合理的功能）\n`;
-            }
-
-            if (selectedTags.length > 0) {
-                prompt += `\n## 相关功能\n${selectedTags.map(t => '- ' + t).join('\n')}\n`;
             }
 
             if (extraNotes) {
@@ -1292,7 +1253,6 @@ ${styleMap[style]}
 
             // 清除标签选择
             document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
-            selectedTags = [];
             optGoals = [];
             expFocus = [];
             learnFocus = [];
