@@ -586,9 +586,9 @@
             </div>
 
             <div class="form-group">
-                <label>GitHub Token <span style="color: #e74c3c; font-size: 0.85em;">（发布插件时需要）</span></label>
+                <label>GitHub Token <span class="required">*</span></label>
                 <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-                <small>⚠️ Token 仅用于生成提示词，不会被保存。发布插件到 GitHub 时需要。</small>
+                <small>⚠️ 必填。用于访问 GitHub API 获取源码、发布插件。获取方式：GitHub → Settings → Developer settings → Personal access tokens</small>
             </div>
 
             <div class="form-group">
@@ -696,14 +696,19 @@
             const extraNotes = document.getElementById('extraNotes').value;
             const githubToken = document.getElementById('githubToken').value.trim();
 
+            if (!githubToken) {
+                alert('请填写 GitHub Token！');
+                return;
+            }
+
             if (currentMode === 'learn') {
-                prompt = generateLearnPrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateLearnPrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'create') {
                 prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'optimize') {
                 prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'explain') {
-                prompt = generateExplainPrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateExplainPrompt(sourcePath, guidePath, extraNotes, githubToken);
             }
 
             document.getElementById('outputBox').value = prompt;
@@ -711,13 +716,20 @@
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function generateLearnPrompt(sourcePath, guidePath, extraNotes) {
+        function generateLearnPrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const question = document.getElementById('learnQuestion').value.trim();
 
             let prompt = `学习 AstrBot 插件开发。
 
 开发指南：${guidePath}
 源码：${sourcePath}
+
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+请使用此 Token 通过 GitHub API 获取源码和开发指南。
 
 ## 学习目标
 请阅读上述资料，了解 AstrBot 插件开发的核心知识：
@@ -774,6 +786,7 @@ my_plugin/
 - 现在只需要了解和掌握基础知识
 - 准备好接收用户的下一步指令
 - 开发过程中需要及时更新版本和发布
+- 注意保护 Token 安全，不要在日志中输出
 `;
 
             if (extraNotes) {
@@ -805,6 +818,18 @@ my_plugin/
 
 开发指南：${guidePath}
 源码：${sourcePath}
+
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+请使用此 Token 进行以下操作：
+1. 通过 GitHub API 获取源码和开发指南
+2. 创建 GitHub 仓库
+3. 推送代码
+4. 创建 Release
+5. 上传发行版文件
 
 ## 插件描述
 ${desc}
@@ -921,26 +946,11 @@ astrbot_version: ">=4.0.0"
 - CHANGELOG.md（更新日志）
 - README.md（使用说明）
 ${document.getElementById('createConfig').checked ? '- _conf_schema.json（配置 Schema）' : ''}
-- GitHub 仓库链接（如已发布）
-- Release 下载链接（如已发布）
+- GitHub 仓库链接
+- Release 下载链接
+
+注意保护 Token 安全，不要在日志中输出。
 `;
-
-            if (githubToken) {
-                prompt += `
-
-## GitHub Token
-\`\`\`
-${githubToken}
-\`\`\`
-
-请使用此 Token 进行以下操作：
-1. 创建 GitHub 仓库
-2. 推送代码
-3. 创建 Release
-4. 上传发行版文件
-
-注意保护 Token 安全，不要在日志中输出。`;
-            }
 
             return prompt;
         }
@@ -968,6 +978,17 @@ ${githubToken}
 开发指南：${guidePath}
 源码：${sourcePath}
 
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+请使用此 Token 进行以下操作：
+1. 通过 GitHub API 获取源码（如需要）
+2. 推送优化后的代码到仓库
+3. 创建新的 Release
+4. 上传发行版文件
+
 `;
 
             if (isUrl) {
@@ -976,7 +997,7 @@ ${githubToken}
                 prompt += `## 插件仓库
 ${url}
 
-请先从上述仓库获取插件代码，然后进行优化。
+请先使用 Token 通过 GitHub API 获取上述仓库的插件代码，然后进行优化。
 `;
             } else {
                 // 代码方式
@@ -1036,28 +1057,14 @@ ${input}
 - 输出更新后的 CHANGELOG.md
 - 输出更新后的 metadata.yaml
 - 如果有破坏性更改，请明确指出
+
+注意保护 Token 安全，不要在日志中输出。
 `;
-
-            if (githubToken) {
-                prompt += `
-
-## GitHub Token
-\`\`\`
-${githubToken}
-\`\`\`
-
-请使用此 Token 进行以下操作（如需要）：
-1. 推送优化后的代码到仓库
-2. 创建新的 Release
-3. 上传发行版文件
-
-注意保护 Token 安全，不要在日志中输出。`;
-            }
 
             return prompt;
         }
 
-        function generateExplainPrompt(sourcePath, guidePath, extraNotes) {
+        function generateExplainPrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const input = document.getElementById('explainCode').value.trim();
             const question = document.getElementById('explainQuestion').value.trim();
             const style = document.getElementById('explainStyle').value;
@@ -1081,6 +1088,13 @@ ${githubToken}
 开发指南：${guidePath}
 源码：${sourcePath}
 
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+请使用此 Token 通过 GitHub API 获取源码（如需要）。
+
 `;
 
             if (isUrl) {
@@ -1089,7 +1103,7 @@ ${githubToken}
                 prompt += `## 插件仓库
 ${url}
 
-请先从上述仓库获取插件代码，然后进行讲解。
+请先使用 Token 通过 GitHub API 获取上述仓库的插件代码，然后进行讲解。
 `;
             } else {
                 // 代码方式
@@ -1114,6 +1128,8 @@ ${styleMap[style]}
 3. 解释装饰器的作用
 4. 说明数据流向
 5. 指出需要注意的地方
+
+注意保护 Token 安全，不要在日志中输出。
 `;
 
             if (extraNotes) {
