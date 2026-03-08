@@ -457,21 +457,6 @@
             <h2 class="card-title">📚 学习 AstrBot 插件开发</h2>
 
             <div class="form-group">
-                <label>学习重点（可选）</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '插件结构')">插件结构</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '指令开发')">指令开发</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, 'LLM Tool')">LLM Tool</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '事件监听')">事件监听</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '配置管理')">配置管理</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, 'API 调用')">API 调用</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '异步编程')">异步编程</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '错误处理')">错误处理</button>
-                </div>
-                <small>选择你想重点了解的内容，或留空学习全部</small>
-            </div>
-
-            <div class="form-group">
                 <label>你的问题（可选）</label>
                 <textarea id="learnQuestion" placeholder="有什么想提前了解的问题？例如：&#10;- AstrBot 插件和普通 Python 项目有什么区别？&#10;- 如何调试插件？"></textarea>
             </div>
@@ -555,22 +540,6 @@
             </div>
 
             <div class="form-group">
-                <label>快速选择优化类型</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addOptGoal(this, '性能优化')">性能优化</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '代码重构')">代码重构</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加错误处理')">添加错误处理</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加日志')">添加日志</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加配置项')">添加配置项</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '修复Bug')">修复Bug</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加新功能')">添加新功能</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '代码注释')">代码注释</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '优化代码结构')">优化代码结构</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加类型提示')">添加类型提示</button>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <label>预期效果（可选）</label>
                 <textarea id="optimizeExpect" placeholder="描述你期望达到的效果，例如：&#10;- 响应时间小于1秒&#10;- 用户可以配置超时时间"></textarea>
             </div>
@@ -584,20 +553,6 @@
                 <label>插件来源 <span class="required">*</span></label>
                 <textarea id="explainCode" placeholder="粘贴插件代码 或 填写仓库链接，例如：&#10;&#10;代码方式：&#10;class MyPlugin(star.Star):&#10;    ...&#10;&#10;仓库链接方式：&#10;https://github.com/xxx/my_plugin" style="min-height: 150px; font-family: monospace;"></textarea>
                 <small>支持粘贴代码或 GitHub 仓库链接</small>
-            </div>
-
-            <div class="form-group">
-                <label>讲解重点</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addExpFocus(this, '整体架构')">整体架构</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '核心逻辑')">核心逻辑</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, 'API用法')">API用法</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '装饰器')">装饰器</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '异步处理')">异步处理</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '配置管理')">配置管理</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '错误处理')">错误处理</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '逐行解释')">逐行解释</button>
-                </div>
             </div>
 
             <div class="form-group">
@@ -695,9 +650,6 @@
 
     <script>
         let currentMode = 'learn';
-        let optGoals = [];
-        let expFocus = [];
-        let learnFocus = [];
         let needPublish = false;
 
         // 切换模式
@@ -718,36 +670,6 @@
 
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
-        }
-
-        // 学习重点
-        function addLearnFocus(el, focus) {
-            el.classList.toggle('selected');
-            if (learnFocus.includes(focus)) {
-                learnFocus = learnFocus.filter(f => f !== focus);
-            } else {
-                learnFocus.push(focus);
-            }
-        }
-
-        // 优化目标
-        function addOptGoal(el, goal) {
-            el.classList.toggle('selected');
-            if (optGoals.includes(goal)) {
-                optGoals = optGoals.filter(g => g !== goal);
-            } else {
-                optGoals.push(goal);
-            }
-        }
-
-        // 讲解重点
-        function addExpFocus(el, focus) {
-            el.classList.toggle('selected');
-            if (expFocus.includes(focus)) {
-                expFocus = expFocus.filter(f => f !== focus);
-            } else {
-                expFocus.push(focus);
-            }
         }
 
         // 生成提示词
@@ -807,10 +729,6 @@
 6. 配置管理
 7. 消息处理和返回结果
 `;
-
-            if (learnFocus.length > 0) {
-                prompt += `\n## 重点学习\n请重点关注以下内容：\n${learnFocus.map(f => '- ' + f).join('\n')}\n`;
-            }
 
             if (question) {
                 prompt += `\n## 我的问题\n${question}\n`;
@@ -1071,10 +989,6 @@ ${input}
 
             prompt += `\n## 我的要求\n${request}\n`;
 
-            if (optGoals.length > 0) {
-                prompt += `\n## 优化类型\n${optGoals.map(g => '- ' + g).join('\n')}\n`;
-            }
-
             if (expect) {
                 prompt += `\n## 预期效果\n${expect}\n`;
             }
@@ -1170,10 +1084,6 @@ ${input}
 `;
             }
 
-            if (expFocus.length > 0) {
-                prompt += `\n## 讲解重点\n${expFocus.map(f => '- ' + f).join('\n')}\n`;
-            }
-
             if (question) {
                 prompt += `\n## 我的问题\n${question}\n`;
             }
@@ -1250,12 +1160,6 @@ ${styleMap[style]}
             // 重置高级选项
             document.getElementById('extraNotes').value = '';
             document.getElementById('githubToken').value = '';
-
-            // 清除标签选择
-            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
-            optGoals = [];
-            expFocus = [];
-            learnFocus = [];
 
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
