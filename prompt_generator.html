@@ -62,9 +62,15 @@
         /* 模式选择 */
         .mode-selector {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
             margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .mode-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .mode-card {
@@ -390,10 +396,6 @@
 
         /* 响应式 */
         @media (max-width: 700px) {
-            .mode-selector {
-                grid-template-columns: 1fr;
-            }
-
             .form-row {
                 grid-template-columns: 1fr;
             }
@@ -427,7 +429,12 @@
         <div class="card">
             <h2 class="card-title">📌 选择操作模式</h2>
             <div class="mode-selector">
-                <div class="mode-card active" data-mode="create" onclick="selectMode('create')">
+                <div class="mode-card active" data-mode="learn" onclick="selectMode('learn')">
+                    <div class="icon">📚</div>
+                    <h3>学习模式</h3>
+                    <p>先了解 AstrBot 插件开发</p>
+                </div>
+                <div class="mode-card" data-mode="create" onclick="selectMode('create')">
                     <div class="icon">✨</div>
                     <h3>创建插件</h3>
                     <p>从零开始创建新插件</p>
@@ -445,8 +452,43 @@
             </div>
         </div>
 
+        <!-- 学习模式表单 -->
+        <div id="learnForm" class="card">
+            <h2 class="card-title">📚 学习 AstrBot 插件开发</h2>
+
+            <div class="form-group">
+                <label>学习重点（可选）</label>
+                <div class="tag-group">
+                    <button class="tag" onclick="addLearnFocus(this, '插件结构')">插件结构</button>
+                    <button class="tag" onclick="addLearnFocus(this, '指令开发')">指令开发</button>
+                    <button class="tag" onclick="addLearnFocus(this, 'LLM Tool')">LLM Tool</button>
+                    <button class="tag" onclick="addLearnFocus(this, '事件监听')">事件监听</button>
+                    <button class="tag" onclick="addLearnFocus(this, '配置管理')">配置管理</button>
+                    <button class="tag" onclick="addLearnFocus(this, 'API 调用')">API 调用</button>
+                    <button class="tag" onclick="addLearnFocus(this, '异步编程')">异步编程</button>
+                    <button class="tag" onclick="addLearnFocus(this, '错误处理')">错误处理</button>
+                </div>
+                <small>选择你想重点了解的内容，或留空学习全部</small>
+            </div>
+
+            <div class="form-group">
+                <label>你的问题（可选）</label>
+                <textarea id="learnQuestion" placeholder="有什么想提前了解的问题？例如：&#10;- AstrBot 插件和普通 Python 项目有什么区别？&#10;- 如何调试插件？"></textarea>
+            </div>
+
+            <div class="tips">
+                <h4>💡 学习模式说明</h4>
+                <ul>
+                    <li>Agent 会先阅读 AstrBot 源码和开发指南</li>
+                    <li>了解插件开发的核心概念和 API</li>
+                    <li>你可以在稍后提供具体的开发任务</li>
+                    <li>适合第一次使用或想深入了解 AstrBot 的用户</li>
+                </ul>
+            </div>
+        </div>
+
         <!-- 创建插件表单 -->
-        <div id="createForm" class="card">
+        <div id="createForm" class="card hidden">
             <h2 class="card-title">✨ 创建新插件</h2>
 
             <div class="form-row">
@@ -668,10 +710,11 @@
     <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
 
     <script>
-        let currentMode = 'create';
+        let currentMode = 'learn';
         let selectedTags = [];
         let optGoals = [];
         let expFocus = [];
+        let learnFocus = [];
         let needPublish = false;
 
         // 切换模式
@@ -685,12 +728,23 @@
             document.querySelector(`.mode-card[data-mode="${mode}"]`).classList.add('active');
 
             // 显示对应表单
+            document.getElementById('learnForm').classList.toggle('hidden', mode !== 'learn');
             document.getElementById('createForm').classList.toggle('hidden', mode !== 'create');
             document.getElementById('optimizeForm').classList.toggle('hidden', mode !== 'optimize');
             document.getElementById('explainForm').classList.toggle('hidden', mode !== 'explain');
 
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
+        }
+
+        // 学习重点
+        function addLearnFocus(el, focus) {
+            el.classList.toggle('selected');
+            if (learnFocus.includes(focus)) {
+                learnFocus = learnFocus.filter(f => f !== focus);
+            } else {
+                learnFocus.push(focus);
+            }
         }
 
         // 添加功能标签
@@ -737,6 +791,7 @@
                 // 显示发布确认
                 document.getElementById('publishModal').classList.add('show');
             } else {
+                // 其他模式直接生成
                 generatePromptFinal();
             }
         }
@@ -754,7 +809,9 @@
             const extraNotes = document.getElementById('extraNotes').value;
             const githubToken = document.getElementById('githubToken').value.trim();
 
-            if (currentMode === 'create') {
+            if (currentMode === 'learn') {
+                prompt = generateLearnPrompt(sourcePath, guidePath, extraNotes);
+            } else if (currentMode === 'create') {
                 prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'optimize') {
                 prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes);
@@ -765,6 +822,53 @@
             document.getElementById('outputBox').value = prompt;
             document.getElementById('outputSection').classList.add('show');
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateLearnPrompt(sourcePath, guidePath, extraNotes) {
+            const question = document.getElementById('learnQuestion').value.trim();
+
+            let prompt = `学习 AstrBot 插件开发。
+
+开发指南：${guidePath}
+源码：${sourcePath}
+
+## 学习目标
+请阅读上述资料，了解 AstrBot 插件开发的核心知识：
+1. 插件的基本结构
+2. Star 基类和 Context 接口
+3. 指令开发（@filter.command）
+4. LLM Tool 开发（@filter.llm_tool）
+5. 事件监听
+6. 配置管理
+7. 消息处理和返回结果
+`;
+
+            if (learnFocus.length > 0) {
+                prompt += `\n## 重点学习\n请重点关注以下内容：\n${learnFocus.map(f => '- ' + f).join('\n')}\n`;
+            }
+
+            if (question) {
+                prompt += `\n## 我的问题\n${question}\n`;
+            }
+
+            prompt += `
+## 输出要求
+1. 总结 AstrBot 插件开发的核心概念
+2. 列出常用的 API 和装饰器
+3. 说明插件开发的最佳实践
+4. 等待用户稍后提供具体的开发任务
+
+## 注意
+- 用户将在稍后提供具体的开发任务
+- 现在只需要了解和掌握基础知识
+- 准备好接收用户的下一步指令
+`;
+
+            if (extraNotes) {
+                prompt += `\n## 额外说明\n${extraNotes}\n`;
+            }
+
+            return prompt;
         }
 
         function generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken) {
@@ -1027,6 +1131,9 @@ ${styleMap[style]}
 
         // 重置
         function resetAll() {
+            // 重置学习表单
+            document.getElementById('learnQuestion').value = '';
+
             // 重置创建表单
             document.getElementById('createName').value = '';
             document.getElementById('createAuthor').value = '';
@@ -1056,6 +1163,7 @@ ${styleMap[style]}
             selectedTags = [];
             optGoals = [];
             expFocus = [];
+            learnFocus = [];
 
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
