@@ -4,14 +4,34 @@
 
 ## 📁 文件说明
 
+### 开发指南
+
 | 文件 | 说明 | 推荐度 |
 |------|------|--------|
 | [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **v5.0 本地模拟测试版** - 完全自包含测试环境 | ⭐⭐⭐⭐⭐ 强烈推荐 |
 | [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md) | **本地测试环境配置** - Ollama + 模拟消息端 | ⭐⭐⭐⭐ 推荐 |
 | [MESSAGE_SIMULATOR.md](./MESSAGE_SIMULATOR.md) | **消息模拟器详解** - 如何模拟发送消息 | ⭐⭐⭐⭐ 推荐 |
-| [PROMPT_V4_TEST_DRIVEN.md](./PROMPT_V4_TEST_DRIVEN.md) | v4.0 测试驱动版 | ⭐⭐⭐ |
-| [TEST_ENVIRONMENT.md](./TEST_ENVIRONMENT.md) | 测试环境配置指南 | ⭐⭐⭐ |
 | [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | AstrBot 核心源码文件索引 | ⭐⭐⭐ |
+
+### 测试工具
+
+| 文件 | 说明 |
+|------|------|
+| [tools/](./tools/) | **完整测试工具集** |
+| ├── `setup_local_env.sh` | 一键部署本地测试环境 |
+| ├── `start_astrbot.sh` | 启动 AstrBot 服务 |
+| ├── `stop_astrbot.sh` | 停止 AstrBot 服务 |
+| ├── `deploy_plugin.sh` | 部署插件 |
+| ├── `send_message.py` | 发送消息 |
+| ├── `send_message_stream.py` | 发送消息（流式） |
+| ├── `test_plugin.py` | 自动化测试 |
+| └── `view_log.sh` | 查看日志 |
+
+### 历史版本
+
+| 文件 | 说明 | 推荐度 |
+|------|------|--------|
+| [PROMPT_V4_TEST_DRIVEN.md](./PROMPT_V4_TEST_DRIVEN.md) | v4.0 测试驱动版 | ⭐⭐⭐ |
 | [PROMPT_V3_SOURCE_CODE_DRIVEN.md](./PROMPT_V3_SOURCE_CODE_DRIVEN.md) | v3.0 源码驱动版 | ⭐⭐⭐ |
 | [PROMPT_V2.md](./PROMPT_V2.md) | v2.0 文档驱动版 | ⭐⭐ |
 | [PROMPT.md](./PROMPT.md) | v1.0 基础版 | ⭐ |
