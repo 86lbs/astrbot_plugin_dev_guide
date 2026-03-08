@@ -2,6 +2,25 @@
 
 使用 AI 快速开发 AstrBot 插件的完整指南。
 
+## 🚀 立即开始
+
+**发送以下内容给 Agent 即可开始开发：**
+
+```
+开发 AstrBot 插件。
+
+开发指南：https://github.com/86lbs/astrbot_plugin_dev_guide
+源码：https://github.com/AstrBotDevs/AstrBot
+
+需求：[描述你的插件需求]
+
+请阅读 PROMPT_V5_LOCAL_SIMULATION.md 按流程开发。
+```
+
+详细说明请查看 [START_HERE.md](./START_HERE.md)
+
+---
+
 ## 📁 文件说明
 
 ### 开发指南
