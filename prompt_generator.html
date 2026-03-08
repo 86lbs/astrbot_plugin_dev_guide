@@ -701,7 +701,7 @@
             } else if (currentMode === 'create') {
                 prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'optimize') {
-                prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'explain') {
                 prompt = generateExplainPrompt(sourcePath, guidePath, extraNotes);
             }
@@ -945,7 +945,7 @@ ${githubToken}
             return prompt;
         }
 
-        function generateOptimizePrompt(sourcePath, guidePath, extraNotes) {
+        function generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const input = document.getElementById('optimizeCode').value.trim();
             const request = document.getElementById('optimizeRequest').value.trim();
             const expect = document.getElementById('optimizeExpect').value.trim();
@@ -1037,6 +1037,22 @@ ${input}
 - 输出更新后的 metadata.yaml
 - 如果有破坏性更改，请明确指出
 `;
+
+            if (githubToken) {
+                prompt += `
+
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+请使用此 Token 进行以下操作（如需要）：
+1. 推送优化后的代码到仓库
+2. 创建新的 Release
+3. 上传发行版文件
+
+注意保护 Token 安全，不要在日志中输出。`;
+            }
 
             return prompt;
         }
