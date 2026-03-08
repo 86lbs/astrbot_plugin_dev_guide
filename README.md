@@ -2,11 +2,15 @@
 
 使用 AI 快速开发 AstrBot 插件的完整指南。
 
+🌐 **在线工具**：[https://86lbs.github.io/astrbot_plugin_dev_guide/](https://86lbs.github.io/astrbot_plugin_dev_guide/)
+
 ## 🚀 立即开始
 
 ### 方式一：使用提示词生成器（推荐）
 
-**打开 [prompt_generator.html](./prompt_generator.html) 网页工具：**
+**打开在线工具：[https://86lbs.github.io/astrbot_plugin_dev_guide/prompt_generator.html](https://86lbs.github.io/astrbot_plugin_dev_guide/prompt_generator.html)**
+
+或者使用本地文件：`prompt_generator.html`
 
 1. 填写插件名称和描述
 2. 选择功能类型
