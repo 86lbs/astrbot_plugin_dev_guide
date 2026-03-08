@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstrBot 插件开发提示词生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group small {
+            color: #888;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+        }
+
+        .output-section {
+            display: none;
+        }
+
+        .output-section.show {
+            display: block;
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .output-box .keyword {
+            color: #569cd6;
+        }
+
+        .output-box .string {
+            color: #ce9178;
+        }
+
+        .output-box .comment {
+            color: #6a9955;
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+        }
+
+        .tips {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tips h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .tips ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .tips li {
+            margin-bottom: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .feature-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .feature-tag:hover {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .feature-tag.selected {
+            background: #1a73e8;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AstrBot 插件开发提示词生成器</h1>
+            <p>快速生成发送给 AI 的开发提示词</p>
+        </div>
+
+        <!-- 基本信息 -->
+        <div class="card">
+            <h2 class="card-title">📋 基本信息</h2>
+
+            <div class="form-group">
+                <label>插件名称 <span class="required">*</span></label>
+                <input type="text" id="pluginName" placeholder="例如：weather_query">
+                <small>使用英文小写和下划线</small>
+            </div>
+
+            <div class="form-group">
+                <label>插件描述 <span class="required">*</span></label>
+                <textarea id="pluginDesc" placeholder="例如：一个天气查询插件，支持查询全球城市天气"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>作者名称</label>
+                <input type="text" id="authorName" placeholder="你的名字或 GitHub 用户名">
+            </div>
+        </div>
+
+        <!-- 功能需求 -->
+        <div class="card">
+            <h2 class="card-title">⚡ 功能需求</h2>
+
+            <div class="form-group">
+                <label>功能类型 <span class="required">*</span></label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="featureCommand" checked>
+                        <label for="featureCommand">指令功能</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="featureLLMTool">
+                        <label for="featureLLMTool">LLM Tool</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="featureEvent">
+                        <label for="featureEvent">事件监听</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="featureConfig">
+                        <label for="featureConfig">需要配置项</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>快速添加功能标签</label>
+                <div class="feature-tags">
+                    <span class="feature-tag" onclick="addFeature(this, '天气查询')">天气查询</span>
+                    <span class="feature-tag" onclick="addFeature(this, '网络搜索')">网络搜索</span>
+                    <span class="feature-tag" onclick="addFeature(this, '图片生成')">图片生成</span>
+                    <span class="feature-tag" onclick="addFeature(this, '翻译功能')">翻译功能</span>
+                    <span class="feature-tag" onclick="addFeature(this, '提醒功能')">提醒功能</span>
+                    <span class="feature-tag" onclick="addFeature(this, '数据统计')">数据统计</span>
+                    <span class="feature-tag" onclick="addFeature(this, 'API 调用')">API 调用</span>
+                    <span class="feature-tag" onclick="addFeature(this, '数据库存储')">数据库存储</span>
+                    <span class="feature-tag" onclick="addFeature(this, '定时任务')">定时任务</span>
+                    <span class="feature-tag" onclick="addFeature(this, '群管功能')">群管功能</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>详细需求描述 <span class="required">*</span></label>
+                <textarea id="detailedReq" placeholder="详细描述插件的功能需求，例如：&#10;1. 用户发送 /天气 北京 可以查询北京天气&#10;2. 支持 LLM Tool 方式，用户问"今天天气怎么样"时自动调用&#10;3. 需要配置天气 API Key"></textarea>
+            </div>
+        </div>
+
+        <!-- 高级选项 -->
+        <div class="card">
+            <h2 class="card-title">🔧 高级选项</h2>
+
+            <div class="form-group">
+                <label>AstrBot 源码路径</label>
+                <input type="text" id="sourcePath" placeholder="/path/to/astrbot/" value="https://github.com/AstrBotDevs/AstrBot">
+                <small>可以是本地路径或 GitHub 地址</small>
+            </div>
+
+            <div class="form-group">
+                <label>测试工具路径</label>
+                <input type="text" id="toolsPath" placeholder="/path/to/astrbot_plugin_dev_guide/tools/" value="https://github.com/86lbs/astrbot_plugin_dev_guide">
+            </div>
+
+            <div class="form-group">
+                <label>额外说明</label>
+                <textarea id="extraNotes" placeholder="任何额外的说明或要求..."></textarea>
+            </div>
+        </div>
+
+        <!-- 生成按钮 -->
+        <div class="card" style="text-align: center;">
+            <button class="btn btn-primary" onclick="generatePrompt()">
+                ✨ 生成提示词
+            </button>
+            <button class="btn btn-secondary" onclick="resetForm()">
+                🔄 重置表单
+            </button>
+        </div>
+
+        <!-- 输出区域 -->
+        <div class="card output-section" id="outputSection">
+            <h2 class="card-title">📝 生成的提示词</h2>
+
+            <div class="output-box" id="outputBox"></div>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-success" onclick="copyPrompt()">
+                    📋 复制到剪贴板
+                </button>
+                <button class="btn btn-secondary" onclick="downloadPrompt()">
+                    💾 下载文件
+                </button>
+            </div>
+
+            <div class="tips">
+                <h4>💡 使用提示</h4>
+                <ul>
+                    <li>将生成的提示词发送给 AI（如 Claude、ChatGPT）</li>
+                    <li>AI 会按照提示词中的流程开发插件</li>
+                    <li>开发完成后会提示你是否发布到市场</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发布确认弹窗 -->
+    <div class="modal" id="publishModal">
+        <div class="modal-content">
+            <h3>🚀 发布到插件市场？</h3>
+            <p>插件开发完成后，是否需要发布到 AstrBot 官方插件市场？<br><small>（需要 GitHub Token 和提交 PR）</small></p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="confirmPublish(true)">需要发布</button>
+                <button class="btn btn-secondary" onclick="confirmPublish(false)">暂不发布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 复制提示 -->
+    <div class="copy-toast" id="copyToast">✅ 已复制到剪贴板！</div>
+
+    <script>
+        let selectedFeatures = [];
+        let needPublish = false;
+
+        // 添加功能标签
+        function addFeature(element, feature) {
+            element.classList.toggle('selected');
+
+            if (selectedFeatures.includes(feature)) {
+                selectedFeatures = selectedFeatures.filter(f => f !== feature);
+            } else {
+                selectedFeatures.push(feature);
+            }
+
+            // 更新详细需求
+            const detailedReq = document.getElementById('detailedReq');
+            if (detailedReq.value === '') {
+                detailedReq.value = '需要的功能：\n' + selectedFeatures.map(f => '- ' + f).join('\n');
+            }
+        }
+
+        // 生成提示词
+        function generatePrompt() {
+            const pluginName = document.getElementById('pluginName').value.trim();
+            const pluginDesc = document.getElementById('pluginDesc').value.trim();
+            const authorName = document.getElementById('authorName').value.trim();
+            const detailedReq = document.getElementById('detailedReq').value.trim();
+            const sourcePath = document.getElementById('sourcePath').value.trim();
+            const toolsPath = document.getElementById('toolsPath').value.trim();
+            const extraNotes = document.getElementById('extraNotes').value.trim();
+
+            // 验证必填项
+            if (!pluginName || !pluginDesc || !detailedReq) {
+                alert('请填写所有必填项！');
+                return;
+            }
+
+            // 获取功能类型
+            const features = [];
+            if (document.getElementById('featureCommand').checked) features.push('指令功能');
+            if (document.getElementById('featureLLMTool').checked) features.push('LLM Tool');
+            if (document.getElementById('featureEvent').checked) features.push('事件监听');
+            if (document.getElementById('featureConfig').checked) features.push('配置项');
+
+            // 显示发布确认弹窗
+            document.getElementById('publishModal').classList.add('show');
+        }
+
+        // 确认发布选择
+        function confirmPublish(publish) {
+            needPublish = publish;
+            document.getElementById('publishModal').classList.remove('show');
+
+            // 继续生成
+            generatePromptFinal();
+        }
+
+        // 最终生成提示词
+        function generatePromptFinal() {
+            const pluginName = document.getElementById('pluginName').value.trim();
+            const pluginDesc = document.getElementById('pluginDesc').value.trim();
+            const authorName = document.getElementById('authorName').value.trim() || 'your_name';
+            const detailedReq = document.getElementById('detailedReq').value.trim();
+            const sourcePath = document.getElementById('sourcePath').value.trim();
+            const toolsPath = document.getElementById('toolsPath').value.trim();
+            const extraNotes = document.getElementById('extraNotes').value.trim();
+
+            const features = [];
+            if (document.getElementById('featureCommand').checked) features.push('指令功能');
+            if (document.getElementById('featureLLMTool').checked) features.push('LLM Tool');
+            if (document.getElementById('featureEvent').checked) features.push('事件监听');
+            if (document.getElementById('featureConfig').checked) features.push('配置项');
+
+            // 生成提示词
+            let prompt = `开发 AstrBot 插件。
+
+开发指南：${toolsPath}
+源码：${sourcePath}
+
+## 插件信息
+- 插件名称：${pluginName}
+- 插件描述：${pluginDesc}
+- 作者：${authorName}
+
+## 功能类型
+${features.map(f => '- ' + f).join('\n')}
+
+## 详细需求
+${detailedReq}
+`;
+
+            if (extraNotes) {
+                prompt += `
+## 额外说明
+${extraNotes}
+`;
+            }
+
+            prompt += `
+## 开发要求
+请阅读 PROMPT_V5_LOCAL_SIMULATION.md 按流程开发：
+1. 阅读源码并输出阅读报告
+2. 设计插件结构
+3. 编写代码（包含 metadata.yaml 和 CHANGELOG.md）
+4. 本地测试验证
+5. 修复错误（如有）
+6. 交付完整代码`;
+
+            if (needPublish) {
+                prompt += `
+7. 提供 GitHub 发布命令（需要 Token）`;
+            }
+
+            prompt += `
+
+## 交付内容
+- main.py（主代码）
+- metadata.yaml（元数据，含版本号）
+- CHANGELOG.md（更新日志）
+${document.getElementById('featureConfig').checked ? '- _conf_schema.json（配置 Schema）' : ''}
+- README.md（使用说明）
+`;
+
+            // 显示输出
+            document.getElementById('outputBox').textContent = prompt;
+            document.getElementById('outputSection').classList.add('show');
+
+            // 滚动到输出区域
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 复制提示词
+        function copyPrompt() {
+            const prompt = document.getElementById('outputBox').textContent;
+            navigator.clipboard.writeText(prompt).then(() => {
+                const toast = document.getElementById('copyToast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        // 下载提示词
+        function downloadPrompt() {
+            const prompt = document.getElementById('outputBox').textContent;
+            const pluginName = document.getElementById('pluginName').value.trim() || 'prompt';
+            const blob = new Blob([prompt], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${pluginName}_prompt.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('pluginName').value = '';
+            document.getElementById('pluginDesc').value = '';
+            document.getElementById('authorName').value = '';
+            document.getElementById('detailedReq').value = '';
+            document.getElementById('extraNotes').value = '';
+            document.getElementById('featureCommand').checked = true;
+            document.getElementById('featureLLMTool').checked = false;
+            document.getElementById('featureEvent').checked = false;
+            document.getElementById('featureConfig').checked = false;
+
+            // 清除选中的标签
+            document.querySelectorAll('.feature-tag').forEach(tag => {
+                tag.classList.remove('selected');
+            });
+            selectedFeatures = [];
+
+            // 隐藏输出区域
+            document.getElementById('outputSection').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
