@@ -605,6 +605,12 @@
             </div>
 
             <div class="form-group">
+                <label>GitHub Token <span style="color: #e74c3c; font-size: 0.85em;">（发布插件时需要）</span></label>
+                <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                <small>⚠️ Token 仅用于生成提示词，不会被保存。发布插件到 GitHub 时需要。</small>
+            </div>
+
+            <div class="form-group">
                 <label>额外说明</label>
                 <textarea id="extraNotes" placeholder="任何额外的要求或说明..."></textarea>
             </div>
@@ -746,9 +752,10 @@
             const sourcePath = document.getElementById('sourcePath').value;
             const guidePath = document.getElementById('guidePath').value;
             const extraNotes = document.getElementById('extraNotes').value;
+            const githubToken = document.getElementById('githubToken').value.trim();
 
             if (currentMode === 'create') {
-                prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'optimize') {
                 prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes);
             } else if (currentMode === 'explain') {
@@ -760,7 +767,7 @@
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function generateCreatePrompt(sourcePath, guidePath, extraNotes) {
+        function generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const name = document.getElementById('createName').value.trim();
             const author = document.getElementById('createAuthor').value.trim() || 'your_name';
             const desc = document.getElementById('createDesc').value.trim();
@@ -823,8 +830,18 @@ ${desc}
 5. 修复错误（如有）
 6. 交付完整代码`;
 
-            if (needPublish) {
-                prompt += `\n7. 提供 GitHub 发布命令`;
+            if (needPublish || githubToken) {
+                prompt += `\n7. 发布到 GitHub`;
+                if (githubToken) {
+                    prompt += `
+
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+请使用此 Token 进行发布操作。注意保护 Token 安全。`;
+                }
             }
 
             prompt += `
@@ -1032,6 +1049,7 @@ ${styleMap[style]}
 
             // 重置高级选项
             document.getElementById('extraNotes').value = '';
+            document.getElementById('githubToken').value = '';
 
             // 清除标签选择
             document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
