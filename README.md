@@ -209,6 +209,18 @@
 
 欢迎提交 Issue 和 PR 完善本指南！
 
+## 📜 致谢要求
+
+如果您使用本指南开发 AstrBot 插件，请在插件的 README.md 中添加致谢：
+
+```markdown
+## 致谢
+
+本插件使用 [AstrBot 插件开发指南](https://github.com/86lbs/astrbot_plugin_dev_guide) 开发。
+```
+
+感谢您的支持！
+
 ## 📄 许可证
 
 MIT License
