@@ -856,12 +856,41 @@
 1. 总结 AstrBot 插件开发的核心概念
 2. 列出常用的 API 和装饰器
 3. 说明插件开发的最佳实践
-4. 等待用户稍后提供具体的开发任务
+4. 了解版本管理和发布流程
+5. 等待用户稍后提供具体的开发任务
+
+## 版本管理知识
+请了解以下版本管理要求：
+
+### 插件文件结构
+\`\`\`
+my_plugin/
+├── main.py              # 主代码
+├── metadata.yaml        # 元数据（含版本号）
+├── CHANGELOG.md         # 更新日志
+├── README.md            # 使用说明
+└── _conf_schema.json    # 配置 Schema（如需要）
+\`\`\`
+
+### 版本号规则
+- 初始版本：1.0.0
+- 新增功能：MINOR +1（如 1.0.0 → 1.1.0）
+- 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
+- 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
+
+### 发布流程
+1. 完成代码编写和测试
+2. 更新 CHANGELOG.md
+3. 更新 metadata.yaml 版本号
+4. 创建 Git Tag
+5. 创建 GitHub Release
+6. 上传发行版 zip
 
 ## 注意
 - 用户将在稍后提供具体的开发任务
 - 现在只需要了解和掌握基础知识
 - 准备好接收用户的下一步指令
+- 开发过程中需要及时更新版本和发布
 `;
 
             if (extraNotes) {
@@ -935,28 +964,104 @@ ${desc}
 6. 交付完整代码`;
 
             if (needPublish || githubToken) {
-                prompt += `\n7. 发布到 GitHub`;
-                if (githubToken) {
-                    prompt += `
+                prompt += `
+7. 发布到 GitHub
+   - 创建 GitHub 仓库
+   - 推送代码
+   - 创建 Release（v1.0.0）
+   - 上传发行版`;
+            }
+
+            prompt += `
+
+## 版本管理要求
+
+### 文件结构
+每个插件必须包含以下文件：
+\`\`\`
+my_plugin/
+├── main.py              # 主代码
+├── metadata.yaml        # 元数据（含版本号）
+├── CHANGELOG.md         # 更新日志
+├── README.md            # 使用说明
+└── _conf_schema.json    # 配置 Schema（如需要）
+\`\`\`
+
+### metadata.yaml 格式
+\`\`\`yaml
+name: my_plugin
+author: author_name
+description: 插件描述
+version: 1.0.0
+repo: https://github.com/user/my_plugin
+astrbot_version: ">=4.0.0"
+\`\`\`
+
+### CHANGELOG.md 格式
+\`\`\`markdown
+# 更新日志
+
+## [1.0.0] - 2025-01-15
+
+### Added
+- 初始版本发布
+- 功能描述...
+
+### Changed
+- 无
+
+### Fixed
+- 无
+\`\`\`
+
+### 版本号规则
+- 初始版本：1.0.0
+- 新增功能：MINOR +1（如 1.0.0 → 1.1.0）
+- 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
+- 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
+
+## 开发过程中的要求
+
+1. **每完成一个功能模块**：
+   - 更新 CHANGELOG.md
+   - 提交到 Git（如有 Token）
+
+2. **测试通过后**：
+   - 更新版本号
+   - 创建 Git Tag
+   - 创建 GitHub Release
+
+3. **发行版要求**：
+   - 打包插件为 zip
+   - 上传到 Release assets
+   - 填写 Release notes（来自 CHANGELOG.md）
+
+## 交付内容
+- main.py（主代码）
+- metadata.yaml（元数据）
+- CHANGELOG.md（更新日志）
+- README.md（使用说明）
+${document.getElementById('createConfig').checked ? '- _conf_schema.json（配置 Schema）' : ''}
+- GitHub 仓库链接（如已发布）
+- Release 下载链接（如已发布）
+`;
+
+            if (githubToken) {
+                prompt += `
 
 ## GitHub Token
 \`\`\`
 ${githubToken}
 \`\`\`
 
-请使用此 Token 进行发布操作。注意保护 Token 安全。`;
-                }
+请使用此 Token 进行以下操作：
+1. 创建 GitHub 仓库
+2. 推送代码
+3. 创建 Release
+4. 上传发行版文件
+
+注意保护 Token 安全，不要在日志中输出。`;
             }
-
-            prompt += `
-
-## 交付内容
-- main.py（主代码）
-- metadata.yaml（元数据）
-- CHANGELOG.md（更新日志）
-${document.getElementById('createConfig').checked ? '- _conf_schema.json（配置 Schema）' : ''}
-- README.md（使用说明）
-`;
 
             return prompt;
         }
@@ -1025,9 +1130,36 @@ ${input}
 4. 处理可能的异常情况
 5. 优化代码结构和性能
 
+## 版本更新要求
+优化完成后，必须更新版本：
+
+1. **更新版本号**：
+   - 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
+   - 功能优化：MINOR +1（如 1.0.0 → 1.1.0）
+   - 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
+
+2. **更新 CHANGELOG.md**：
+\`\`\`markdown
+## [新版本号] - 日期
+
+### Added
+- 新增功能...
+
+### Changed
+- 变更内容...
+
+### Fixed
+- 修复问题...
+\`\`\`
+
+3. **更新 metadata.yaml**：
+   - 更新 version 字段
+
 ## 输出要求
 - 输出优化后的完整代码
 - 说明做了哪些优化
+- 输出更新后的 CHANGELOG.md
+- 输出更新后的 metadata.yaml
 - 如果有破坏性更改，请明确指出
 `;
 
