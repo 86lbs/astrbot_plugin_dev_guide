@@ -394,6 +394,111 @@
             display: none !important;
         }
 
+        /* 标签页 */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        /* 文档浏览 */
+        .doc-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .doc-sidebar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .doc-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .doc-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .doc-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .doc-content {
+            min-height: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .doc-content h1 { font-size: 1.8em; color: #333; margin-bottom: 20px; }
+        .doc-content h2 { font-size: 1.4em; color: #444; margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+        .doc-content h3 { font-size: 1.2em; color: #555; margin: 20px 0 10px; }
+        .doc-content p { color: #666; line-height: 1.8; margin-bottom: 15px; }
+        .doc-content ul, .doc-content ol { margin: 10px 0 15px 25px; color: #666; }
+        .doc-content li { margin-bottom: 8px; line-height: 1.6; }
+        .doc-content code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .doc-content pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 15px 0; }
+        .doc-content pre code { background: none; padding: 0; color: inherit; }
+        .doc-content table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .doc-content th, .doc-content td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .doc-content th { background: #f8f9fa; }
+        .doc-content blockquote { border-left: 4px solid #667eea; padding-left: 15px; margin: 15px 0; color: #666; }
+        .doc-content a { color: #667eea; text-decoration: none; }
+        .doc-content a:hover { text-decoration: underline; }
+
+        .doc-loading {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+
+        .doc-error {
+            text-align: center;
+            padding: 50px;
+            color: #e74c3c;
+        }
+
         /* 响应式 */
         @media (max-width: 700px) {
             .form-row {
@@ -424,6 +529,15 @@
             <h1>🤖 AstrBot 插件开发提示词生成器</h1>
             <p>选择模式，快速生成发送给 AI 的开发提示词</p>
         </div>
+
+        <!-- 标签页切换 -->
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('generator')">📝 提示词生成器</button>
+            <button class="tab-btn" onclick="switchTab('docs')">📚 浏览文档</button>
+        </div>
+
+        <!-- 提示词生成器区域 -->
+        <div id="generatorTab">
 
         <!-- 模式选择 -->
         <div class="card">
@@ -659,8 +773,29 @@
         </div>
     </div>
 
+    </div><!-- 关闭 generatorTab -->
+
     <!-- Toast -->
     <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
+
+    <!-- 文档浏览区域 -->
+    <div id="docsTab" class="hidden">
+        <div class="doc-container">
+            <h2 class="card-title">📚 开发文档</h2>
+            <div class="doc-sidebar">
+                <button class="doc-btn active" onclick="loadDoc('AGENT_ENTRY.md')">入口文档</button>
+                <button class="doc-btn" onclick="loadDoc('SOURCE_CODE_MAP.md')">API 速查</button>
+                <button class="doc-btn" onclick="loadDoc('PROMPT_V5_LOCAL_SIMULATION.md')">开发流程</button>
+                <button class="doc-btn" onclick="loadDoc('GITHUB_RELEASE_GUIDE.md')">发布指南</button>
+                <button class="doc-btn" onclick="loadDoc('VERSION_MANAGEMENT.md')">版本管理</button>
+                <button class="doc-btn" onclick="loadDoc('MOCK_LLM_SERVER.md')">模拟 LLM</button>
+                <button class="doc-btn" onclick="loadDoc('README.md')">README</button>
+            </div>
+            <div id="docContent" class="doc-content">
+                <div class="doc-loading">加载中...</div>
+            </div>
+        </div>
+    </div>
 
     <script>
         let currentMode = 'learn';
@@ -1164,6 +1299,115 @@ ${styleMap[style]}
 
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
+        }
+
+        // 标签页切换
+        function switchTab(tab) {
+            // 更新按钮样式
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 显示对应区域
+            document.getElementById('generatorTab').classList.toggle('hidden', tab !== 'generator');
+            document.getElementById('docsTab').classList.toggle('hidden', tab !== 'docs');
+
+            // 如果切换到文档页，加载默认文档
+            if (tab === 'docs') {
+                loadDoc('AGENT_ENTRY.md');
+            }
+        }
+
+        // 加载文档
+        async function loadDoc(docName) {
+            const docContent = document.getElementById('docContent');
+            
+            // 更新按钮样式
+            document.querySelectorAll('.doc-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 显示加载中
+            docContent.innerHTML = '<div class="doc-loading">加载中...</div>';
+
+            try {
+                // 从 GitHub 获取文档
+                const url = `https://raw.githubusercontent.com/86lbs/astrbot_plugin_dev_guide/main/${docName}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('文档加载失败');
+                }
+
+                const text = await response.text();
+                
+                // 简单的 Markdown 渲染
+                const html = renderMarkdown(text);
+                docContent.innerHTML = html;
+
+            } catch (error) {
+                docContent.innerHTML = `<div class="doc-error">文档加载失败：${error.message}<br><br>请直接访问 <a href="https://github.com/86lbs/astrbot_plugin_dev_guide/blob/main/${docName}" target="_blank">GitHub</a> 查看</div>`;
+            }
+        }
+
+        // 简单的 Markdown 渲染
+        function renderMarkdown(text) {
+            // 转义 HTML
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // 代码块
+            html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+
+            // 行内代码
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+            // 标题
+            html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+            html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+            // 粗体和斜体
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+            // 链接
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+            // 列表
+            html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+            // 有序列表
+            html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+
+            // 引用
+            html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+
+            // 水平线
+            html = html.replace(/^---$/gm, '<hr>');
+
+            // 段落
+            html = html.replace(/\n\n/g, '</p><p>');
+            html = '<p>' + html + '</p>';
+
+            // 清理空段落
+            html = html.replace(/<p><\/p>/g, '');
+            html = html.replace(/<p>(<h[123]>)/g, '$1');
+            html = html.replace(/(<\/h[123]>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<pre>)/g, '$1');
+            html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<ul>)/g, '$1');
+            html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<blockquote>)/g, '$1');
+            html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
+
+            return html;
         }
     </script>
 </body>
