@@ -781,6 +781,21 @@ my_plugin/
 └── _conf_schema.json    # 配置 Schema（如需要）
 \`\`\`
 
+### _conf_schema.json 格式（重要）
+配置 Schema 必须使用正确的 JSON 格式：
+
+\`\`\`json
+{
+    "config_key": {
+        "type": "string",
+        "description": "配置项描述",
+        "default": "默认值"
+    }
+}
+\`\`\`
+
+支持的类型：\`string\`、\`int\`、\`float\`、\`bool\`、\`list\`
+
 ### 版本号规则
 - 初始版本：1.0.0
 - 新增功能：MINOR +1（如 1.0.0 → 1.1.0）
@@ -931,6 +946,41 @@ astrbot_version: ">=4.0.0"
 ### Fixed
 - 无
 \`\`\`
+
+### _conf_schema.json 格式（配置 Schema）
+**重要：格式必须正确，否则插件无法加载！**
+
+\`\`\`json
+{
+    "api_key": {
+        "type": "string",
+        "description": "API 密钥",
+        "default": ""
+    },
+    "timeout": {
+        "type": "int",
+        "description": "超时时间（秒）",
+        "default": 30
+    },
+    "enable_feature": {
+        "type": "bool",
+        "description": "是否启用功能",
+        "default": true
+    }
+}
+\`\`\`
+
+**支持的类型：**
+- \`string\`：字符串
+- \`int\`：整数
+- \`float\`：浮点数
+- \`bool\`：布尔值
+- \`list\`：列表
+
+**注意事项：**
+1. 每个配置项必须包含 \`type\`、\`description\`、\`default\` 三个字段
+2. \`type\` 必须是上述支持的类型之一
+3. 如果不需要配置项，可以不创建此文件
 
 ### 版本号规则
 - 初始版本：1.0.0
