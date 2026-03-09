@@ -824,28 +824,38 @@
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function generateLearnPrompt(sourcePath, guidePath, extraNotes) {
+        function generateLearnPrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const question = document.getElementById('learnQuestion').value.trim();
 
             let prompt = `学习 AstrBot 插件开发。
 
-开发指南：${guidePath}
-源码：${sourcePath}
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+## 学习资料
+请使用 Token 通过 GitHub API 获取以下资料：
+
+1. **开发指南**：${guidePath}
+   - 包含完整的插件开发教程
+   - API 文档和示例代码
+   - 配置文件格式说明
+
+2. **源码**：${sourcePath}
+   - AstrBot 核心代码
+   - 了解插件系统实现
 
 ## 学习目标
-请阅读上述资料，了解 AstrBot 插件开发的核心知识：
-1. 插件的基本结构
-2. Star 基类和 Context 接口
-3. 指令开发（@filter.command）
-4. LLM Tool 开发（@filter.llm_tool）
-5. 事件监听
-6. 配置管理
-7. 消息处理和返回结果
+请阅读上述资料，了解：
+- 插件的基本结构
+- Star 基类和 Context 接口
+- 指令开发（@filter.command）
+- LLM Tool 开发（@filter.llm_tool）
+- 事件监听
+- 配置管理
+- 消息处理和返回结果
 `;
-
-            if (learnFocus.length > 0) {
-                prompt += `\n## 重点学习\n请重点关注以下内容：\n${learnFocus.map(f => '- ' + f).join('\n')}\n`;
-            }
 
             if (question) {
                 prompt += `\n## 我的问题\n${question}\n`;
@@ -853,44 +863,9 @@
 
             prompt += `
 ## 输出要求
-1. 总结 AstrBot 插件开发的核心概念
-2. 列出常用的 API 和装饰器
-3. 说明插件开发的最佳实践
-4. 了解版本管理和发布流程
-5. 等待用户稍后提供具体的开发任务
+简要确认已学习完成，等待用户稍后提供具体的开发任务。
 
-## 版本管理知识
-请了解以下版本管理要求：
-
-### 插件文件结构
-\`\`\`
-my_plugin/
-├── main.py              # 主代码
-├── metadata.yaml        # 元数据（含版本号）
-├── CHANGELOG.md         # 更新日志
-├── README.md            # 使用说明
-└── _conf_schema.json    # 配置 Schema（如需要）
-\`\`\`
-
-### 版本号规则
-- 初始版本：1.0.0
-- 新增功能：MINOR +1（如 1.0.0 → 1.1.0）
-- 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
-- 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
-
-### 发布流程
-1. 完成代码编写和测试
-2. 更新 CHANGELOG.md
-3. 更新 metadata.yaml 版本号
-4. 创建 Git Tag
-5. 创建 GitHub Release
-6. 上传发行版 zip
-
-## 注意
-- 用户将在稍后提供具体的开发任务
-- 现在只需要了解和掌握基础知识
-- 准备好接收用户的下一步指令
-- 开发过程中需要及时更新版本和发布
+注意保护 Token 安全，不要在日志中输出。
 `;
 
             if (extraNotes) {
@@ -920,8 +895,23 @@ my_plugin/
 
             let prompt = `开发 AstrBot 插件。
 
-开发指南：${guidePath}
-源码：${sourcePath}
+## GitHub Token
+\`\`\`
+${githubToken}
+\`\`\`
+
+## 开发资料
+请使用 Token 通过 GitHub API 获取以下资料：
+
+1. **开发指南**：${guidePath}
+   - 完整的插件开发教程
+   - API 文档和示例代码
+   - 配置文件格式（metadata.yaml、_conf_schema.json）
+   - 版本管理和发布流程
+
+2. **源码**：${sourcePath}
+   - AstrBot 核心代码
+   - 插件系统实现
 
 ## 插件描述
 ${desc}
@@ -945,134 +935,82 @@ ${desc}
                 prompt += `\n## 详细需求\n（请根据插件描述自动设计合理的功能）\n`;
             }
 
-            if (selectedTags.length > 0) {
-                prompt += `\n## 相关功能\n${selectedTags.map(t => '- ' + t).join('\n')}\n`;
-            }
-
             if (extraNotes) {
                 prompt += `\n## 额外说明\n${extraNotes}\n`;
             }
 
             prompt += `
 ## 开发要求
-请阅读 PROMPT_V5_LOCAL_SIMULATION.md 按流程开发：
-1. 阅读源码并输出阅读报告
-2. 设计插件结构
-3. 编写代码（包含 metadata.yaml 和 CHANGELOG.md）
-4. 本地测试验证
-5. 修复错误（如有）
-6. 交付完整代码`;
+1. 阅读开发指南中的教程和示例
+2. 按照指南中的格式要求编写代码
+3. 包含必要的文件：main.py、metadata.yaml、CHANGELOG.md、README.md
+4. 如果需要配置项，按指南格式创建 _conf_schema.json
+5. 测试验证功能正常
+6. 发布到 GitHub（创建仓库、推送代码、创建 Release）
 
-            if (needPublish || githubToken) {
-                prompt += `
-7. 发布到 GitHub
-   - 创建 GitHub 仓库
-   - 推送代码
-   - 创建 Release（v1.0.0）
-   - 上传发行版`;
-            }
+## 发布要求（必须执行）
+完成开发后，必须执行以下发布步骤：
 
-            prompt += `
-
-## 版本管理要求
-
-### 文件结构
-每个插件必须包含以下文件：
-\`\`\`
-my_plugin/
-├── main.py              # 主代码
-├── metadata.yaml        # 元数据（含版本号）
-├── CHANGELOG.md         # 更新日志
-├── README.md            # 使用说明
-└── _conf_schema.json    # 配置 Schema（如需要）
+### 1. 创建 GitHub 仓库
+\`\`\`bash
+# 使用 GitHub API 创建仓库
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/user/repos \\
+  -d '{"name":"插件名称","description":"插件描述"}'
 \`\`\`
 
-### metadata.yaml 格式
-\`\`\`yaml
-name: my_plugin
-author: author_name
-description: 插件描述
-version: 1.0.0
-repo: https://github.com/user/my_plugin
-astrbot_version: ">=4.0.0"
+### 2. 推送代码
+\`\`\`bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/用户名/插件名.git
+git push -u origin main
 \`\`\`
 
-### CHANGELOG.md 格式
-\`\`\`markdown
-# 更新日志
+### 3. 创建 Release
+\`\`\`bash
+# 创建 Tag
+git tag v1.0.0
+git push origin v1.0.0
 
-## [1.0.0] - 2025-01-15
-
-### Added
-- 初始版本发布
-- 功能描述...
-
-### Changed
-- 无
-
-### Fixed
-- 无
+# 使用 GitHub API 创建 Release
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/repos/用户名/插件名/releases \\
+  -d '{"tag_name":"v1.0.0","name":"v1.0.0","body":"初始版本"}'
 \`\`\`
 
-### 版本号规则
-- 初始版本：1.0.0
-- 新增功能：MINOR +1（如 1.0.0 → 1.1.0）
-- 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
-- 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
+### 4. 打包并上传发行版
+\`\`\`bash
+# 打包插件
+zip -r 插件名.zip main.py metadata.yaml CHANGELOG.md README.md
 
-## 开发过程中的要求
-
-1. **每完成一个功能模块**：
-   - 更新 CHANGELOG.md
-   - 提交到 Git（如有 Token）
-
-2. **测试通过后**：
-   - 更新版本号
-   - 创建 Git Tag
-   - 创建 GitHub Release
-
-3. **发行版要求**：
-   - 打包插件为 zip
-   - 上传到 Release assets
-   - 填写 Release notes（来自 CHANGELOG.md）
+# 上传到 Release（需要先获取 release_id）
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  -H "Content-Type: application/zip" \\
+  --data-binary @插件名.zip \\
+  https://uploads.github.com/repos/用户名/插件名/releases/{release_id}/assets?name=插件名.zip
+\`\`\`
 
 ## 交付内容
-- main.py（主代码）
-- metadata.yaml（元数据）
-- CHANGELOG.md（更新日志）
-- README.md（使用说明）
-${document.getElementById('createConfig').checked ? '- _conf_schema.json（配置 Schema）' : ''}
-- GitHub 仓库链接（如已发布）
-- Release 下载链接（如已发布）
+- 完整的插件代码
+- GitHub 仓库链接
+- Release 下载链接
+
+注意保护 Token 安全，不要在日志中输出。
 `;
-
-            if (githubToken) {
-                prompt += `
-
-## GitHub Token
-\`\`\`
-${githubToken}
-\`\`\`
-
-请使用此 Token 进行以下操作：
-1. 创建 GitHub 仓库
-2. 推送代码
-3. 创建 Release
-4. 上传发行版文件
-
-注意保护 Token 安全，不要在日志中输出。`;
-            }
 
             return prompt;
         }
 
-        function generateOptimizePrompt(sourcePath, guidePath, extraNotes) {
+        function generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const input = document.getElementById('optimizeCode').value.trim();
             const request = document.getElementById('optimizeRequest').value.trim();
             const expect = document.getElementById('optimizeExpect').value.trim();
+            const publishMode = document.getElementById('optimizePublishMode').value;
 
             if (!input) {
-                alert('请填写插件来源！');
+                alert('请填写插件仓库链接！');
                 return '';
             }
 
@@ -1081,103 +1019,128 @@ ${githubToken}
                 return '';
             }
 
-            // 判断是代码还是链接
-            const isUrl = input.startsWith('http://') || input.startsWith('https://') || input.startsWith('github.com');
+            // 发布方式说明
+            const publishModeDesc = {
+                'original': '推送到原仓库（需要有写权限）',
+                'fork': 'Fork 后推送到我的仓库',
+                'new': '作为新插件发布到我的仓库'
+            };
+
+            // 格式化仓库链接
+            let repoUrl = input;
+            if (!repoUrl.startsWith('http://') && !repoUrl.startsWith('https://')) {
+                repoUrl = 'https://' + repoUrl;
+            }
 
             let prompt = `优化 AstrBot 插件代码。
 
-开发指南：${guidePath}
-源码：${sourcePath}
-
-`;
-
-            if (isUrl) {
-                // 仓库链接方式
-                const url = input.startsWith('github.com') ? 'https://' + input : input;
-                prompt += `## 插件仓库
-${url}
-
-请先从上述仓库获取插件代码，然后进行优化。
-`;
-            } else {
-                // 代码方式
-                prompt += `## 原始代码
-\`\`\`python
-${input}
+## GitHub Token
 \`\`\`
+${githubToken}
+\`\`\`
+
+## 开发资料
+请使用 Token 通过 GitHub API 获取以下资料：
+
+1. **开发指南**：${guidePath}
+   - 插件开发规范
+   - 配置文件格式
+
+2. **源码**：${sourcePath}
+   - AstrBot 核心代码
+
+## 原始插件仓库
+${repoUrl}
+
+## 我的要求
+${request}
 `;
-            }
-
-            prompt += `\n## 我的要求\n${request}\n`;
-
-            if (optGoals.length > 0) {
-                prompt += `\n## 优化类型\n${optGoals.map(g => '- ' + g).join('\n')}\n`;
-            }
 
             if (expect) {
                 prompt += `\n## 预期效果\n${expect}\n`;
             }
+
+            prompt += `\n## 发布方式\n${publishModeDesc[publishMode]}\n`;
 
             if (extraNotes) {
                 prompt += `\n## 额外说明\n${extraNotes}\n`;
             }
 
             prompt += `
-## 优化要求
-1. 保持原有功能不变
-2. 遵循 AstrBot 插件开发规范
-3. 添加必要的注释
-4. 处理可能的异常情况
-5. 优化代码结构和性能
+## 开发要求
+1. 获取原始插件代码
+2. 按照要求进行优化
+3. 更新版本号和 CHANGELOG.md
 
-## 版本更新要求
-优化完成后，必须更新版本：
+## 发布要求（必须执行）
+优化完成后，必须执行以下发布步骤：
 
-1. **更新版本号**：
-   - 问题修复：PATCH +1（如 1.0.0 → 1.0.1）
-   - 功能优化：MINOR +1（如 1.0.0 → 1.1.0）
-   - 不兼容更改：MAJOR +1（如 1.0.0 → 2.0.0）
-
-2. **更新 CHANGELOG.md**：
-\`\`\`markdown
-## [新版本号] - 日期
-
-### Added
-- 新增功能...
-
-### Changed
-- 变更内容...
-
-### Fixed
-- 修复问题...
+### 如果选择"推送到原仓库"
+\`\`\`bash
+git add .
+git commit -m "优化：${request.substring(0, 50)}"
+git push origin main
+git tag v新版本号
+git push origin v新版本号
+# 创建 Release 并上传发行版
 \`\`\`
 
-3. **更新 metadata.yaml**：
-   - 更新 version 字段
+### 如果选择"Fork 后推送到我的仓库"
+\`\`\`bash
+# 1. Fork 仓库（使用 GitHub API）
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/repos/原用户/原插件/forks
 
-## 输出要求
-- 输出优化后的完整代码
-- 说明做了哪些优化
-- 输出更新后的 CHANGELOG.md
-- 输出更新后的 metadata.yaml
-- 如果有破坏性更改，请明确指出
+# 2. 克隆 Fork 的仓库并推送
+git clone https://github.com/你的用户名/原插件.git
+cd 原插件
+# 修改代码
+git add .
+git commit -m "优化：${request.substring(0, 50)}"
+git push origin main
+
+# 3. 创建 Release 并上传发行版
+\`\`\`
+
+### 如果选择"作为新插件发布"
+\`\`\`bash
+# 1. 创建新仓库
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/user/repos \\
+  -d '{"name":"新插件名","description":"插件描述"}'
+
+# 2. 推送代码
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/你的用户名/新插件名.git
+git push -u origin main
+
+# 3. 创建 Release 并上传发行版
+\`\`\`
+
+## 交付内容
+- 优化后的完整代码
+- 更新后的 CHANGELOG.md
+- 更新后的 metadata.yaml
+- 仓库链接
+- Release 下载链接
+
+注意保护 Token 安全，不要在日志中输出。
 `;
 
             return prompt;
         }
 
-        function generateExplainPrompt(sourcePath, guidePath, extraNotes) {
+        function generateExplainPrompt(sourcePath, guidePath, extraNotes, githubToken) {
             const input = document.getElementById('explainCode').value.trim();
             const question = document.getElementById('explainQuestion').value.trim();
             const style = document.getElementById('explainStyle').value;
 
             if (!input) {
-                alert('请填写插件来源！');
+                alert('请填写插件仓库链接！');
                 return '';
             }
-
-            // 判断是代码还是链接
-            const isUrl = input.startsWith('http://') || input.startsWith('https://') || input.startsWith('github.com');
 
             const styleMap = {
                 'simple': '简单易懂，适合新手理解',
@@ -1185,33 +1148,32 @@ ${input}
                 'technical': '技术专业，使用专业术语'
             };
 
+            // 格式化仓库链接
+            let repoUrl = input;
+            if (!repoUrl.startsWith('http://') && !repoUrl.startsWith('https://')) {
+                repoUrl = 'https://' + repoUrl;
+            }
+
             let prompt = `讲解 AstrBot 插件代码。
 
-开发指南：${guidePath}
-源码：${sourcePath}
-
-`;
-
-            if (isUrl) {
-                // 仓库链接方式
-                const url = input.startsWith('github.com') ? 'https://' + input : input;
-                prompt += `## 插件仓库
-${url}
-
-请先从上述仓库获取插件代码，然后进行讲解。
-`;
-            } else {
-                // 代码方式
-                prompt += `## 待讲解代码
-\`\`\`python
-${input}
+## GitHub Token
 \`\`\`
-`;
-            }
+${githubToken}
+\`\`\`
 
-            if (expFocus.length > 0) {
-                prompt += `\n## 讲解重点\n${expFocus.map(f => '- ' + f).join('\n')}\n`;
-            }
+## 参考资料
+请使用 Token 通过 GitHub API 获取以下资料：
+
+1. **开发指南**：${guidePath}
+   - API 文档
+   - 开发规范
+
+2. **源码**：${sourcePath}
+   - AstrBot 核心代码
+
+## 插件仓库
+${repoUrl}
+`;
 
             if (question) {
                 prompt += `\n## 我的问题\n${question}\n`;
@@ -1227,6 +1189,8 @@ ${styleMap[style]}
 3. 解释装饰器的作用
 4. 说明数据流向
 5. 指出需要注意的地方
+
+注意保护 Token 安全，不要在日志中输出。
 `;
 
             if (extraNotes) {
