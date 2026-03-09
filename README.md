@@ -128,6 +128,44 @@
 
 ---
 
+## 📋 配置 Schema 格式
+
+如果插件需要配置项，必须创建 `_conf_schema.json` 文件，格式如下：
+
+```json
+{
+    "api_key": {
+        "type": "string",
+        "description": "API 密钥",
+        "default": ""
+    },
+    "timeout": {
+        "type": "int",
+        "description": "超时时间（秒）",
+        "default": 30
+    },
+    "enable_feature": {
+        "type": "bool",
+        "description": "是否启用功能",
+        "default": true
+    }
+}
+```
+
+**支持的类型：**
+- `string`：字符串
+- `int`：整数
+- `float`：浮点数
+- `bool`：布尔值
+- `list`：列表
+
+**注意事项：**
+1. 每个配置项必须包含 `type`、`description`、`default` 三个字段
+2. `type` 必须是上述支持的类型之一
+3. 格式错误会导致插件无法加载
+
+---
+
 ## 📁 文件说明
 
 ### 在线工具
