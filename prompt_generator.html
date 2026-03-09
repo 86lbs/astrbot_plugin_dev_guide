@@ -528,9 +528,9 @@
             <h2 class="card-title">🔧 优化已有插件</h2>
 
             <div class="form-group">
-                <label>插件来源 <span class="required">*</span></label>
-                <textarea id="optimizeCode" placeholder="粘贴插件代码 或 填写仓库链接，例如：&#10;&#10;代码方式：&#10;class MyPlugin(star.Star):&#10;    ...&#10;&#10;仓库链接方式：&#10;https://github.com/xxx/my_plugin" style="min-height: 100px; font-family: monospace;"></textarea>
-                <small>支持粘贴代码或 GitHub 仓库链接</small>
+                <label>插件仓库链接 <span class="required">*</span></label>
+                <input type="text" id="optimizeCode" placeholder="https://github.com/xxx/my_plugin">
+                <small>填写要优化的插件 GitHub 仓库链接</small>
             </div>
 
             <div class="form-group">
@@ -560,9 +560,9 @@
             <h2 class="card-title">📖 讲解插件代码</h2>
 
             <div class="form-group">
-                <label>插件来源 <span class="required">*</span></label>
-                <textarea id="explainCode" placeholder="粘贴插件代码 或 填写仓库链接，例如：&#10;&#10;代码方式：&#10;class MyPlugin(star.Star):&#10;    ...&#10;&#10;仓库链接方式：&#10;https://github.com/xxx/my_plugin" style="min-height: 150px; font-family: monospace;"></textarea>
-                <small>支持粘贴代码或 GitHub 仓库链接</small>
+                <label>插件仓库链接 <span class="required">*</span></label>
+                <input type="text" id="explainCode" placeholder="https://github.com/xxx/my_plugin">
+                <small>填写要讲解的插件 GitHub 仓库链接</small>
             </div>
 
             <div class="form-group">
@@ -976,7 +976,7 @@ ${document.getElementById('createConfig').checked ? '- _conf_schema.json（配�
             const publishMode = document.getElementById('optimizePublishMode').value;
 
             if (!input) {
-                alert('请填写插件来源！');
+                alert('请填写插件仓库链接！');
                 return '';
             }
 
@@ -985,15 +985,18 @@ ${document.getElementById('createConfig').checked ? '- _conf_schema.json（配�
                 return '';
             }
 
-            // 判断是代码还是链接
-            const isUrl = input.startsWith('http://') || input.startsWith('https://') || input.startsWith('github.com');
-
             // 发布方式说明
             const publishModeDesc = {
                 'original': '推送到原仓库（需要有写权限）',
                 'fork': 'Fork 后推送到我的仓库',
                 'new': '作为新插件发布到我的仓库'
             };
+
+            // 格式化仓库链接
+            let repoUrl = input;
+            if (!repoUrl.startsWith('http://') && !repoUrl.startsWith('https://')) {
+                repoUrl = 'https://' + repoUrl;
+            }
 
             let prompt = `优化 AstrBot 插件代码。
 
@@ -1028,7 +1031,7 @@ ${githubToken}
 `;
             } else {
                 prompt += `请使用此 Token 进行以下操作：
-1. 通过 GitHub API 获取源码（如需要）
+1. 通过 GitHub API 获取源码
 2. 推送优化后的代码到原仓库
 3. 创建新的 Release
 4. 上传发行版文件
@@ -1036,24 +1039,14 @@ ${githubToken}
 `;
             }
 
-            if (isUrl) {
-                // 仓库链接方式
-                const url = input.startsWith('github.com') ? 'https://' + input : input;
-                prompt += `## 原始插件仓库
-${url}
+            prompt += `## 原始插件仓库
+${repoUrl}
 
 请先使用 Token 通过 GitHub API 获取上述仓库的插件代码，然后进行优化。
-`;
-            } else {
-                // 代码方式
-                prompt += `## 原始代码
-\`\`\`python
-${input}
-\`\`\`
-`;
-            }
 
-            prompt += `\n## 我的要求\n${request}\n`;
+## 我的要求
+${request}
+`;
 
             if (expect) {
                 prompt += `\n## 预期效果\n${expect}\n`;
@@ -1117,18 +1110,21 @@ ${input}
             const style = document.getElementById('explainStyle').value;
 
             if (!input) {
-                alert('请填写插件来源！');
+                alert('请填写插件仓库链接！');
                 return '';
             }
-
-            // 判断是代码还是链接
-            const isUrl = input.startsWith('http://') || input.startsWith('https://') || input.startsWith('github.com');
 
             const styleMap = {
                 'simple': '简单易懂，适合新手理解',
                 'detailed': '详细深入，包含原理说明',
                 'technical': '技术专业，使用专业术语'
             };
+
+            // 格式化仓库链接
+            let repoUrl = input;
+            if (!repoUrl.startsWith('http://') && !repoUrl.startsWith('https://')) {
+                repoUrl = 'https://' + repoUrl;
+            }
 
             let prompt = `讲解 AstrBot 插件代码。
 
@@ -1140,26 +1136,13 @@ ${input}
 ${githubToken}
 \`\`\`
 
-请使用此 Token 通过 GitHub API 获取源码（如需要）。
+请使用此 Token 通过 GitHub API 获取源码。
 
-`;
-
-            if (isUrl) {
-                // 仓库链接方式
-                const url = input.startsWith('github.com') ? 'https://' + input : input;
-                prompt += `## 插件仓库
-${url}
+## 插件仓库
+${repoUrl}
 
 请先使用 Token 通过 GitHub API 获取上述仓库的插件代码，然后进行讲解。
 `;
-            } else {
-                // 代码方式
-                prompt += `## 待讲解代码
-\`\`\`python
-${input}
-\`\`\`
-`;
-            }
 
             if (question) {
                 prompt += `\n## 我的问题\n${question}\n`;
