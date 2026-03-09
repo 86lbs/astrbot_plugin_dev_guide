@@ -50,21 +50,42 @@ astrbot_version: ">=4.0.0"
         "type": "bool",
         "description": "是否启用功能",
         "default": true
+    },
+    "temperature": {
+        "type": "float",
+        "description": "温度参数",
+        "default": 0.7
+    },
+    "allowed_users": {
+        "type": "list",
+        "description": "允许使用的用户列表",
+        "default": [],
+        "items": {
+            "type": "string"
+        }
     }
 }
 ```
 
 **支持的类型**：
-- `string`：字符串
-- `int`：整数
-- `float`：浮点数
-- `bool`：布尔值
-- `list`：列表
+| 类型 | 说明 | 必需字段 |
+|------|------|----------|
+| `string` | 字符串 | type, description, default |
+| `int` | 整数 | type, description, default |
+| `float` | 浮点数 | type, description, default |
+| `bool` | 布尔值 | type, description, default |
+| `list` | 列表 | type, description, default, **items** |
+
+**list 类型特殊说明**：
+- 必须添加 `items` 字段，指定列表元素的类型
+- `items` 是一个对象，包含 `type` 字段
+- 示例：`"items": {"type": "string"}`
 
 **注意事项**：
 1. 每个配置项必须包含 `type`、`description`、`default` 三个字段
-2. `type` 必须是上述支持的类型之一
-3. 如果不需要配置项，可以不创建此文件
+2. `list` 类型必须额外包含 `items` 字段
+3. `type` 必须是上述支持的类型之一
+4. 如果不需要配置项，可以不创建此文件
 
 #### CHANGELOG.md 格式
 ```markdown
