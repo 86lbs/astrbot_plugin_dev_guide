@@ -168,18 +168,14 @@
 
 ## 📁 文件说明
 
-### Agent 入口文档（重要）
-
-| 文件 | 说明 |
-|------|------|
-| [AGENT_ENTRY.md](./AGENT_ENTRY.md) | **Agent 入口文档** - 必读，包含配置格式 |
-
 ### 开发指南
 
 | 文件 | 说明 | 推荐度 |
 |------|------|--------|
+| [AGENT_ENTRY.md](./AGENT_ENTRY.md) | **Agent 入口文档** - 必读，包含配置格式 | ⭐⭐⭐⭐⭐ |
 | [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | **源码地图** - API 速查表 | ⭐⭐⭐⭐⭐ |
 | [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **开发流程** - 标准工作流 | ⭐⭐⭐⭐⭐ |
+| [GITHUB_RELEASE_GUIDE.md](./GITHUB_RELEASE_GUIDE.md) | **发布指南** - GitHub API 发布步骤 | ⭐⭐⭐⭐⭐ |
 | [VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md) | **版本管理指南** - 版本号和更新日志 | ⭐⭐⭐⭐ |
 | [MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md) | **模拟 LLM 服务** - 测试 Tool 无需真实模型 | ⭐⭐⭐⭐⭐ |
 

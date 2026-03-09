@@ -166,3 +166,17 @@ my_plugin/
 - **AstrBot 源码**：https://github.com/AstrBotDevs/AstrBot
 - **AstrBot 文档**：https://astrbot.app
 - **本仓库**：https://github.com/86lbs/astrbot_plugin_dev_guide
+
+---
+
+## 📤 发布指南
+
+**文件**：[GITHUB_RELEASE_GUIDE.md](./GITHUB_RELEASE_GUIDE.md)
+
+**内容**：
+- 使用 GitHub API 创建仓库
+- 推送代码
+- 创建 Release
+- 上传发行版
+
+**重要**：完成开发后，必须执行发布步骤！

@@ -855,7 +855,50 @@ ${desc}
 3. 包含必要的文件：main.py、metadata.yaml、CHANGELOG.md、README.md
 4. 如果需要配置项，按指南格式创建 _conf_schema.json
 5. 测试验证功能正常
-6. 发布到 GitHub（创建仓库、推送代码、创建 Release）
+
+## 发布要求（必须执行）
+完成开发后，必须执行以下发布步骤：
+
+### 1. 创建 GitHub 仓库
+\`\`\`bash
+# 使用 GitHub API 创建仓库
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/user/repos \\
+  -d '{"name":"插件名称","description":"插件描述"}'
+\`\`\`
+
+### 2. 推送代码
+\`\`\`bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/用户名/插件名.git
+git push -u origin main
+\`\`\`
+
+### 3. 创建 Release
+\`\`\`bash
+# 创建 Tag
+git tag v1.0.0
+git push origin v1.0.0
+
+# 使用 GitHub API 创建 Release
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/repos/用户名/插件名/releases \\
+  -d '{"tag_name":"v1.0.0","name":"v1.0.0","body":"初始版本"}'
+\`\`\`
+
+### 4. 打包并上传发行版
+\`\`\`bash
+# 打包插件
+zip -r 插件名.zip main.py metadata.yaml CHANGELOG.md README.md
+
+# 上传到 Release（需要先获取 release_id）
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  -H "Content-Type: application/zip" \\
+  --data-binary @插件名.zip \\
+  https://uploads.github.com/repos/用户名/插件名/releases/{release_id}/assets?name=插件名.zip
+\`\`\`
 
 ## 交付内容
 - 完整的插件代码
@@ -936,13 +979,60 @@ ${request}
 1. 获取原始插件代码
 2. 按照要求进行优化
 3. 更新版本号和 CHANGELOG.md
-4. 按选择的发布方式发布
+
+## 发布要求（必须执行）
+优化完成后，必须执行以下发布步骤：
+
+### 如果选择"推送到原仓库"
+\`\`\`bash
+git add .
+git commit -m "优化：${request.substring(0, 50)}"
+git push origin main
+git tag v新版本号
+git push origin v新版本号
+# 创建 Release 并上传发行版
+\`\`\`
+
+### 如果选择"Fork 后推送到我的仓库"
+\`\`\`bash
+# 1. Fork 仓库（使用 GitHub API）
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/repos/原用户/原插件/forks
+
+# 2. 克隆 Fork 的仓库并推送
+git clone https://github.com/你的用户名/原插件.git
+cd 原插件
+# 修改代码
+git add .
+git commit -m "优化：${request.substring(0, 50)}"
+git push origin main
+
+# 3. 创建 Release 并上传发行版
+\`\`\`
+
+### 如果选择"作为新插件发布"
+\`\`\`bash
+# 1. 创建新仓库
+curl -X POST -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/user/repos \\
+  -d '{"name":"新插件名","description":"插件描述"}'
+
+# 2. 推送代码
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/你的用户名/新插件名.git
+git push -u origin main
+
+# 3. 创建 Release 并上传发行版
+\`\`\`
 
 ## 交付内容
 - 优化后的完整代码
 - 更新后的 CHANGELOG.md
 - 更新后的 metadata.yaml
-- 仓库链接（如有发布）
+- 仓库链接
+- Release 下载链接
 
 注意保护 Token 安全，不要在日志中输出。
 `;
