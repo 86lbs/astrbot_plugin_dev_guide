@@ -168,34 +168,29 @@
 
 ## 📁 文件说明
 
-### 在线工具
+### Agent 入口文档（重要）
 
 | 文件 | 说明 |
 |------|------|
-| [prompt_generator.html](./prompt_generator.html) | **提示词生成器** - 三种模式，支持 Token |
+| [AGENT_ENTRY.md](./AGENT_ENTRY.md) | **Agent 入口文档** - 必读，包含配置格式 |
 
 ### 开发指南
 
 | 文件 | 说明 | 推荐度 |
 |------|------|--------|
-| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **v5.0 本地模拟测试版** - 完全自包含测试环境 | ⭐⭐⭐⭐⭐ |
-| [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md) | **本地测试环境配置** - Ollama + 模拟消息端 | ⭐⭐⭐⭐ |
-| [MESSAGE_SIMULATOR.md](./MESSAGE_SIMULATOR.md) | **消息模拟器详解** - 如何模拟发送消息 | ⭐⭐⭐⭐ |
+| [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | **源码地图** - API 速查表 | ⭐⭐⭐⭐⭐ |
+| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **开发流程** - 标准工作流 | ⭐⭐⭐⭐⭐ |
 | [VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md) | **版本管理指南** - 版本号和更新日志 | ⭐⭐⭐⭐ |
-| [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md) | **插件发布指南** - Token 和发布流程 | ⭐⭐⭐⭐ |
+| [MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md) | **模拟 LLM 服务** - 测试 Tool 无需真实模型 | ⭐⭐⭐⭐⭐ |
 
 ### 测试工具
 
 | 文件 | 说明 |
 |------|------|
 | [tools/](./tools/) | **完整测试工具集** |
-| ├── `setup_local_env.sh` | 一键部署本地测试环境 |
-| ├── `start_astrbot.sh` | 启动 AstrBot 服务 |
-| ├── `stop_astrbot.sh` | 停止 AstrBot 服务 |
-| ├── `deploy_plugin.sh` | 部署插件 |
+| ├── `mock_llm_server.py` | 模拟 LLM 服务（测试 Tool） |
 | ├── `send_message.py` | 发送消息 |
-| ├── `send_message_stream.py` | 发送消息（流式） |
-| ├── `test_plugin.py` | 自动化测试 |
+| ├── `deploy_plugin.sh` | 部署插件 |
 | └── `view_log.sh` | 查看日志 |
 
 ---
@@ -208,8 +203,8 @@
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    │
-│   │ 模拟消息端  │───▶│  AstrBot    │───▶│  Ollama     │    │
-│   │ (测试脚本)  │    │  (被测系统) │    │ (本地 LLM)  │    │
+│   │ 模拟消息端  │───▶│  AstrBot    │───▶│ 模拟 LLM    │    │
+│   │ (测试脚本)  │    │  (被测系统) │    │ (mock服务)  │    │
 │   └─────────────┘    └─────────────┘    └─────────────┘    │
 │          │                  │                   │          │
 │          └──────────────────┼───────────────────┘          │
@@ -221,12 +216,29 @@
 │                                                             │
 │   优势：                                                    │
 │   ✅ 无需真实 LLM API（省钱）                               │
+│   ✅ 无需运行真实模型（省资源）                             │
 │   ✅ 无需真实消息平台（简单）                               │
 │   ✅ 完全可控可预测                                        │
 │   ✅ 可自动化 CI/CD                                        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### 测试 LLM Tool
+
+使用模拟 LLM 服务，无需运行真实的 LLM 模型：
+
+```bash
+# 启动模拟服务
+python tools/mock_llm_server.py
+
+# 配置 AstrBot
+# API Base: http://localhost:8000/v1
+# API Key: mock-key
+# Model: mock-model
+```
+
+详见 [MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md)
 
 ---
 
