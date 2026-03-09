@@ -128,36 +128,85 @@
 
 ---
 
+## 📋 配置 Schema 格式
+
+如果插件需要配置项，必须创建 `_conf_schema.json` 文件，格式如下：
+
+```json
+{
+    "api_key": {
+        "type": "string",
+        "description": "API 密钥",
+        "default": ""
+    },
+    "timeout": {
+        "type": "int",
+        "description": "超时时间（秒）",
+        "default": 30
+    },
+    "enable_feature": {
+        "type": "bool",
+        "description": "是否启用功能",
+        "default": true
+    },
+    "temperature": {
+        "type": "float",
+        "description": "温度参数",
+        "default": 0.7
+    },
+    "allowed_users": {
+        "type": "list",
+        "description": "允许使用的用户列表",
+        "default": [],
+        "items": {
+            "type": "string"
+        }
+    }
+}
+```
+
+**支持的类型**：
+| 类型 | 说明 | 必需字段 |
+|------|------|----------|
+| `string` | 字符串 | type, description, default |
+| `int` | 整数 | type, description, default |
+| `float` | 浮点数 | type, description, default |
+| `bool` | 布尔值 | type, description, default |
+| `list` | 列表 | type, description, default, **items** |
+
+**list 类型特殊说明**：
+- 必须添加 `items` 字段，指定列表元素的类型
+- `items` 是一个对象，包含 `type` 字段
+
+**注意事项**：
+1. 每个配置项必须包含 `type`、`description`、`default` 三个字段
+2. `list` 类型必须额外包含 `items` 字段
+3. `type` 必须是上述支持的类型之一
+4. 格式错误会导致插件无法加载
+
+---
+
 ## 📁 文件说明
-
-### 在线工具
-
-| 文件 | 说明 |
-|------|------|
-| [prompt_generator.html](./prompt_generator.html) | **提示词生成器** - 三种模式，支持 Token |
 
 ### 开发指南
 
 | 文件 | 说明 | 推荐度 |
 |------|------|--------|
-| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **v5.0 本地模拟测试版** - 完全自包含测试环境 | ⭐⭐⭐⭐⭐ |
-| [LOCAL_TEST_ENVIRONMENT.md](./LOCAL_TEST_ENVIRONMENT.md) | **本地测试环境配置** - Ollama + 模拟消息端 | ⭐⭐⭐⭐ |
-| [MESSAGE_SIMULATOR.md](./MESSAGE_SIMULATOR.md) | **消息模拟器详解** - 如何模拟发送消息 | ⭐⭐⭐⭐ |
+| [AGENT_ENTRY.md](./AGENT_ENTRY.md) | **Agent 入口文档** - 必读，包含配置格式 | ⭐⭐⭐⭐⭐ |
+| [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | **源码地图** - API 速查表 | ⭐⭐⭐⭐⭐ |
+| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **开发流程** - 标准工作流 | ⭐⭐⭐⭐⭐ |
+| [GITHUB_RELEASE_GUIDE.md](./GITHUB_RELEASE_GUIDE.md) | **发布指南** - GitHub API 发布步骤 | ⭐⭐⭐⭐⭐ |
 | [VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md) | **版本管理指南** - 版本号和更新日志 | ⭐⭐⭐⭐ |
-| [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md) | **插件发布指南** - Token 和发布流程 | ⭐⭐⭐⭐ |
+| [MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md) | **模拟 LLM 服务** - 测试 Tool 无需真实模型 | ⭐⭐⭐⭐⭐ |
 
 ### 测试工具
 
 | 文件 | 说明 |
 |------|------|
 | [tools/](./tools/) | **完整测试工具集** |
-| ├── `setup_local_env.sh` | 一键部署本地测试环境 |
-| ├── `start_astrbot.sh` | 启动 AstrBot 服务 |
-| ├── `stop_astrbot.sh` | 停止 AstrBot 服务 |
-| ├── `deploy_plugin.sh` | 部署插件 |
+| ├── `mock_llm_server.py` | 模拟 LLM 服务（测试 Tool） |
 | ├── `send_message.py` | 发送消息 |
-| ├── `send_message_stream.py` | 发送消息（流式） |
-| ├── `test_plugin.py` | 自动化测试 |
+| ├── `deploy_plugin.sh` | 部署插件 |
 | └── `view_log.sh` | 查看日志 |
 
 ---
@@ -170,8 +219,8 @@
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    │
-│   │ 模拟消息端  │───▶│  AstrBot    │───▶│  Ollama     │    │
-│   │ (测试脚本)  │    │  (被测系统) │    │ (本地 LLM)  │    │
+│   │ 模拟消息端  │───▶│  AstrBot    │───▶│ 模拟 LLM    │    │
+│   │ (测试脚本)  │    │  (被测系统) │    │ (mock服务)  │    │
 │   └─────────────┘    └─────────────┘    └─────────────┘    │
 │          │                  │                   │          │
 │          └──────────────────┼───────────────────┘          │
@@ -183,12 +232,29 @@
 │                                                             │
 │   优势：                                                    │
 │   ✅ 无需真实 LLM API（省钱）                               │
+│   ✅ 无需运行真实模型（省资源）                             │
 │   ✅ 无需真实消息平台（简单）                               │
 │   ✅ 完全可控可预测                                        │
 │   ✅ 可自动化 CI/CD                                        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### 测试 LLM Tool
+
+使用模拟 LLM 服务，无需运行真实的 LLM 模型：
+
+```bash
+# 启动模拟服务
+python tools/mock_llm_server.py
+
+# 配置 AstrBot
+# API Base: http://localhost:8000/v1
+# API Key: mock-key
+# Model: mock-model
+```
+
+详见 [MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md)
 
 ---
 
@@ -208,6 +274,18 @@
 ## 🤝 贡献
 
 欢迎提交 Issue 和 PR 完善本指南！
+
+## 📜 致谢要求
+
+如果您使用本指南开发 AstrBot 插件，请在插件的 README.md 中添加致谢：
+
+```markdown
+## 致谢
+
+本插件使用 [AstrBot 插件开发指南](https://github.com/86lbs/astrbot_plugin_dev_guide) 开发。
+```
+
+感谢您的支持！
 
 ## 📄 许可证
 

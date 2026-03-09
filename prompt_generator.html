@@ -394,6 +394,111 @@
             display: none !important;
         }
 
+        /* 标签页 */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        /* 文档浏览 */
+        .doc-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .doc-sidebar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .doc-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .doc-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .doc-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .doc-content {
+            min-height: 400px;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .doc-content h1 { font-size: 1.8em; color: #333; margin-bottom: 20px; }
+        .doc-content h2 { font-size: 1.4em; color: #444; margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+        .doc-content h3 { font-size: 1.2em; color: #555; margin: 20px 0 10px; }
+        .doc-content p { color: #666; line-height: 1.8; margin-bottom: 15px; }
+        .doc-content ul, .doc-content ol { margin: 10px 0 15px 25px; color: #666; }
+        .doc-content li { margin-bottom: 8px; line-height: 1.6; }
+        .doc-content code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .doc-content pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 15px 0; }
+        .doc-content pre code { background: none; padding: 0; color: inherit; }
+        .doc-content table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .doc-content th, .doc-content td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .doc-content th { background: #f8f9fa; }
+        .doc-content blockquote { border-left: 4px solid #667eea; padding-left: 15px; margin: 15px 0; color: #666; }
+        .doc-content a { color: #667eea; text-decoration: none; }
+        .doc-content a:hover { text-decoration: underline; }
+
+        .doc-loading {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+
+        .doc-error {
+            text-align: center;
+            padding: 50px;
+            color: #e74c3c;
+        }
+
         /* 响应式 */
         @media (max-width: 700px) {
             .form-row {
@@ -425,6 +530,15 @@
             <p>选择模式，快速生成发送给 AI 的开发提示词</p>
         </div>
 
+        <!-- 标签页切换 -->
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('generator')">📝 提示词生成器</button>
+            <button class="tab-btn" onclick="switchTab('docs')">📚 浏览文档</button>
+        </div>
+
+        <!-- 提示词生成器区域 -->
+        <div id="generatorTab">
+
         <!-- 模式选择 -->
         <div class="card">
             <h2 class="card-title">📌 选择操作模式</h2>
@@ -455,21 +569,6 @@
         <!-- 学习模式表单 -->
         <div id="learnForm" class="card">
             <h2 class="card-title">📚 学习 AstrBot 插件开发</h2>
-
-            <div class="form-group">
-                <label>学习重点（可选）</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '插件结构')">插件结构</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '指令开发')">指令开发</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, 'LLM Tool')">LLM Tool</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '事件监听')">事件监听</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '配置管理')">配置管理</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, 'API 调用')">API 调用</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '异步编程')">异步编程</button>
-                    <button type="button" class="tag" onclick="addLearnFocus(this, '错误处理')">错误处理</button>
-                </div>
-                <small>选择你想重点了解的内容，或留空学习全部</small>
-            </div>
 
             <div class="form-group">
                 <label>你的问题（可选）</label>
@@ -532,22 +631,6 @@
             </div>
 
             <div class="form-group">
-                <label>快速添加功能</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addTag(this, '天气查询')">天气查询</button>
-                    <button type="button" class="tag" onclick="addTag(this, '网络搜索')">网络搜索</button>
-                    <button type="button" class="tag" onclick="addTag(this, '图片生成')">图片生成</button>
-                    <button type="button" class="tag" onclick="addTag(this, '翻译功能')">翻译功能</button>
-                    <button type="button" class="tag" onclick="addTag(this, '提醒/定时')">提醒/定时</button>
-                    <button type="button" class="tag" onclick="addTag(this, '数据存储')">数据存储</button>
-                    <button type="button" class="tag" onclick="addTag(this, 'API调用')">API调用</button>
-                    <button type="button" class="tag" onclick="addTag(this, '群管功能')">群管功能</button>
-                    <button type="button" class="tag" onclick="addTag(this, 'AI对话')">AI对话</button>
-                    <button type="button" class="tag" onclick="addTag(this, '文件处理')">文件处理</button>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <label>详细需求</label>
                 <textarea id="createDetail" placeholder="更详细的需求描述（可选），例如：&#10;1. 用户发送 /天气 北京 查询天气&#10;2. 支持 LLM Tool，用户问"今天天气怎么样"时自动调用&#10;3. 需要配置 API Key&#10;&#10;留空则 AI 会根据描述自动设计功能"></textarea>
                 <small>可选，留空让 AI 自动设计功能</small>
@@ -559,9 +642,9 @@
             <h2 class="card-title">🔧 优化已有插件</h2>
 
             <div class="form-group">
-                <label>插件来源 <span class="required">*</span></label>
-                <textarea id="optimizeCode" placeholder="粘贴插件代码 或 填写仓库链接，例如：&#10;&#10;代码方式：&#10;class MyPlugin(star.Star):&#10;    ...&#10;&#10;仓库链接方式：&#10;https://github.com/xxx/my_plugin" style="min-height: 120px; font-family: monospace;"></textarea>
-                <small>支持粘贴代码或 GitHub 仓库链接</small>
+                <label>插件仓库链接 <span class="required">*</span></label>
+                <input type="text" id="optimizeCode" placeholder="https://github.com/xxx/my_plugin">
+                <small>填写要优化的插件 GitHub 仓库链接</small>
             </div>
 
             <div class="form-group">
@@ -571,19 +654,13 @@
             </div>
 
             <div class="form-group">
-                <label>快速选择优化类型</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addOptGoal(this, '性能优化')">性能优化</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '代码重构')">代码重构</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加错误处理')">添加错误处理</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加日志')">添加日志</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加配置项')">添加配置项</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '修复Bug')">修复Bug</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加新功能')">添加新功能</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '代码注释')">代码注释</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '优化代码结构')">优化代码结构</button>
-                    <button type="button" class="tag" onclick="addOptGoal(this, '添加类型提示')">添加类型提示</button>
-                </div>
+                <label>发布方式</label>
+                <select id="optimizePublishMode">
+                    <option value="original">推送到原仓库（需要权限）</option>
+                    <option value="fork">Fork 后推送到我的仓库</option>
+                    <option value="new">作为新插件发布到我的仓库</option>
+                </select>
+                <small>选择如何发布优化后的插件</small>
             </div>
 
             <div class="form-group">
@@ -597,23 +674,9 @@
             <h2 class="card-title">📖 讲解插件代码</h2>
 
             <div class="form-group">
-                <label>插件来源 <span class="required">*</span></label>
-                <textarea id="explainCode" placeholder="粘贴插件代码 或 填写仓库链接，例如：&#10;&#10;代码方式：&#10;class MyPlugin(star.Star):&#10;    ...&#10;&#10;仓库链接方式：&#10;https://github.com/xxx/my_plugin" style="min-height: 150px; font-family: monospace;"></textarea>
-                <small>支持粘贴代码或 GitHub 仓库链接</small>
-            </div>
-
-            <div class="form-group">
-                <label>讲解重点</label>
-                <div class="tag-group">
-                    <button type="button" class="tag" onclick="addExpFocus(this, '整体架构')">整体架构</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '核心逻辑')">核心逻辑</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, 'API用法')">API用法</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '装饰器')">装饰器</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '异步处理')">异步处理</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '配置管理')">配置管理</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '错误处理')">错误处理</button>
-                    <button type="button" class="tag" onclick="addExpFocus(this, '逐行解释')">逐行解释</button>
-                </div>
+                <label>插件仓库链接 <span class="required">*</span></label>
+                <input type="text" id="explainCode" placeholder="https://github.com/xxx/my_plugin">
+                <small>填写要讲解的插件 GitHub 仓库链接</small>
             </div>
 
             <div class="form-group">
@@ -647,9 +710,13 @@
             </div>
 
             <div class="form-group">
-                <label>GitHub Token <span style="color: #e74c3c; font-size: 0.85em;">（发布插件时需要）</span></label>
+                <label>GitHub Token <span class="required">*</span></label>
                 <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-                <small>⚠️ Token 仅用于生成提示词，不会被保存。发布插件到 GitHub 时需要。</small>
+                <small>
+                    ⚠️ 必填。用于访问 GitHub API、发布插件。<br>
+                    📝 获取方式：GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token<br>
+                    🔑 需要权限：repo（完整仓库访问）、workflow（可选，用于 Actions）
+                </small>
             </div>
 
             <div class="form-group">
@@ -706,15 +773,32 @@
         </div>
     </div>
 
+    </div><!-- 关闭 generatorTab -->
+
     <!-- Toast -->
     <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
 
+    <!-- 文档浏览区域 -->
+    <div id="docsTab" class="hidden">
+        <div class="doc-container">
+            <h2 class="card-title">📚 开发文档</h2>
+            <div class="doc-sidebar">
+                <button class="doc-btn active" onclick="loadDoc('AGENT_ENTRY.md')">入口文档</button>
+                <button class="doc-btn" onclick="loadDoc('SOURCE_CODE_MAP.md')">API 速查</button>
+                <button class="doc-btn" onclick="loadDoc('PROMPT_V5_LOCAL_SIMULATION.md')">开发流程</button>
+                <button class="doc-btn" onclick="loadDoc('GITHUB_RELEASE_GUIDE.md')">发布指南</button>
+                <button class="doc-btn" onclick="loadDoc('VERSION_MANAGEMENT.md')">版本管理</button>
+                <button class="doc-btn" onclick="loadDoc('MOCK_LLM_SERVER.md')">模拟 LLM</button>
+                <button class="doc-btn" onclick="loadDoc('README.md')">README</button>
+            </div>
+            <div id="docContent" class="doc-content">
+                <div class="doc-loading">加载中...</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentMode = 'learn';
-        let selectedTags = [];
-        let optGoals = [];
-        let expFocus = [];
-        let learnFocus = [];
         let needPublish = false;
 
         // 切换模式
@@ -735,54 +819,6 @@
 
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
-        }
-
-        // 学习重点
-        function addLearnFocus(el, focus) {
-            el.classList.toggle('selected');
-            if (learnFocus.includes(focus)) {
-                learnFocus = learnFocus.filter(f => f !== focus);
-            } else {
-                learnFocus.push(focus);
-            }
-        }
-
-        // 添加功能标签
-        function addTag(el, tag) {
-            el.classList.toggle('selected');
-            if (selectedTags.includes(tag)) {
-                selectedTags = selectedTags.filter(t => t !== tag);
-            } else {
-                selectedTags.push(tag);
-            }
-            updateDetailFromTags();
-        }
-
-        function updateDetailFromTags() {
-            const detail = document.getElementById('createDetail');
-            if (selectedTags.length > 0 && detail.value === '') {
-                detail.value = '需要的功能：\n' + selectedTags.map(t => '- ' + t).join('\n');
-            }
-        }
-
-        // 优化目标
-        function addOptGoal(el, goal) {
-            el.classList.toggle('selected');
-            if (optGoals.includes(goal)) {
-                optGoals = optGoals.filter(g => g !== goal);
-            } else {
-                optGoals.push(goal);
-            }
-        }
-
-        // 讲解重点
-        function addExpFocus(el, focus) {
-            el.classList.toggle('selected');
-            if (expFocus.includes(focus)) {
-                expFocus = expFocus.filter(f => f !== focus);
-            } else {
-                expFocus.push(focus);
-            }
         }
 
         // 生成提示词
@@ -809,14 +845,19 @@
             const extraNotes = document.getElementById('extraNotes').value;
             const githubToken = document.getElementById('githubToken').value.trim();
 
+            if (!githubToken) {
+                alert('请填写 GitHub Token！');
+                return;
+            }
+
             if (currentMode === 'learn') {
-                prompt = generateLearnPrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateLearnPrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'create') {
                 prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'optimize') {
-                prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken);
             } else if (currentMode === 'explain') {
-                prompt = generateExplainPrompt(sourcePath, guidePath, extraNotes);
+                prompt = generateExplainPrompt(sourcePath, guidePath, extraNotes, githubToken);
             }
 
             document.getElementById('outputBox').value = prompt;
@@ -863,7 +904,10 @@ ${githubToken}
 
             prompt += `
 ## 输出要求
-简要确认已学习完成，等待用户稍后提供具体的开发任务。
+1. 总结 AstrBot 插件开发的核心概念
+2. 列出常用的 API 和装饰器
+3. 说明插件开发的最佳实践
+4. 等待用户稍后提供具体的开发任务
 
 注意保护 Token 安全，不要在日志中输出。
 `;
@@ -946,7 +990,6 @@ ${desc}
 3. 包含必要的文件：main.py、metadata.yaml、CHANGELOG.md、README.md
 4. 如果需要配置项，按指南格式创建 _conf_schema.json
 5. 测试验证功能正常
-6. 发布到 GitHub（创建仓库、推送代码、创建 Release）
 
 ## 发布要求（必须执行）
 完成开发后，必须执行以下发布步骤：
@@ -1161,8 +1204,7 @@ git push -u origin main
 ${githubToken}
 \`\`\`
 
-## 参考资料
-请使用 Token 通过 GitHub API 获取以下资料：
+## 参考资料请使用 Token 通过 GitHub API 获取以下资料：
 
 1. **开发指南**：${guidePath}
    - API 文档
@@ -1244,6 +1286,7 @@ ${styleMap[style]}
             document.getElementById('optimizeCode').value = '';
             document.getElementById('optimizeRequest').value = '';
             document.getElementById('optimizeExpect').value = '';
+            document.getElementById('optimizePublishMode').value = 'original';
 
             // 重置讲解表单
             document.getElementById('explainCode').value = '';
@@ -1254,15 +1297,117 @@ ${styleMap[style]}
             document.getElementById('extraNotes').value = '';
             document.getElementById('githubToken').value = '';
 
-            // 清除标签选择
-            document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
-            selectedTags = [];
-            optGoals = [];
-            expFocus = [];
-            learnFocus = [];
-
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
+        }
+
+        // 标签页切换
+        function switchTab(tab) {
+            // 更新按钮样式
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 显示对应区域
+            document.getElementById('generatorTab').classList.toggle('hidden', tab !== 'generator');
+            document.getElementById('docsTab').classList.toggle('hidden', tab !== 'docs');
+
+            // 如果切换到文档页，加载默认文档
+            if (tab === 'docs') {
+                loadDoc('AGENT_ENTRY.md');
+            }
+        }
+
+        // 加载文档
+        async function loadDoc(docName) {
+            const docContent = document.getElementById('docContent');
+            
+            // 更新按钮样式
+            document.querySelectorAll('.doc-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 显示加载中
+            docContent.innerHTML = '<div class="doc-loading">加载中...</div>';
+
+            try {
+                // 从 GitHub 获取文档
+                const url = `https://raw.githubusercontent.com/86lbs/astrbot_plugin_dev_guide/main/${docName}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('文档加载失败');
+                }
+
+                const text = await response.text();
+                
+                // 简单的 Markdown 渲染
+                const html = renderMarkdown(text);
+                docContent.innerHTML = html;
+
+            } catch (error) {
+                docContent.innerHTML = `<div class="doc-error">文档加载失败：${error.message}<br><br>请直接访问 <a href="https://github.com/86lbs/astrbot_plugin_dev_guide/blob/main/${docName}" target="_blank">GitHub</a> 查看</div>`;
+            }
+        }
+
+        // 简单的 Markdown 渲染
+        function renderMarkdown(text) {
+            // 转义 HTML
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // 代码块
+            html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+
+            // 行内代码
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+            // 标题
+            html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+            html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+            // 粗体和斜体
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+            // 链接
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+            // 列表
+            html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+            // 有序列表
+            html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+
+            // 引用
+            html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+
+            // 水平线
+            html = html.replace(/^---$/gm, '<hr>');
+
+            // 段落
+            html = html.replace(/\n\n/g, '</p><p>');
+            html = '<p>' + html + '</p>';
+
+            // 清理空段落
+            html = html.replace(/<p><\/p>/g, '');
+            html = html.replace(/<p>(<h[123]>)/g, '$1');
+            html = html.replace(/(<\/h[123]>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<pre>)/g, '$1');
+            html = html.replace(/(<\/pre>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<ul>)/g, '$1');
+            html = html.replace(/(<\/ul>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<blockquote>)/g, '$1');
+            html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
+            html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
+
+            return html;
         }
     </script>
 </body>

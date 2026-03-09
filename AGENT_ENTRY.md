@@ -1,135 +1,173 @@
-# AstrBot 插件开发指南 - Agent 入口
+# Agent 入口文档
 
-> **如果你是 Agent，请阅读本文件了解如何开发 AstrBot 插件。**
-
----
-
-## 🤖 给 Agent 的指令
-
-### 核心原则
-
-1. **源码即真理** - 必须阅读 AstrBot 源码，文档可能过时
-2. **测试验证** - 代码必须部署测试，不能凭猜测交付
-3. **错误修复闭环** - 有错误必须修复并重新测试
-
-### 强制规则
-
-- ❌ 禁止凭记忆/猜测写代码
-- ❌ 禁止在未测试的情况下交付代码
-- ✅ 必须先阅读源码
-- ✅ 必须输出阅读报告
-- ✅ 必须测试验证
+欢迎使用本仓库开发 AstrBot 插件。请按以下顺序阅读文档。
 
 ---
 
-## 📁 本仓库文件说明
+## 📚 必读文档
 
-| 文件 | 用途 | Agent 是否需要阅读 |
-|------|------|-------------------|
-| **AGENT_ENTRY.md** | Agent 入口（本文件） | ✅ 必读 |
-| **SOURCE_CODE_MAP.md** | AstrBot 源码文件地图 | ✅ 必读 |
-| **QUICK_REFERENCE.md** | API 快速参考 | ⭐ 推荐 |
-| **TEST_ENVIRONMENT.md** | 测试环境配置 | 按需 |
-| PROMPT_V4_TEST_DRIVEN.md | 完整提示词模板 | 参考 |
-| TUTORIAL.md | 人类教程 | 参考 |
+### 1. 源码地图（理解 API）
+**文件**：[SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md)
 
----
+**内容**：
+- 核心 API 速查表
+- 导入路径速查
+- 按功能查找源码
 
-## 🚀 开发工作流
-
-### 第一步：阅读源码地图
-
-打开 `SOURCE_CODE_MAP.md`，了解 AstrBot 核心源码文件位置。
-
-**必读文件：**
-```
-astrbot/core/star/base.py                    # Star 基类
-astrbot/core/star/context.py                 # Context 接口
-astrbot/core/platform/astr_message_event.py  # 事件类
-astrbot/core/message/message_event_result.py # 返回结果
-astrbot/core/star/register/star_handler.py   # 装饰器实现
-```
-
-### 第二步：阅读源码
-
-**必须实际阅读上述文件**，不能凭记忆假设 API。
-
-### 第三步：输出阅读报告
-
-格式如下：
-```
-## 📖 源码阅读报告
-
-### 已阅读文件
-- astrbot/core/star/base.py: Star 基类，插件必须继承
-- astrbot/core/star/context.py: Context 接口，get_using_provider() 等
-- ...
-
-### 关键 API 签名（从源码提取）
-[列出实际使用的 API 及其签名]
-```
-
-### 第四步：编写代码
-
-按照源码中的实际 API 编写插件代码。
-
-### 第五步：测试验证
-
-如果有测试环境：
-```bash
-cp -r ./my_plugin /opt/astrbot/data/plugins/
-pkill -f "python main.py" && sleep 2 && python main.py &
-sleep 5
-tail -100 /opt/astrbot/logs/astrbot.log
-```
-
-### 第六步：交付
-
-只有测试通过后才能交付代码。
+**目的**：了解可用的 API 和正确的导入方式
 
 ---
 
-## 📋 插件开发模板
+### 2. 配置文件格式（重要）
+**本节内容**：插件配置文件格式
 
-```python
-from astrbot.api import star, logger
-from astrbot.api.event import AstrMessageEvent, MessageEventResult, filter
-from astrbot.api.star import Context
-from astrbot.core.config.astrbot_config import AstrBotConfig
+#### metadata.yaml 格式
+```yaml
+name: my_plugin
+author: your_name
+description: 插件描述
+version: 1.0.0
+repo: https://github.com/your_name/my_plugin
+astrbot_version: ">=4.0.0"
+```
 
+#### _conf_schema.json 格式（重要！）
+**格式必须正确，否则插件无法加载！**
 
-class MyPlugin(star.Star):
-    """插件类 - 必须继承 star.Star"""
+```json
+{
+    "api_key": {
+        "type": "string",
+        "description": "API 密钥",
+        "default": ""
+    },
+    "timeout": {
+        "type": "int",
+        "description": "超时时间（秒）",
+        "default": 30
+    },
+    "enable_feature": {
+        "type": "bool",
+        "description": "是否启用功能",
+        "default": true
+    },
+    "temperature": {
+        "type": "float",
+        "description": "温度参数",
+        "default": 0.7
+    },
+    "allowed_users": {
+        "type": "list",
+        "description": "允许使用的用户列表",
+        "default": [],
+        "items": {
+            "type": "string"
+        }
+    }
+}
+```
 
-    def __init__(self, context: Context, config: AstrBotConfig = None):
-        super().__init__(context)
-        self._config = config
+**支持的类型**：
+| 类型 | 说明 | 必需字段 |
+|------|------|----------|
+| `string` | 字符串 | type, description, default |
+| `int` | 整数 | type, description, default |
+| `float` | 浮点数 | type, description, default |
+| `bool` | 布尔值 | type, description, default |
+| `list` | 列表 | type, description, default, **items** |
 
-    async def initialize(self):
-        """插件初始化"""
-        logger.info("插件初始化完成")
+**list 类型特殊说明**：
+- 必须添加 `items` 字段，指定列表元素的类型
+- `items` 是一个对象，包含 `type` 字段
+- 示例：`"items": {"type": "string"}`
 
-    @filter.command("command_name", alias={"别名"})
-    async def my_command(self, event: AstrMessageEvent):
-        """指令说明"""
-        event.set_result(
-            MessageEventResult()
-            .message("返回内容")
-            .use_t2i(False)
-        )
+**注意事项**：
+1. 每个配置项必须包含 `type`、`description`、`default` 三个字段
+2. `list` 类型必须额外包含 `items` 字段
+3. `type` 必须是上述支持的类型之一
+4. 如果不需要配置项，可以不创建此文件
 
-    @filter.llm_tool(name="my_tool")
-    async def my_tool(self, event: AstrMessageEvent, query: str = "") -> str:
-        '''工具描述。
+#### CHANGELOG.md 格式
+```markdown
+# 更新日志
 
-        Args:
-            query(string): 参数说明
-        '''
-        return "工具返回结果"
+## [1.0.0] - 2025-01-15
 
-    async def terminate(self):
-        """插件销毁"""
-        logger.info("插件已卸载")
+### Added
+- 初始版本发布
+- 功能描述...
+
+### Changed
+- 无
+
+### Fixed
+- 无
+```
+
+---
+
+### 3. 版本管理
+**文件**：[VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md)
+
+**内容**：
+- 版本号规则
+- 更新日志格式
+- 发布流程
+
+---
+
+### 4. 测试工具
+**文件**：[tools/README.md](./tools/README.md)
+
+**内容**：
+- 测试脚本使用方法
+- 消息模拟器
+- 自动化测试
+
+---
+
+### 5. 模拟 LLM 服务（测试 LLM Tool）
+**文件**：[MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md)
+
+**用途**：测试 LLM Tool 时无需运行真实的 LLM 模型
+
+---
+
+## 🚀 开发流程
+
+```
+1. 阅读源码地图 → 了解 API
+      ↓
+2. 设计插件结构
+      ↓
+3. 编写代码
+   - main.py
+   - metadata.yaml
+   - _conf_schema.json（如需要）
+   - CHANGELOG.md
+   - README.md
+      ↓
+4. 本地测试
+   - 使用模拟 LLM 服务测试 Tool
+   - 使用消息模拟器测试指令
+      ↓
+5. 发布
+   - 创建 GitHub 仓库
+   - 推送代码
+   - 创建 Release
+```
+
+---
+
+## 📁 插件文件结构
+
+```
+my_plugin/
+├── main.py              # 主代码
+├── metadata.yaml        # 元数据（含版本号）
+├── _conf_schema.json    # 配置 Schema（可选）
+├── CHANGELOG.md         # 更新日志
+└── README.md            # 插件说明
 ```
 
 ---
@@ -140,15 +178,26 @@ class MyPlugin(star.Star):
 |------|------|
 | `yield event.plain_result("内容")` | `event.set_result(MessageEventResult().message("内容"))` |
 | `return "内容"` 在指令中 | `event.set_result(MessageEventResult().message("内容"))` |
-| `@star.register()` | 直接继承 `star.Star` |
+| `_conf_schema.json` 格式错误 | 每个配置项必须是对象，包含 type、description、default |
 
 ---
 
-## 📞 开始开发
+## 🔗 相关链接
 
-请提供以下信息：
+- **AstrBot 源码**：https://github.com/AstrBotDevs/AstrBot
+- **AstrBot 文档**：https://astrbot.app
+- **本仓库**：https://github.com/86lbs/astrbot_plugin_dev_guide
 
-1. **AstrBot 源码路径**：`/path/to/astrbot/`
-2. **插件需求**：描述你想要的功能
+---
 
-我会按照上述工作流开发插件。
+## 📤 发布指南
+
+**文件**：[GITHUB_RELEASE_GUIDE.md](./GITHUB_RELEASE_GUIDE.md)
+
+**内容**：
+- 使用 GitHub API 创建仓库
+- 推送代码
+- 创建 Release
+- 上传发行版
+
+**重要**：完成开发后，必须执行发布步骤！

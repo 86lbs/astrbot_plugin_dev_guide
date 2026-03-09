@@ -153,26 +153,35 @@ class MyPlugin(star.Star):
 
 ```json
 {
-  "enable_feature": {
-    "name": "启用功能",
-    "description": "功能描述",
-    "type": "bool",
-    "value": true
-  },
-  "max_count": {
-    "name": "最大数量",
-    "description": "最大处理数量",
-    "type": "int",
-    "value": 10
-  },
-  "api_key": {
-    "name": "API密钥",
-    "description": "第三方API密钥",
-    "type": "string",
-    "value": ""
-  }
+    "api_key": {
+        "type": "string",
+        "description": "API 密钥",
+        "default": ""
+    },
+    "max_count": {
+        "type": "int",
+        "description": "最大处理数量",
+        "default": 10
+    },
+    "enable_feature": {
+        "type": "bool",
+        "description": "是否启用功能",
+        "default": true
+    },
+    "allowed_users": {
+        "type": "list",
+        "description": "允许使用的用户列表",
+        "default": [],
+        "items": {
+            "type": "string"
+        }
+    }
 }
 ```
+
+**注意**：
+- 每个配置项必须包含 `type`、`description`、`default` 三个字段
+- `list` 类型必须额外包含 `items` 字段
 
 ## 重要注意事项
 
