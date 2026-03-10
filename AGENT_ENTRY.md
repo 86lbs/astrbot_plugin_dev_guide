@@ -192,7 +192,7 @@ my_plugin/
 
 ## 📤 发布指南
 
-**文件**：[GITHUB_RELEASE_GUIDE.md](./GITHUB_RELEASE_GUIDE.md)
+**文件**：[PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md)
 
 **内容**：
 - 使用 GitHub API 创建仓库
@@ -201,3 +201,19 @@ my_plugin/
 - 上传发行版
 
 **重要**：完成开发后，必须执行发布步骤！
+
+---
+
+## 🔍 自我审查
+
+**文件**：[SELF_REVIEW.md](./SELF_REVIEW.md)
+
+**内容**：
+- 模仿 astrpluginreviewer[bot] 的审核逻辑
+- 基础结构检查
+- filter 装饰器检查
+- LLM 事件钩子检查
+- 消息发送方式检查
+- 安全检查
+
+**重要**：完成代码后，必须进行自我审查！

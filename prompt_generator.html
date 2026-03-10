@@ -989,7 +989,42 @@ ${desc}
 2. 按照指南中的格式要求编写代码
 3. 包含必要的文件：main.py、metadata.yaml、CHANGELOG.md、README.md
 4. 如果需要配置项，按指南格式创建 _conf_schema.json
-5. 测试验证功能正常
+5. 进行自我审查（参考 SELF_REVIEW.md）
+6. 测试验证功能正常
+7. 发布到 GitHub（创建仓库、推送代码、创建 Release）
+
+## 自我审查要求
+完成代码后，必须进行自我审查（模仿 astrpluginreviewer[bot]）：
+
+### 基础结构检查
+- [ ] 文件中必须存在一个继承自 Star 的类
+- [ ] logger 必须从 astrbot.api 导入
+
+### filter 装饰器检查
+- [ ] filter 必须从 astrbot.api.event 导入
+- [ ] 所有事件监听器方法必须包含 event 参数
+
+### LLM 事件钩子检查
+- [ ] on_llm_request 必须有三个参数：self, event, req: ProviderRequest
+- [ ] on_llm_response 必须有三个参数：self, event, resp: LLMResponse
+
+### 消息发送方式检查
+- [ ] 普通指令：event.set_result(MessageEventResult().message("内容"))
+- [ ] LLM 钩子中：await event.send(message_chain)
+- [ ] 禁止在 LLM 钩子中使用 yield
+
+### 权限装饰器检查
+- [ ] @filter.permission_type 不能用于 @filter.llm_tool
+
+### 数据持久化检查
+- [ ] 使用 StarTools.get_data_dir() 获取数据目录
+
+### 异步操作检查
+- [ ] 网络 I/O 使用异步方式（aiohttp 而非 requests）
+
+### 安全检查
+- [ ] 无硬编码的敏感信息
+- [ ] 无不安全的 pickle 反序列化
 
 ## 发布要求（必须执行）
 完成开发后，必须执行以下发布步骤：
