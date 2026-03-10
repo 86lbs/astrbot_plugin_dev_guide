@@ -253,9 +253,34 @@ git push -u origin main
 ### 6.3 上架到插件市场
 
 在 AstrBot 官方仓库提交 Issue 申请上架：
+
 - 地址：https://github.com/AstrBotDevs/AstrBot/issues/new
-- 标题格式：`[插件上架] 插件名称`
+- 标题格式：`[Plugin] 插件名称`
 - 详细说明请参考 [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md)
+
+**Issue 内容示例：**
+
+```markdown
+### 插件信息
+
+```json
+{
+  "name": "my_plugin",
+  "display_name": "我的插件",
+  "desc": "插件功能描述",
+  "author": "your_name",
+  "repo": "https://github.com/your_name/my_plugin",
+  "tags": ["工具", "实用"],
+  "social_link": "https://github.com/your_name"
+}
+```
+
+### 插件检查清单
+
+- [x] 我的插件经过完整的测试
+- [x] 我的插件不包含恶意代码
+- [x] 我已阅读并同意遵守该项目的 [行为准则](https://docs.github.com/zh/site-policy/github-terms/github-community-code-of-conduct)。
+```
 
 ---
 

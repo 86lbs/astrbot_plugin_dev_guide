@@ -122,32 +122,49 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
 3. **Issue 标题格式**
 
    ```
-   [插件上架] 插件名称
+   [Plugin] 插件名称
    ```
 
 4. **Issue 内容模板**
 
    ```markdown
-   ## 插件信息
+   ### 插件信息
 
-   - **插件名称**：my_plugin
-   - **作者**：your_name
-   - **简介**：插件功能描述
-   - **仓库地址**：https://github.com/your_name/my_plugin
-   - **版本**：1.0.0
-   - **标签**：工具, 天气
-
-   ## 检查清单
-
-   - [x] 插件已发布到 GitHub
-   - [x] 包含完整的 metadata.yaml
-   - [x] 包含 README.md 说明文档
-   - [x] 包含 CHANGELOG.md 更新日志
-   - [x] 已创建 Release 版本
-   - [x] 代码无恶意内容
+   ```json
+   {
+     "name": "my_plugin",
+     "display_name": "插件显示名称",
+     "desc": "插件功能描述",
+     "author": "your_name",
+     "repo": "https://github.com/your_name/my_plugin",
+     "tags": ["标签1", "标签2", "标签3"],
+     "social_link": "https://github.com/your_name"
+   }
    ```
 
-5. **等待官方审核**
+   ### 插件检查清单
+
+   - [x] 我的插件经过完整的测试
+   - [x] 我的插件不包含恶意代码
+   - [x] 我已阅读并同意遵守该项目的 [行为准则](https://docs.github.com/zh/site-policy/github-terms/github-community-code-of-conduct)。
+   ```
+
+5. **等待审核**
+
+   - 自动审核机器人会进行初步代码审核
+   - 官方维护者会进行人工审核
+
+### 插件信息字段说明
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `name` | ✅ | 插件唯一标识（英文，下划线分隔） |
+| `display_name` | ✅ | 插件显示名称（中文） |
+| `desc` | ✅ | 插件功能描述 |
+| `author` | ✅ | 作者名称 |
+| `repo` | ✅ | GitHub 仓库地址 |
+| `tags` | ✅ | 标签数组 |
+| `social_link` | ❌ | 社交链接（如 GitHub 主页） |
 
 ### 审核要求
 
@@ -162,8 +179,8 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
 ### 注意事项
 
 - 不要直接提交 PR，只接受 Issue 申请
+- 自动审核机器人会进行初步代码审核
 - 审核通过后，官方会更新插件市场列表
-- 一般 1-3 个工作日内处理
 
 ---
 
