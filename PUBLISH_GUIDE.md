@@ -109,26 +109,13 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
 - 主源：`https://api.soulter.top/astrbot/plugins`
 - 备用源：`https://github.com/AstrBotDevs/AstrBot_Plugins_Collection`
 
-**重要**：插件市场安装的是 **Release 版本**，必须先创建 Release！
+**重要**：插件市场直接下载仓库源码，不需要创建 Release！
 
 ### 上架步骤
 
-1. **创建 GitHub Release（必须）**
-
-   ```bash
-   # 创建 Tag
-   git tag v1.0.0
-   git push origin v1.0.0
-   
-   # 打包插件
-   zip -r my_plugin.zip main.py metadata.yaml CHANGELOG.md README.md
-   
-   # 在 GitHub 创建 Release 并上传 zip
-   ```
-
-   **Release 必须包含**：
-   - 插件 zip 包（包含所有必要文件）
-   - 版本说明
+1. **确保插件已发布到 GitHub**
+   - 插件仓库必须有完整的 `metadata.yaml`
+   - 仓库中必须包含所有必要文件
 
 2. **提交 Issue 申请上架**
 
@@ -161,7 +148,6 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
 
    - [x] 我的插件经过完整的测试
    - [x] 我的插件不包含恶意代码
-   - [x] **我已创建 GitHub Release 并上传插件 zip**
    - [x] 我已阅读并同意遵守该项目的 [行为准则](https://docs.github.com/zh/site-policy/github-terms/github-community-code-of-conduct)。
    ```
 
@@ -170,28 +156,23 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
    - 自动审核机器人会进行初步代码审核
    - 官方维护者会进行人工审核
 
-### Release 打包要求
+### 仓库文件要求
 
-**zip 包内容**：
+**必须包含的文件**：
 ```
-my_plugin.zip
+my_plugin/
 ├── main.py              # 主代码
 ├── metadata.yaml        # 元数据
 ├── CHANGELOG.md         # 更新日志
-├── README.md            # 使用说明
-└── _conf_schema.json    # 配置 Schema（如有）
+└── README.md            # 使用说明
 ```
 
-**打包命令**：
-```bash
-# 在插件目录下执行
-zip -r my_plugin.zip main.py metadata.yaml CHANGELOG.md README.md
-
-# 如有配置 Schema
-zip -r my_plugin.zip main.py metadata.yaml _conf_schema.json CHANGELOG.md README.md
+**可选文件**：
+```
+└── _conf_schema.json    # 配置 Schema（如需要）
 ```
 
-**注意**：zip 包内不要包含目录结构，直接打包文件！
+**注意**：用户安装时直接下载仓库源码，确保仓库中的文件完整！
 
 ### 插件信息字段说明
 

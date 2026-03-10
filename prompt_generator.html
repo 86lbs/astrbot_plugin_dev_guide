@@ -1074,13 +1074,10 @@ ${desc}
 
 **本地操作**：在你的工作目录中执行
 - 创建文件
-- 打包 zip
 - git 命令
 
 **远程操作**：通过 GitHub API 执行
 - 创建仓库
-- 创建 Release
-- 上传文件
 
 **不要混淆！** 本地文件操作 ≠ 远程仓库操作
 
@@ -1095,23 +1092,14 @@ ${desc}
 └── _conf_schema.json（如需要）
 ```
 
-### 步骤 2：本地 - 打包插件
-\`\`\`bash
-# 在插件目录下执行
-cd /workspace/my_plugin
-zip -r my_plugin.zip main.py metadata.yaml CHANGELOG.md README.md
-\`\`\`
-
-**注意**：zip 包内不要包含目录结构，直接打包文件！
-
-### 步骤 3：远程 - 创建 GitHub 仓库
+### 步骤 2：远程 - 创建 GitHub 仓库
 \`\`\`bash
 curl -X POST -H "Authorization: token ${githubToken}" \\
   https://api.github.com/user/repos \\
   -d '{"name":"插件名称","description":"插件描述"}'
 \`\`\`
 
-### 步骤 4：本地 - 推送代码
+### 步骤 3：本地 - 推送代码
 \`\`\`bash
 cd /workspace/my_plugin
 git init
@@ -1121,42 +1109,13 @@ git remote add origin https://github.com/用户名/插件名.git
 git push -u origin main
 \`\`\`
 
-### 步骤 5：本地 - 创建 Tag
-\`\`\`bash
-git tag v1.0.0
-git push origin v1.0.0
-\`\`\`
-
-### 步骤 6：远程 - 创建 Release
-\`\`\`bash
-curl -X POST -H "Authorization: token ${githubToken}" \\
-  https://api.github.com/repos/用户名/插件名/releases \\
-  -d '{"tag_name":"v1.0.0","name":"v1.0.0","body":"初始版本"}'
-\`\`\`
-
-### 步骤 7：远程 - 上传 zip 到 Release
-\`\`\`bash
-# 先获取 release_id
-curl -s -H "Authorization: token ${githubToken}" \\
-  https://api.github.com/repos/用户名/插件名/releases/latest
-
-# 上传 zip（使用上一步获取的 release_id）
-curl -X POST -H "Authorization: token ${githubToken}" \\
-  -H "Content-Type: application/zip" \\
-  --data-binary @/workspace/my_plugin/my_plugin.zip \\
-  "https://uploads.github.com/repos/用户名/插件名/releases/RELEASE_ID/assets?name=my_plugin.zip"
-\`\`\`
-
 ## 交付内容
-- 完整的插件代码（本地文件）
-- 插件 zip 包（已上传到 Release）
+- 完整的插件代码（已推送到 GitHub）
 - GitHub 仓库链接
-- Release 下载链接
 
 **重要**：
-1. 本地创建文件 ≠ 远程仓库有文件，必须 git push
-2. 本地打包 zip ≠ Release 有 zip，必须通过 API 上传
-3. 插件市场安装的是 Release 中的 zip 包
+1. 插件市场直接下载仓库源码，确保仓库文件完整
+2. 本地创建文件 ≠ 远程仓库有文件，必须 git push
 
 注意保护 Token 安全，不要在日志中输出。
 `;

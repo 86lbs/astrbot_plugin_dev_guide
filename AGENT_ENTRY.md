@@ -236,34 +236,26 @@ my_plugin/
 **内容**：
 - 使用 GitHub API 创建仓库
 - 推送代码
-- 创建 Release
-- **上传 zip 包到 Release（重要！）**
 
-**重要**：插件市场安装的是 Release 版本，必须：
-1. 打包插件为 zip
-2. 创建 GitHub Release
-3. 上传 zip 到 Release
+**重要**：插件市场直接下载仓库源码，必须确保仓库文件完整！
 
 ---
 
-## 📦 打包要求
+## 📁 仓库文件要求
 
-**zip 包内容**：
+**必须包含的文件**：
 ```
-my_plugin.zip
+my_plugin/
 ├── main.py              # 主代码
 ├── metadata.yaml        # 元数据
 ├── CHANGELOG.md         # 更新日志
-├── README.md            # 使用说明
-└── _conf_schema.json    # 配置 Schema（如有）
+└── README.md            # 使用说明
 ```
 
-**打包命令**：
-```bash
-zip -r my_plugin.zip main.py metadata.yaml CHANGELOG.md README.md
+**可选文件**：
 ```
-
-**注意**：zip 包内不要包含目录结构，直接打包文件！
+└── _conf_schema.json    # 配置 Schema（如需要）
+```
 
 ---
 
