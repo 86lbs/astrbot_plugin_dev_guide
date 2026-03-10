@@ -205,6 +205,11 @@ class MessageEventResult(MessageChain):
 async def my_command(self, event: AstrMessageEvent):
     """指令说明"""
 
+# 指令组（v4.19+ 新增）
+@filter.command_group("group_name")
+async def my_group(self, event: AstrMessageEvent, *args):
+    """指令组说明"""
+
 # LLM 工具注册
 @filter.llm_tool(name="tool_name")  # name 可选
 async def my_tool(self, event: AstrMessageEvent, arg: str) -> str:
@@ -245,6 +250,42 @@ async def on_loaded(self):
 
 @filter.after_message_sent()
 async def after_sent(self, event: AstrMessageEvent):
+    pass
+
+# 新增事件监听（v4.19+）
+@filter.on_using_llm_tool()
+async def on_using_tool(self, event: AstrMessageEvent, tool_name: str):
+    """当 LLM 决定使用工具时触发"""
+    pass
+
+@filter.on_llm_tool_respond()
+async def on_tool_respond(self, event: AstrMessageEvent, tool_name: str, result: str):
+    """当工具执行完成时触发"""
+    pass
+
+@filter.on_waiting_llm_request()
+async def on_waiting_req(self, event: AstrMessageEvent):
+    """当等待 LLM 请求时触发"""
+    pass
+
+@filter.on_plugin_loaded()
+async def on_plugin_load(self, plugin_name: str):
+    """当插件加载时触发"""
+    pass
+
+@filter.on_plugin_unloaded()
+async def on_plugin_unload(self, plugin_name: str):
+    """当插件卸载时触发"""
+    pass
+
+@filter.on_plugin_error()
+async def on_plugin_err(self, plugin_name: str, error: Exception):
+    """当插件出错时触发"""
+    pass
+
+@filter.on_platform_loaded()
+async def on_platform_load(self, platform_id: str):
+    """当平台适配器加载时触发"""
     pass
 ```
 

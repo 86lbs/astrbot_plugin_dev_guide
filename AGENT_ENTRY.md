@@ -167,7 +167,46 @@ my_plugin/
 ├── metadata.yaml        # 元数据（含版本号）
 ├── _conf_schema.json    # 配置 Schema（可选）
 ├── CHANGELOG.md         # 更新日志
-└── README.md            # 插件说明
+└── README.md            # 插件说明（必须包含）
+```
+
+---
+
+## 📝 README.md 格式（重要！）
+
+每个插件必须包含 README.md：
+
+```markdown
+# 插件名称
+
+插件功能描述。
+
+## 安装
+
+在 AstrBot 插件市场搜索插件名称，或通过仓库地址安装。
+
+## 使用方法
+
+### 指令
+- `/指令1` - 功能说明
+- `/指令2` - 功能说明
+
+### LLM Tool（如有）
+用户问 "xxx" 时会自动调用。
+
+## 配置项（如有）
+
+| 配置项 | 说明 | 默认值 |
+|--------|------|--------|
+| config_key | 说明 | 默认值 |
+
+## 更新日志
+
+见 [CHANGELOG.md](./CHANGELOG.md)
+
+## 致谢
+
+本插件使用 [AstrBot 插件开发指南](https://github.com/86lbs/astrbot_plugin_dev_guide) 开发。
 ```
 
 ---
