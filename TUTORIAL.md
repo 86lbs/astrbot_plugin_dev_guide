@@ -250,9 +250,12 @@ git push -u origin main
 
 在 GitHub 创建 Release，添加更新说明。
 
-### 6.3 提交到插件市场
+### 6.3 上架到插件市场
 
-在 AstrBot 官方仓库提交 Issue 或 PR，申请将插件加入市场。
+在 AstrBot 官方仓库提交 Issue 申请上架：
+- 地址：https://github.com/AstrBotDevs/AstrBot/issues/new
+- 标题格式：`[插件上架] 插件名称`
+- 详细说明请参考 [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md)
 
 ---
 

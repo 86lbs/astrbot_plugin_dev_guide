@@ -10,7 +10,7 @@
 |------|----------------|------|
 | 本地测试 | ❌ 不需要 | 直接复制到 `data/plugins/` |
 | GitHub 发布 | ✅ 需要 | 需要 GitHub Personal Access Token |
-| AstrBot 插件市场 | ✅ 需要 | 需要提交 PR 到官方仓库 |
+| AstrBot 插件市场 | ❌ 不需要 | 通过 Issue 申请上架 |
 | 分享给他人 | ❌ 不需要 | 打包成 zip 发送 |
 
 ---
@@ -101,7 +101,7 @@ curl -X POST http://localhost:6185/api/plugin/install \
 
 ---
 
-## 🏪 方式四：发布到 AstrBot 插件市场（需要 PR）
+## 🏪 方式四：上架到 AstrBot 插件市场（通过 Issue）
 
 ### 插件市场机制
 
@@ -109,30 +109,45 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
 - 主源：`https://api.soulter.top/astrbot/plugins`
 - 备用源：`https://github.com/AstrBotDevs/AstrBot_Plugins_Collection`
 
-### 发布步骤
+### 上架步骤
 
 1. **确保插件已发布到 GitHub**
+   - 插件仓库必须有完整的 `metadata.yaml`
+   - 必须有 Release 版本
 
-2. **提交 PR 到官方仓库**
+2. **提交 Issue 申请上架**
 
-   仓库地址：https://github.com/AstrBotDevs/AstrBot_Plugins_Collection
+   地址：https://github.com/AstrBotDevs/AstrBot/issues/new
 
-3. **PR 内容格式**
+3. **Issue 标题格式**
 
-   在 `plugins.json` 中添加：
-
-   ```json
-   {
-     "name": "my_plugin",
-     "author": "your_name",
-     "desc": "插件描述",
-     "repo": "https://github.com/your_name/my_plugin",
-     "version": "1.0.0",
-     "tags": ["工具", "天气"]
-   }
+   ```
+   [插件上架] 插件名称
    ```
 
-4. **等待审核合并**
+4. **Issue 内容模板**
+
+   ```markdown
+   ## 插件信息
+
+   - **插件名称**：my_plugin
+   - **作者**：your_name
+   - **简介**：插件功能描述
+   - **仓库地址**：https://github.com/your_name/my_plugin
+   - **版本**：1.0.0
+   - **标签**：工具, 天气
+
+   ## 检查清单
+
+   - [x] 插件已发布到 GitHub
+   - [x] 包含完整的 metadata.yaml
+   - [x] 包含 README.md 说明文档
+   - [x] 包含 CHANGELOG.md 更新日志
+   - [x] 已创建 Release 版本
+   - [x] 代码无恶意内容
+   ```
+
+5. **等待官方审核**
 
 ### 审核要求
 
@@ -140,8 +155,15 @@ AstrBot 插件市场是一个 JSON 文件，由官方维护：
 - ✅ 有完整的 `metadata.yaml`
 - ✅ 有 `README.md` 说明文档
 - ✅ 有 `CHANGELOG.md` 更新日志
+- ✅ 已创建 GitHub Release
 - ✅ 代码质量良好
 - ✅ 无恶意代码
+
+### 注意事项
+
+- 不要直接提交 PR，只接受 Issue 申请
+- 审核通过后，官方会更新插件市场列表
+- 一般 1-3 个工作日内处理
 
 ---
 
@@ -209,8 +231,8 @@ echo "发布成功！"
     ├──▶ GitHub 发布（需要 Token）
     │        └── git push → 创建 Release → 用户通过 URL 安装
     │
-    └──▶ 插件市场（需要 PR）
-             └── GitHub 发布 → 提交 PR → 审核合并 → 市场可见
+    └──▶ 插件市场（通过 Issue）
+             └── GitHub 发布 → 提交 Issue → 官方审核 → 市场可见
 ```
 
 ---
