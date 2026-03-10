@@ -1070,6 +1070,19 @@ ${desc}
 ## 发布要求（必须执行）
 完成开发后，必须执行以下发布步骤：
 
+### 0. 打包插件（重要！）
+插件市场安装的是 Release 版本，必须打包：
+
+\`\`\`bash
+# 在插件目录下执行
+zip -r my_plugin.zip main.py metadata.yaml CHANGELOG.md README.md
+
+# 如有配置 Schema
+zip -r my_plugin.zip main.py metadata.yaml _conf_schema.json CHANGELOG.md README.md
+\`\`\`
+
+**注意**：zip 包内不要包含目录结构，直接打包文件！
+
 ### 1. 创建 GitHub 仓库
 \`\`\`bash
 # 使用 GitHub API 创建仓库
@@ -1099,22 +1112,28 @@ curl -X POST -H "Authorization: token ${githubToken}" \\
   -d '{"tag_name":"v1.0.0","name":"v1.0.0","body":"初始版本"}'
 \`\`\`
 
-### 4. 打包并上传发行版
-\`\`\`bash
-# 打包插件
-zip -r 插件名.zip main.py metadata.yaml CHANGELOG.md README.md
+### 4. 上传发行版到 Release（必须！）
+插件市场安装的是 Release 中的 zip 包，必须上传：
 
-# 上传到 Release（需要先获取 release_id）
+\`\`\`bash
+# 获取 release_id
+RELEASE_ID=$(curl -s -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/repos/用户名/插件名/releases/latest | jq -r '.id')
+
+# 上传 zip 到 Release
 curl -X POST -H "Authorization: token ${githubToken}" \\
   -H "Content-Type: application/zip" \\
   --data-binary @插件名.zip \\
-  https://uploads.github.com/repos/用户名/插件名/releases/{release_id}/assets?name=插件名.zip
+  "https://uploads.github.com/repos/用户名/插件名/releases/$RELEASE_ID/assets?name=插件名.zip"
 \`\`\`
 
 ## 交付内容
 - 完整的插件代码
+- 插件 zip 包（已上传到 Release）
 - GitHub 仓库链接
 - Release 下载链接
+
+**重要**：插件市场安装的是 Release 版本，必须确保 Release 中有 zip 包！
 
 注意保护 Token 安全，不要在日志中输出。
 `;
