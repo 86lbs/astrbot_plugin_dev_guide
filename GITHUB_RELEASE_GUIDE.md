@@ -4,9 +4,42 @@
 
 ---
 
+## ⚠️ 重要说明
+
+**本地操作**：在你的工作目录中执行
+- 创建文件
+- 打包 zip
+- git 命令（init, add, commit, push）
+
+**远程操作**：通过 GitHub API 执行
+- 创建仓库
+- 创建 Release
+- 上传文件到 Release
+
+**不要混淆！**
+- 本地创建文件 ≠ 远程仓库有文件
+- 本地打包 zip ≠ Release 有 zip
+- 必须通过 git push 和 API 上传才能同步到远程
+
+---
+
 ## 📋 发布流程
 
-### 1. 创建 GitHub 仓库
+### 1. 本地 - 创建插件文件
+
+在本地工作目录创建插件文件：
+```
+/workspace/my_plugin/
+├── main.py
+├── metadata.yaml
+├── CHANGELOG.md
+├── README.md
+└── _conf_schema.json（如需要）
+```
+
+---
+
+### 2. 远程 - 创建 GitHub 仓库
 
 ```bash
 curl -X POST \
@@ -32,7 +65,7 @@ curl -X POST \
 
 ---
 
-### 2. 推送代码
+### 3. 本地 - 推送代码
 
 ```bash
 # 初始化仓库
@@ -55,7 +88,7 @@ git push -u origin main
 
 ---
 
-### 3. 创建 Tag
+### 4. 本地 - 创建 Tag
 
 ```bash
 # 创建本地 Tag
@@ -67,7 +100,7 @@ git push origin v1.0.0
 
 ---
 
-### 4. 创建 Release
+### 5. 远程 - 创建 Release
 
 ```bash
 curl -X POST \
@@ -98,7 +131,7 @@ curl -X POST \
 
 ---
 
-### 5. 打包插件
+### 6. 本地 - 打包插件
 
 ```bash
 # 创建 zip 包
@@ -119,7 +152,7 @@ zip -r my_plugin.zip \
 
 ---
 
-### 6. 上传发行版
+### 7. 远程 - 上传发行版到 Release
 
 ```bash
 # 使用 release_id 上传
@@ -147,7 +180,7 @@ curl -X POST \
 
 如果选择 Fork 后推送到自己的仓库：
 
-### 1. Fork 原仓库
+### 1. 远程 - Fork 原仓库
 
 ```bash
 curl -X POST \
@@ -156,7 +189,7 @@ curl -X POST \
   https://api.github.com/repos/original_owner/original_plugin/forks
 ```
 
-### 2. 克隆并修改
+### 2. 本地 - 克隆并修改
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/original_plugin.git
@@ -182,7 +215,7 @@ PLUGIN_NAME="my_plugin"
 PLUGIN_DESC="AstrBot 插件"
 USERNAME="your_username"
 
-# 1. 创建仓库
+# 1. 远程 - 创建仓库
 echo "创建仓库..."
 curl -X POST \
   -H "Authorization: token $TOKEN" \
@@ -190,7 +223,7 @@ curl -X POST \
   https://api.github.com/user/repos \
   -d "{\"name\":\"$PLUGIN_NAME\",\"description\":\"$PLUGIN_DESC\"}"
 
-# 2. 推送代码
+# 2. 本地 - 推送代码
 echo "推送代码..."
 cd /path/to/plugin
 git init
@@ -199,12 +232,12 @@ git commit -m "Initial commit"
 git remote add origin https://$TOKEN@github.com/$USERNAME/$PLUGIN_NAME.git
 git push -u origin main
 
-# 3. 创建 Tag
+# 3. 本地 - 创建 Tag
 echo "创建 Tag..."
 git tag v1.0.0
 git push origin v1.0.0
 
-# 4. 创建 Release
+# 4. 远程 - 创建 Release
 echo "创建 Release..."
 RESPONSE=$(curl -s -X POST \
   -H "Authorization: token $TOKEN" \
@@ -214,9 +247,12 @@ RESPONSE=$(curl -s -X POST \
 
 RELEASE_ID=$(echo $RESPONSE | jq -r '.id')
 
-# 5. 打包并上传
-echo "打包并上传..."
+# 5. 本地 - 打包
+echo "打包..."
 zip -r $PLUGIN_NAME.zip main.py metadata.yaml CHANGELOG.md README.md
+
+# 6. 远程 - 上传到 Release
+echo "上传..."
 curl -X POST \
   -H "Authorization: token $TOKEN" \
   -H "Content-Type: application/zip" \

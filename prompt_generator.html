@@ -1070,29 +1070,50 @@ ${desc}
 ## 发布要求（必须执行）
 完成开发后，必须执行以下发布步骤：
 
-### 0. 打包插件（重要！）
-插件市场安装的是 Release 版本，必须打包：
+### 操作环境说明（重要！）
 
+**本地操作**：在你的工作目录中执行
+- 创建文件
+- 打包 zip
+- git 命令
+
+**远程操作**：通过 GitHub API 执行
+- 创建仓库
+- 创建 Release
+- 上传文件
+
+**不要混淆！** 本地文件操作 ≠ 远程仓库操作
+
+### 步骤 1：本地 - 创建文件
+在本地工作目录创建插件文件：
+```
+/workspace/my_plugin/
+├── main.py
+├── metadata.yaml
+├── CHANGELOG.md
+├── README.md
+└── _conf_schema.json（如需要）
+```
+
+### 步骤 2：本地 - 打包插件
 \`\`\`bash
 # 在插件目录下执行
+cd /workspace/my_plugin
 zip -r my_plugin.zip main.py metadata.yaml CHANGELOG.md README.md
-
-# 如有配置 Schema
-zip -r my_plugin.zip main.py metadata.yaml _conf_schema.json CHANGELOG.md README.md
 \`\`\`
 
 **注意**：zip 包内不要包含目录结构，直接打包文件！
 
-### 1. 创建 GitHub 仓库
+### 步骤 3：远程 - 创建 GitHub 仓库
 \`\`\`bash
-# 使用 GitHub API 创建仓库
 curl -X POST -H "Authorization: token ${githubToken}" \\
   https://api.github.com/user/repos \\
   -d '{"name":"插件名称","description":"插件描述"}'
 \`\`\`
 
-### 2. 推送代码
+### 步骤 4：本地 - 推送代码
 \`\`\`bash
+cd /workspace/my_plugin
 git init
 git add .
 git commit -m "Initial commit"
@@ -1100,40 +1121,42 @@ git remote add origin https://github.com/用户名/插件名.git
 git push -u origin main
 \`\`\`
 
-### 3. 创建 Release
+### 步骤 5：本地 - 创建 Tag
 \`\`\`bash
-# 创建 Tag
 git tag v1.0.0
 git push origin v1.0.0
+\`\`\`
 
-# 使用 GitHub API 创建 Release
+### 步骤 6：远程 - 创建 Release
+\`\`\`bash
 curl -X POST -H "Authorization: token ${githubToken}" \\
   https://api.github.com/repos/用户名/插件名/releases \\
   -d '{"tag_name":"v1.0.0","name":"v1.0.0","body":"初始版本"}'
 \`\`\`
 
-### 4. 上传发行版到 Release（必须！）
-插件市场安装的是 Release 中的 zip 包，必须上传：
-
+### 步骤 7：远程 - 上传 zip 到 Release
 \`\`\`bash
-# 获取 release_id
-RELEASE_ID=$(curl -s -H "Authorization: token ${githubToken}" \\
-  https://api.github.com/repos/用户名/插件名/releases/latest | jq -r '.id')
+# 先获取 release_id
+curl -s -H "Authorization: token ${githubToken}" \\
+  https://api.github.com/repos/用户名/插件名/releases/latest
 
-# 上传 zip 到 Release
+# 上传 zip（使用上一步获取的 release_id）
 curl -X POST -H "Authorization: token ${githubToken}" \\
   -H "Content-Type: application/zip" \\
-  --data-binary @插件名.zip \\
-  "https://uploads.github.com/repos/用户名/插件名/releases/$RELEASE_ID/assets?name=插件名.zip"
+  --data-binary @/workspace/my_plugin/my_plugin.zip \\
+  "https://uploads.github.com/repos/用户名/插件名/releases/RELEASE_ID/assets?name=my_plugin.zip"
 \`\`\`
 
 ## 交付内容
-- 完整的插件代码
+- 完整的插件代码（本地文件）
 - 插件 zip 包（已上传到 Release）
 - GitHub 仓库链接
 - Release 下载链接
 
-**重要**：插件市场安装的是 Release 版本，必须确保 Release 中有 zip 包！
+**重要**：
+1. 本地创建文件 ≠ 远程仓库有文件，必须 git push
+2. 本地打包 zip ≠ Release 有 zip，必须通过 API 上传
+3. 插件市场安装的是 Release 中的 zip 包
 
 注意保护 Token 安全，不要在日志中输出。
 `;
