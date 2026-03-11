@@ -290,4 +290,10 @@ python tools/mock_llm_server.py
 
 ## 📄 许可证
 
-MIT License
+[MIT License](./LICENSE)
+
+Copyright (c) 2025 86lbs
+
+本教程采用 MIT 许可证，你可以自由使用、修改和分发。
+
+**注意**：使用本教程开发的插件不需要标注来源，开发者可自行决定是否添加致谢。

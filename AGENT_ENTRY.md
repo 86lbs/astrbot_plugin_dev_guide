@@ -203,23 +203,27 @@ my_plugin/
 ## 更新日志
 
 见 [CHANGELOG.md](./CHANGELOG.md)
+```
 
+**可选内容**（欢迎添加）：
+
+```markdown
 ## 开发说明
 
 本插件使用 [AstrBot 插件开发指南](https://github.com/86lbs/astrbot_plugin_dev_guide) 开发。
 
 参与的开发步骤：
-- [x] 阅读开发指南
-- [x] 参考 API 文档
-- [x] 自我审查
-- [x] 发布到 GitHub
-
-（根据实际情况勾选）
+- [ ] 阅读开发指南
+- [ ] 参考 API 文档
+- [ ] 自我审查
+- [ ] 发布到 GitHub
 
 ## 致谢
 
 感谢 AstrBot 插件开发指南提供的帮助。
 ```
+
+**注意**：以上为可选内容，开发者可自行决定是否添加。
 
 ---
 
