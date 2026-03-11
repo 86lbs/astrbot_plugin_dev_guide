@@ -10,514 +10,221 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
+        
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
         }
-
+        
         .header {
             text-align: center;
             color: white;
             margin-bottom: 30px;
         }
-
+        
         .header h1 {
-            font-size: 2.2em;
+            font-size: 2em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-
+        
         .header p {
-            font-size: 1em;
             opacity: 0.9;
         }
-
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
         .card {
             background: white;
-            border-radius: 16px;
+            border-radius: 15px;
             padding: 25px;
             margin-bottom: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
-
+        
         .card-title {
-            font-size: 1.2em;
-            color: #333;
+            font-size: 1.3em;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* 模式选择 */
-        .mode-selector {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 700px) {
-            .mode-selector {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .mode-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .mode-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .mode-card.active {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-        }
-
-        .mode-card .icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .mode-card h3 {
             color: #333;
-            margin-bottom: 8px;
         }
-
-        .mode-card p {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        /* 表单 */
+        
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
-
+        
         .form-group label {
             display: block;
-            font-weight: 600;
-            color: #444;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
         }
-
-        .form-group label .required {
-            color: #e74c3c;
-        }
-
+        
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            font-size: 14px;
+            transition: border-color 0.3s;
         }
-
+        
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
         }
-
+        
         .form-group textarea {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
-            font-family: inherit;
         }
-
-        .form-group small {
-            color: #888;
-            font-size: 0.85em;
-            margin-top: 4px;
-            display: block;
-        }
-
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-
-        /* 复选框组 */
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .checkbox-item label {
-            cursor: pointer;
-            font-weight: normal;
-            font-size: 0.95em;
-        }
-
-        /* 标签 */
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .tag {
-            background: #f0f0f0;
-            color: #555;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-
-        .tag:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .tag.selected {
-            background: #667eea;
-            color: white;
-        }
-
-        /* 按钮 */
+        
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
+            padding: 12px 30px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
         }
-
+        
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-
+        
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
-
+        
         .btn-secondary {
             background: #f0f0f0;
             color: #333;
         }
-
+        
         .btn-secondary:hover {
             background: #e0e0e0;
         }
-
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #219a52;
-        }
-
-        /* 输出区域 */
+        
         .output-section {
             display: none;
         }
-
+        
         .output-section.show {
             display: block;
         }
-
+        
         .output-box {
-            background: #1e1e1e;
-            border-radius: 8px;
-            padding: 20px;
-            color: #d4d4d4;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9em;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-word;
-            max-height: 450px;
-            overflow-y: auto;
-        }
-
-        /* 可编辑区域 */
-        .edit-box {
-            background: #fafafa;
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.9em;
-            line-height: 1.6;
-            min-height: 300px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
             resize: vertical;
-            width: 100%;
+            background: #fafafa;
         }
-
-        .edit-box:focus {
-            outline: none;
-            border-color: #667eea;
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
-
-        /* 提示 */
+        
         .tips {
             background: #f8f9fa;
             border-left: 4px solid #667eea;
-            padding: 12px 16px;
-            margin-top: 15px;
+            padding: 15px;
             border-radius: 0 8px 8px 0;
-            font-size: 0.9em;
+            margin-top: 20px;
         }
-
+        
         .tips h4 {
-            color: #667eea;
-            margin-bottom: 8px;
-        }
-
-        .tips ul {
-            margin-left: 18px;
-            color: #555;
-        }
-
-        .tips li {
-            margin-bottom: 4px;
-        }
-
-        /* 弹窗 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .modal-content h3 {
+            margin-bottom: 10px;
             color: #333;
-            margin-bottom: 12px;
         }
-
-        .modal-content p {
+        
+        .tips ul {
+            margin-left: 20px;
             color: #666;
-            margin-bottom: 20px;
-            font-size: 0.95em;
         }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
+        
+        .tips li {
+            margin-bottom: 5px;
         }
-
-        /* Toast */
+        
+        .hidden {
+            display: none !important;
+        }
+        
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
-            transform: translateX(-50%);
-            background: #27ae60;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 8px;
-            font-weight: 600;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1001;
+            transition: all 0.3s;
+            z-index: 1000;
         }
-
+        
         .toast.show {
+            transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
-
-        /* 隐藏区域 */
-        .hidden {
-            display: none !important;
-        }
-
-        /* 标签页 */
-        .tab-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 15px 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .tab-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #667eea;
-            border-color: white;
-        }
-
-        /* 文档浏览 */
-        .doc-container {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .doc-sidebar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .doc-btn {
-            padding: 8px 16px;
-            border: 1px solid #e0e0e0;
-            background: #f8f9fa;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.2s;
-        }
-
-        .doc-btn:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .doc-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .doc-content {
-            min-height: 400px;
-            max-height: 70vh;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .doc-content h1 { font-size: 1.8em; color: #333; margin-bottom: 20px; }
-        .doc-content h2 { font-size: 1.4em; color: #444; margin: 25px 0 15px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-        .doc-content h3 { font-size: 1.2em; color: #555; margin: 20px 0 10px; }
-        .doc-content p { color: #666; line-height: 1.8; margin-bottom: 15px; }
-        .doc-content ul, .doc-content ol { margin: 10px 0 15px 25px; color: #666; }
-        .doc-content li { margin-bottom: 8px; line-height: 1.6; }
-        .doc-content code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
-        .doc-content pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 15px 0; }
-        .doc-content pre code { background: none; padding: 0; color: inherit; }
-        .doc-content table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        .doc-content th, .doc-content td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        .doc-content th { background: #f8f9fa; }
-        .doc-content blockquote { border-left: 4px solid #667eea; padding-left: 15px; margin: 15px 0; color: #666; }
-        .doc-content a { color: #667eea; text-decoration: none; }
-        .doc-content a:hover { text-decoration: underline; }
-
-        .doc-loading {
-            text-align: center;
-            padding: 50px;
-            color: #999;
-        }
-
-        .doc-error {
-            text-align: center;
-            padding: 50px;
-            color: #e74c3c;
-        }
-
-        /* 响应式 */
-        @media (max-width: 700px) {
+        
+        @media (max-width: 600px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
-
-            .header h1 {
-                font-size: 1.6em;
-            }
-
-            .card {
-                padding: 18px;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .modal-buttons {
+            
+            .tabs {
                 flex-direction: column;
             }
         }
@@ -527,421 +234,208 @@
     <div class="container">
         <div class="header">
             <h1>🤖 AstrBot 插件开发提示词生成器</h1>
-            <p>选择模式，快速生成发送给 AI 的开发提示词</p>
+            <p>生成发送给 AI 的开发提示词</p>
         </div>
-
-        <!-- 标签页切换 -->
-        <div class="tab-container">
-            <button class="tab-btn active" onclick="switchTab('generator')">📝 提示词生成器</button>
+        
+        <!-- 标签页 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('generator')">📝 生成提示词</button>
             <button class="tab-btn" onclick="switchTab('docs')">📚 浏览文档</button>
         </div>
-
-        <!-- 提示词生成器区域 -->
+        
+        <!-- 生成器标签页 -->
         <div id="generatorTab">
-
-        <!-- 模式选择 -->
-        <div class="card">
-            <h2 class="card-title">📌 选择操作模式</h2>
-            <div class="mode-selector">
-                <div class="mode-card active" data-mode="learn" onclick="selectMode('learn')">
-                    <div class="icon">📚</div>
-                    <h3>学习模式</h3>
-                    <p>先了解 AstrBot 插件开发</p>
-                </div>
-                <div class="mode-card" data-mode="create" onclick="selectMode('create')">
-                    <div class="icon">✨</div>
-                    <h3>创建插件</h3>
-                    <p>从零开始创建新插件</p>
-                </div>
-                <div class="mode-card" data-mode="optimize" onclick="selectMode('optimize')">
-                    <div class="icon">🔧</div>
-                    <h3>优化插件</h3>
-                    <p>改进已有插件代码</p>
-                </div>
-                <div class="mode-card" data-mode="explain" onclick="selectMode('explain')">
-                    <div class="icon">📖</div>
-                    <h3>讲解插件</h3>
-                    <p>解释插件代码原理</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 学习模式表单 -->
-        <div id="learnForm" class="card">
-            <h2 class="card-title">📚 学习 AstrBot 插件开发</h2>
-
-            <div class="form-group">
-                <label>你的问题（可选）</label>
-                <textarea id="learnQuestion" placeholder="有什么想提前了解的问题？例如：&#10;- AstrBot 插件和普通 Python 项目有什么区别？&#10;- 如何调试插件？"></textarea>
-            </div>
-
-            <div class="tips">
-                <h4>💡 学习模式说明</h4>
-                <ul>
-                    <li>Agent 会先阅读 AstrBot 源码和开发指南</li>
-                    <li>了解插件开发的核心概念和 API</li>
-                    <li>你可以在稍后提供具体的开发任务</li>
-                    <li>适合第一次使用或想深入了解 AstrBot 的用户</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 创建插件表单 -->
-        <div id="createForm" class="card hidden">
-            <h2 class="card-title">✨ 创建新插件</h2>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>插件名称</label>
-                    <input type="text" id="createName" placeholder="例如：weather_query（留空则自动生成）">
-                    <small>使用英文小写和下划线，留空可让 AI 自动命名</small>
-                </div>
-                <div class="form-group">
-                    <label>作者名称</label>
-                    <input type="text" id="createAuthor" placeholder="你的名字">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>插件描述 <span class="required">*</span></label>
-                <textarea id="createDesc" placeholder="用一句话描述你想要的插件功能，例如：&#10;- 查天气的插件&#10;- 能搜索网页的插件&#10;- 帮我记备忘录的插件"></textarea>
-                <small>简单描述即可，AI 会帮你完善需求</small>
-            </div>
-
-            <div class="form-group">
-                <label>功能类型</label>
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="createCmd" checked>
-                        <label for="createCmd">指令功能</label>
+            <!-- 通用配置 -->
+            <div class="card">
+                <h2 class="card-title">⚙️ 基本配置</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>GitHub Token（可选）</label>
+                        <input type="password" id="githubToken" placeholder="ghp_xxxx 用于自动发布">
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="createTool">
-                        <label for="createTool">LLM Tool</label>
+                    <div class="form-group">
+                        <label>开发指南路径</label>
+                        <input type="text" id="guidePath" value="https://github.com/86lbs/astrbot_plugin_dev_guide">
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="createEvent">
-                        <label for="createEvent">事件监听</label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>AstrBot 源码路径</label>
+                        <input type="text" id="sourcePath" value="https://github.com/AstrBotDevs/AstrBot">
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="createConfig">
-                        <label for="createConfig">配置项</label>
+                    <div class="form-group">
+                        <label>额外说明（可选）</label>
+                        <input type="text" id="extraNotes" placeholder="其他需要说明的内容">
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label>详细需求</label>
-                <textarea id="createDetail" placeholder="更详细的需求描述（可选），例如：&#10;1. 用户发送 /天气 北京 查询天气&#10;2. 支持 LLM Tool，用户问"今天天气怎么样"时自动调用&#10;3. 需要配置 API Key&#10;&#10;留空则 AI 会根据描述自动设计功能"></textarea>
-                <small>可选，留空让 AI 自动设计功能</small>
-            </div>
-        </div>
-
-        <!-- 优化插件表单 -->
-        <div id="optimizeForm" class="card hidden">
-            <h2 class="card-title">🔧 优化已有插件</h2>
-
-            <div class="form-group">
-                <label>插件仓库链接 <span class="required">*</span></label>
-                <input type="text" id="optimizeCode" placeholder="https://github.com/xxx/my_plugin">
-                <small>填写要优化的插件 GitHub 仓库链接</small>
-            </div>
-
-            <div class="form-group">
-                <label>我的要求 <span class="required">*</span></label>
-                <textarea id="optimizeRequest" placeholder="告诉我你想怎么优化，例如：&#10;- 帮我添加错误处理&#10;- 代码运行太慢了，帮我优化性能&#10;- 添加一个配置项，让用户可以自定义XX&#10;- 修复当用户输入为空时会报错的问题"></textarea>
-                <small>简单描述你的需求即可</small>
-            </div>
-
-            <div class="form-group">
-                <label>发布方式</label>
-                <select id="optimizePublishMode">
-                    <option value="original">推送到原仓库（需要权限）</option>
-                    <option value="fork">Fork 后推送到我的仓库</option>
-                    <option value="new">作为新插件发布到我的仓库</option>
-                </select>
-                <small>选择如何发布优化后的插件</small>
-            </div>
-
-            <div class="form-group">
-                <label>预期效果（可选）</label>
-                <textarea id="optimizeExpect" placeholder="描述你期望达到的效果，例如：&#10;- 响应时间小于1秒&#10;- 用户可以配置超时时间"></textarea>
-            </div>
-        </div>
-
-        <!-- 讲解插件表单 -->
-        <div id="explainForm" class="card hidden">
-            <h2 class="card-title">📖 讲解插件代码</h2>
-
-            <div class="form-group">
-                <label>插件仓库链接 <span class="required">*</span></label>
-                <input type="text" id="explainCode" placeholder="https://github.com/xxx/my_plugin">
-                <small>填写要讲解的插件 GitHub 仓库链接</small>
-            </div>
-
-            <div class="form-group">
-                <label>你的问题</label>
-                <textarea id="explainQuestion" placeholder="你想了解什么？例如：这个装饰器是怎么工作的？"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>讲解风格</label>
-                <select id="explainStyle">
-                    <option value="simple">简单易懂（适合新手）</option>
-                    <option value="detailed">详细深入（适合进阶）</option>
-                    <option value="technical">技术专业（适合开发者）</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 高级选项 -->
-        <div class="card">
-            <h2 class="card-title">⚙️ 高级选项</h2>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>AstrBot 源码</label>
-                    <input type="text" id="sourcePath" value="https://github.com/AstrBotDevs/AstrBot">
-                </div>
-                <div class="form-group">
-                    <label>开发指南</label>
-                    <input type="text" id="guidePath" value="https://github.com/86lbs/astrbot_plugin_dev_guide">
+            
+            <!-- 模式选择 -->
+            <div class="card">
+                <h2 class="card-title">📌 选择模式</h2>
+                <div class="tabs" style="margin-bottom: 0;">
+                    <button class="tab-btn active" onclick="selectMode('general')">🔧 通用模式</button>
+                    <button class="tab-btn" onclick="selectMode('explain')">📖 讲解模式</button>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label>GitHub Token <span class="required">*</span></label>
-                <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-                <small>
-                    ⚠️ 必填。用于访问 GitHub API、发布插件。<br>
-                    📝 获取方式：GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token<br>
-                    🔑 需要权限：repo（完整仓库访问）、workflow（可选，用于 Actions）
-                </small>
+            
+            <!-- 通用模式表单 -->
+            <div id="generalForm" class="card">
+                <h2 class="card-title">🔧 通用模式</h2>
+                <p style="color: #666; margin-bottom: 20px;">适用于学习、开发、优化插件等多种场景</p>
+                
+                <div class="form-group">
+                    <label>你的需求 *</label>
+                    <textarea id="generalRequest" placeholder="描述你的需求，例如：&#10;- 学习 AstrBot 插件开发&#10;- 开发一个天气查询插件&#10;- 优化某个插件的代码&#10;- 帮我理解这个插件的工作原理"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>插件仓库链接（如有）</label>
+                    <input type="text" id="generalRepo" placeholder="https://github.com/user/plugin">
+                </div>
+                
+                <div class="tips">
+                    <h4>💡 使用提示</h4>
+                    <ul>
+                        <li>描述越具体，生成的提示词越准确</li>
+                        <li>如果是开发新插件，描述插件的功能需求</li>
+                        <li>如果是优化插件，说明要优化的方面</li>
+                        <li>如果是学习，说明想了解的内容</li>
+                    </ul>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label>额外说明</label>
-                <textarea id="extraNotes" placeholder="任何额外的要求或说明..."></textarea>
+            
+            <!-- 讲解模式表单 -->
+            <div id="explainForm" class="card hidden">
+                <h2 class="card-title">📖 讲解模式</h2>
+                
+                <div class="form-group">
+                    <label>插件仓库链接 *</label>
+                    <input type="text" id="explainRepo" placeholder="https://github.com/user/plugin">
+                </div>
+                
+                <div class="form-group">
+                    <label>你的问题</label>
+                    <textarea id="explainQuestion" placeholder="想了解什么？例如：&#10;- 这个插件是如何工作的？&#10;- LLM Tool 是怎么被调用的？"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>讲解风格</label>
+                    <select id="explainStyle">
+                        <option value="simple">简单易懂，适合新手</option>
+                        <option value="detailed">详细深入，包含原理</option>
+                        <option value="technical">技术专业，使用术语</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- 生成按钮 -->
+            <div class="card">
+                <button class="btn btn-primary" onclick="generatePrompt()" style="width: 100%;">生成提示词</button>
+            </div>
+            
+            <!-- 输出区域 -->
+            <div id="outputSection" class="card output-section">
+                <h2 class="card-title">📋 生成的提示词</h2>
+                <textarea id="outputBox" class="output-box" readonly></textarea>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="copyPrompt()">复制</button>
+                    <button class="btn btn-secondary" onclick="downloadPrompt()">下载</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">重置</button>
+                </div>
             </div>
         </div>
-
-        <!-- 生成按钮 -->
-        <div class="card" style="text-align: center;">
-            <button class="btn btn-primary" onclick="generatePrompt()">
-                ✨ 生成提示词
-            </button>
-            <button class="btn btn-secondary" onclick="resetAll()">
-                🔄 重置
-            </button>
-        </div>
-
-        <!-- 输出区域 -->
-        <div class="card output-section" id="outputSection">
-            <h2 class="card-title">📝 生成的提示词（可编辑）</h2>
-
-            <textarea class="edit-box" id="outputBox"></textarea>
-
-            <div style="margin-top: 15px; text-align: center;">
-                <button class="btn btn-success" onclick="copyPrompt()">
-                    📋 复制到剪贴板
-                </button>
-                <button class="btn btn-secondary" onclick="downloadPrompt()">
-                    💾 下载文件
-                </button>
-            </div>
-
-            <div class="tips">
-                <h4>💡 使用提示</h4>
-                <ul>
-                    <li>可以直接编辑上方提示词，添加你的个性化需求</li>
-                    <li>编辑完成后复制发送给 AI</li>
-                    <li>AI 会根据提示词完成相应操作</li>
-                </ul>
+        
+        <!-- 文档标签页 -->
+        <div id="docsTab" class="hidden">
+            <div class="card">
+                <h2 class="card-title">📚 开发文档</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-secondary" onclick="loadDoc('AGENT_ENTRY.md')">入口文档</button>
+                    <button class="btn btn-secondary" onclick="loadDoc('SOURCE_CODE_MAP.md')">API 速查</button>
+                    <button class="btn btn-secondary" onclick="loadDoc('SELF_REVIEW.md')">自我审查</button>
+                    <button class="btn btn-secondary" onclick="loadDoc('PUBLISH_GUIDE.md')">发布指南</button>
+                    <button class="btn btn-secondary" onclick="loadDoc('README.md')">README</button>
+                </div>
+                <div id="docContent" style="background: #f8f9fa; padding: 20px; border-radius: 8px; min-height: 300px;">
+                    <p style="color: #666;">点击上方按钮加载文档...</p>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- 发布确认弹窗 -->
-    <div class="modal" id="publishModal">
-        <div class="modal-content">
-            <h3>🚀 发布到插件市场？</h3>
-            <p>插件开发完成后，是否需要发布到 AstrBot 官方插件市场？<br><small>（需要 GitHub Token 和提交 PR）</small></p>
-            <div class="modal-buttons">
-                <button class="btn btn-primary" onclick="confirmPublish(true)">需要发布</button>
-                <button class="btn btn-secondary" onclick="confirmPublish(false)">暂不发布</button>
-            </div>
-        </div>
-    </div>
-
-    </div><!-- 关闭 generatorTab -->
-
+    
     <!-- Toast -->
     <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
-
-    <!-- 文档浏览区域 -->
-    <div id="docsTab" class="hidden">
-        <div class="doc-container">
-            <h2 class="card-title">📚 开发文档</h2>
-            <div class="doc-sidebar">
-                <button class="doc-btn active" onclick="loadDoc('AGENT_ENTRY.md')">入口文档</button>
-                <button class="doc-btn" onclick="loadDoc('SOURCE_CODE_MAP.md')">API 速查</button>
-                <button class="doc-btn" onclick="loadDoc('PROMPT_V5_LOCAL_SIMULATION.md')">开发流程</button>
-                <button class="doc-btn" onclick="loadDoc('GITHUB_RELEASE_GUIDE.md')">发布指南</button>
-                <button class="doc-btn" onclick="loadDoc('VERSION_MANAGEMENT.md')">版本管理</button>
-                <button class="doc-btn" onclick="loadDoc('MOCK_LLM_SERVER.md')">模拟 LLM</button>
-                <button class="doc-btn" onclick="loadDoc('README.md')">README</button>
-            </div>
-            <div id="docContent" class="doc-content">
-                <div class="doc-loading">加载中...</div>
-            </div>
-        </div>
-    </div>
-
+    
     <script>
-        let currentMode = 'learn';
-        let needPublish = false;
-
+        let currentMode = 'general';
+        
+        // 切换标签页
+        function switchTab(tab) {
+            document.querySelectorAll('.tabs .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            document.getElementById('generatorTab').classList.toggle('hidden', tab !== 'generator');
+            document.getElementById('docsTab').classList.toggle('hidden', tab !== 'docs');
+        }
+        
         // 切换模式
         function selectMode(mode) {
             currentMode = mode;
-
-            // 更新卡片样式
-            document.querySelectorAll('.mode-card').forEach(card => {
-                card.classList.remove('active');
+            
+            // 更新按钮样式
+            document.querySelectorAll('#generatorTab .tabs .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
-            document.querySelector(`.mode-card[data-mode="${mode}"]`).classList.add('active');
-
+            event.target.classList.add('active');
+            
             // 显示对应表单
-            document.getElementById('learnForm').classList.toggle('hidden', mode !== 'learn');
-            document.getElementById('createForm').classList.toggle('hidden', mode !== 'create');
-            document.getElementById('optimizeForm').classList.toggle('hidden', mode !== 'optimize');
+            document.getElementById('generalForm').classList.toggle('hidden', mode !== 'general');
             document.getElementById('explainForm').classList.toggle('hidden', mode !== 'explain');
-
+            
             // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
         }
-
+        
         // 生成提示词
         function generatePrompt() {
-            if (currentMode === 'create') {
-                // 显示发布确认
-                document.getElementById('publishModal').classList.add('show');
-            } else {
-                // 其他模式直接生成
-                generatePromptFinal();
-            }
-        }
-
-        function confirmPublish(publish) {
-            needPublish = publish;
-            document.getElementById('publishModal').classList.remove('show');
-            generatePromptFinal();
-        }
-
-        function generatePromptFinal() {
-            let prompt = '';
-            const sourcePath = document.getElementById('sourcePath').value;
-            const guidePath = document.getElementById('guidePath').value;
-            const extraNotes = document.getElementById('extraNotes').value;
             const githubToken = document.getElementById('githubToken').value.trim();
-
-            if (!githubToken) {
-                alert('请填写 GitHub Token！');
-                return;
+            const guidePath = document.getElementById('guidePath').value.trim();
+            const sourcePath = document.getElementById('sourcePath').value.trim();
+            const extraNotes = document.getElementById('extraNotes').value.trim();
+            
+            let prompt = '';
+            
+            if (currentMode === 'general') {
+                prompt = generateGeneralPrompt(githubToken, guidePath, sourcePath, extraNotes);
+            } else {
+                prompt = generateExplainPrompt(githubToken, guidePath, sourcePath, extraNotes);
             }
-
-            if (currentMode === 'learn') {
-                prompt = generateLearnPrompt(sourcePath, guidePath, extraNotes, githubToken);
-            } else if (currentMode === 'create') {
-                prompt = generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken);
-            } else if (currentMode === 'optimize') {
-                prompt = generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken);
-            } else if (currentMode === 'explain') {
-                prompt = generateExplainPrompt(sourcePath, guidePath, extraNotes, githubToken);
+            
+            if (prompt) {
+                document.getElementById('outputBox').value = prompt;
+                document.getElementById('outputSection').classList.add('show');
+                document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
             }
-
-            document.getElementById('outputBox').value = prompt;
-            document.getElementById('outputSection').classList.add('show');
-            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
         }
-
-        function generateLearnPrompt(sourcePath, guidePath, extraNotes, githubToken) {
-            const question = document.getElementById('learnQuestion').value.trim();
-
-            let prompt = `学习 AstrBot 插件开发。
-
-## GitHub Token
-\`\`\`
-${githubToken}
-\`\`\`
-
-## 学习资料
-请使用 Token 通过 GitHub API 获取以下资料：
-
-1. **开发指南**：${guidePath}
-   - 包含完整的插件开发教程
-   - API 文档和示例代码
-   - 配置文件格式说明
-
-2. **源码**：${sourcePath}
-   - AstrBot 核心代码
-   - 了解插件系统实现
-
-## 学习目标
-请阅读上述资料，了解：
-- 插件的基本结构
-- Star 基类和 Context 接口
-- 指令开发（@filter.command）
-- LLM Tool 开发（@filter.llm_tool）
-- 事件监听
-- 配置管理
-- 消息处理和返回结果
-`;
-
-            if (question) {
-                prompt += `\n## 我的问题\n${question}\n`;
-            }
-
-            prompt += `
-## 输出要求
-1. 总结 AstrBot 插件开发的核心概念
-2. 列出常用的 API 和装饰器
-3. 说明插件开发的最佳实践
-4. 等待用户稍后提供具体的开发任务
-
-注意保护 Token 安全，不要在日志中输出。
-`;
-
-            if (extraNotes) {
-                prompt += `\n## 额外说明\n${extraNotes}\n`;
-            }
-
-            return prompt;
-        }
-
-        function generateCreatePrompt(sourcePath, guidePath, extraNotes, githubToken) {
-            const name = document.getElementById('createName').value.trim();
-            const author = document.getElementById('createAuthor').value.trim() || 'your_name';
-            const desc = document.getElementById('createDesc').value.trim();
-            const detail = document.getElementById('createDetail').value.trim();
-
-            // 只需要描述
-            if (!desc) {
-                alert('请至少填写插件描述！');
+        
+        function generateGeneralPrompt(githubToken, guidePath, sourcePath, extraNotes) {
+            const request = document.getElementById('generalRequest').value.trim();
+            const repo = document.getElementById('generalRepo').value.trim();
+            
+            if (!request) {
+                alert('请填写你的需求！');
                 return '';
             }
-
-            const features = [];
-            if (document.getElementById('createCmd').checked) features.push('指令功能');
-            if (document.getElementById('createTool').checked) features.push('LLM Tool');
-            if (document.getElementById('createEvent').checked) features.push('事件监听');
-            if (document.getElementById('createConfig').checked) features.push('配置项');
-
-            let prompt = `开发 AstrBot 插件。
+            
+            let prompt = `## 任务
+${request}
 
 ## GitHub Token
 \`\`\`
-${githubToken}
+${githubToken || '（未提供）'}
 \`\`\`
 
 ## 开发资料
@@ -950,363 +444,75 @@ ${githubToken}
 1. **开发指南**：${guidePath}
    - 完整的插件开发教程
    - API 文档和示例代码
-   - 配置文件格式（metadata.yaml、_conf_schema.json）
-   - 版本管理和发布流程
+   - 配置文件格式说明
 
 2. **源码**：${sourcePath}
    - AstrBot 核心代码
    - 插件系统实现
-
-## 插件描述
-${desc}
 `;
-
-            if (name) {
-                prompt += `\n## 插件名称\n${name}\n`;
-            } else {
-                prompt += `\n## 插件名称\n（请根据功能自动生成合适的英文名称）\n`;
+            
+            if (repo) {
+                prompt += `
+## 相关仓库
+${repo}
+`;
             }
-
-            prompt += `\n## 作者\n${author}\n`;
-
-            if (features.length > 0) {
-                prompt += `\n## 功能类型\n${features.map(f => '- ' + f).join('\n')}\n`;
-            }
-
-            if (detail) {
-                prompt += `\n## 详细需求\n${detail}\n`;
-            } else {
-                prompt += `\n## 详细需求\n（请根据插件描述自动设计合理的功能）\n`;
-            }
-
+            
             if (extraNotes) {
-                prompt += `\n## 额外说明\n${extraNotes}\n`;
+                prompt += `
+## 额外说明
+${extraNotes}
+`;
             }
-
+            
             prompt += `
 ## 开发要求
-1. 阅读开发指南中的教程和示例
-2. 按照指南中的格式要求编写代码
-3. 包含必要的文件：
-   - main.py（主代码）
-   - metadata.yaml（元数据）
-   - CHANGELOG.md（更新日志）
-   - **README.md（使用说明，必须包含）**
-   - _conf_schema.json（配置 Schema，如需要）
-4. 如果需要配置项，按指南格式创建 _conf_schema.json
-5. 进行自我审查（参考 SELF_REVIEW.md）
-6. 测试验证功能正常
-7. 发布到 GitHub（创建仓库、推送代码、创建 Release）
+1. 阅读开发指南了解插件开发规范
+2. 参考源码了解 API 用法
+3. 包含必要的文件：main.py、metadata.yaml、CHANGELOG.md、README.md
+4. 进行自我审查确保代码质量
+5. 如需发布，推送到 GitHub
 
-## README.md 要求（重要！）
-每个插件必须包含 README.md，内容如下：
+## 自我审查要点
+- logger 必须从 astrbot.api 导入
+- filter 必须从 astrbot.api.event 导入
+- 使用正确的返回方式：event.set_result(MessageEventResult().message("内容"))
+- LLM Tool 文档字符串格式正确
 
-\`\`\`markdown
-# 插件名称
-
-插件功能描述。
-
-## 安装
-
-在 AstrBot 插件市场搜索插件名称，或通过仓库地址安装。
-
-## 使用方法
-
-### 指令
-- \`/指令1\` - 功能说明
-- \`/指令2\` - 功能说明
-
-### LLM Tool（如有）
-用户问 "xxx" 时会自动调用。
-
-## 配置项（如有）
-
-| 配置项 | 说明 | 默认值 |
-|--------|------|--------|
-| config_key | 说明 | 默认值 |
-
-## 更新日志
-
-见 [CHANGELOG.md](./CHANGELOG.md)
-\`\`\`
-
-**可选内容**（欢迎添加）：
-
-\`\`\`markdown
-## 开发说明
-
-本插件使用 [AstrBot 插件开发指南](https://github.com/86lbs/astrbot_plugin_dev_guide) 开发。
-
-参与的开发步骤：
-- [ ] 阅读开发指南
-- [ ] 参考 API 文档
-- [ ] 自我审查
-- [ ] 发布到 GitHub
-
-## 致谢
-
-感谢 AstrBot 插件开发指南提供的帮助。
-\`\`\`
-
-**注意**：以上为可选内容，开发者可自行决定是否添加。
-
-## 自我审查要求
-完成代码后，必须进行自我审查（模仿 astrpluginreviewer[bot]）：
-
-### 基础结构检查
-- [ ] 文件中必须存在一个继承自 Star 的类
-- [ ] logger 必须从 astrbot.api 导入
-
-### filter 装饰器检查
-- [ ] filter 必须从 astrbot.api.event 导入
-- [ ] 所有事件监听器方法必须包含 event 参数
-
-### LLM 事件钩子检查
-- [ ] on_llm_request 必须有三个参数：self, event, req: ProviderRequest
-- [ ] on_llm_response 必须有三个参数：self, event, resp: LLMResponse
-
-### 消息发送方式检查
-- [ ] 普通指令：event.set_result(MessageEventResult().message("内容"))
-- [ ] LLM 钩子中：await event.send(message_chain)
-- [ ] 禁止在 LLM 钩子中使用 yield
-
-### 权限装饰器检查
-- [ ] @filter.permission_type 不能用于 @filter.llm_tool
-
-### 数据持久化检查
-- [ ] 使用 StarTools.get_data_dir() 获取数据目录
-
-### 异步操作检查
-- [ ] 网络 I/O 使用异步方式（aiohttp 而非 requests）
-
-### 安全检查
-- [ ] 无硬编码的敏感信息
-- [ ] 无不安全的 pickle 反序列化
-
-## 发布要求（必须执行）
-完成开发后，必须执行以下发布步骤：
-
-### 操作环境说明（重要！）
-
-**本地操作**：在你的工作目录中执行
-- 创建文件
-- git 命令
-
-**远程操作**：通过 GitHub API 执行
-- 创建仓库
-
-**不要混淆！** 本地文件操作 ≠ 远程仓库操作
-
-### 步骤 1：本地 - 创建文件
-在本地工作目录创建插件文件：
-```
-/workspace/my_plugin/
-├── main.py
-├── metadata.yaml
-├── CHANGELOG.md
-├── README.md
-└── _conf_schema.json（如需要）
-```
-
-### 步骤 2：远程 - 创建 GitHub 仓库
-\`\`\`bash
-curl -X POST -H "Authorization: token ${githubToken}" \\
-  https://api.github.com/user/repos \\
-  -d '{"name":"插件名称","description":"插件描述"}'
-\`\`\`
-
-### 步骤 3：本地 - 推送代码
-\`\`\`bash
-cd /workspace/my_plugin
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/用户名/插件名.git
-git push -u origin main
-\`\`\`
-
-## 交付内容
-- 完整的插件代码（已推送到 GitHub）
-- GitHub 仓库链接
-
-**重要**：
-1. 插件市场直接下载仓库源码，确保仓库文件完整
-2. 本地创建文件 ≠ 远程仓库有文件，必须 git push
-
-## 反馈（可选）
-完成开发后，欢迎提交 Issue 反馈：
-- 地址：https://github.com/86lbs/astrbot_plugin_dev_guide/issues/new
-- 标题：\`[反馈] 插件名称 - 简短描述\`
-- 内容：
-  - 开发过程中遇到的问题
-  - 教程中不清楚的地方
-  - 改进建议
-
-注意保护 Token 安全，不要在日志中输出。
+## 注意
+- 保护 Token 安全，不要在日志中输出
+- 插件市场直接下载仓库源码，确保文件完整
 `;
-
+            
             return prompt;
         }
-
-        function generateOptimizePrompt(sourcePath, guidePath, extraNotes, githubToken) {
-            const input = document.getElementById('optimizeCode').value.trim();
-            const request = document.getElementById('optimizeRequest').value.trim();
-            const expect = document.getElementById('optimizeExpect').value.trim();
-            const publishMode = document.getElementById('optimizePublishMode').value;
-
-            if (!input) {
-                alert('请填写插件仓库链接！');
-                return '';
-            }
-
-            if (!request) {
-                alert('请填写你的要求！');
-                return '';
-            }
-
-            // 发布方式说明
-            const publishModeDesc = {
-                'original': '推送到原仓库（需要有写权限）',
-                'fork': 'Fork 后推送到我的仓库',
-                'new': '作为新插件发布到我的仓库'
-            };
-
-            // 格式化仓库链接
-            let repoUrl = input;
-            if (!repoUrl.startsWith('http://') && !repoUrl.startsWith('https://')) {
-                repoUrl = 'https://' + repoUrl;
-            }
-
-            let prompt = `优化 AstrBot 插件代码。
-
-## GitHub Token
-\`\`\`
-${githubToken}
-\`\`\`
-
-## 开发资料
-请使用 Token 通过 GitHub API 获取以下资料：
-
-1. **开发指南**：${guidePath}
-   - 插件开发规范
-   - 配置文件格式
-
-2. **源码**：${sourcePath}
-   - AstrBot 核心代码
-
-## 原始插件仓库
-${repoUrl}
-
-## 我的要求
-${request}
-`;
-
-            if (expect) {
-                prompt += `\n## 预期效果\n${expect}\n`;
-            }
-
-            prompt += `\n## 发布方式\n${publishModeDesc[publishMode]}\n`;
-
-            if (extraNotes) {
-                prompt += `\n## 额外说明\n${extraNotes}\n`;
-            }
-
-            prompt += `
-## 开发要求
-1. 获取原始插件代码
-2. 按照要求进行优化
-3. 更新版本号和 CHANGELOG.md
-
-## 发布要求（必须执行）
-优化完成后，必须执行以下发布步骤：
-
-### 如果选择"推送到原仓库"
-\`\`\`bash
-git add .
-git commit -m "优化：${request.substring(0, 50)}"
-git push origin main
-git tag v新版本号
-git push origin v新版本号
-# 创建 Release 并上传发行版
-\`\`\`
-
-### 如果选择"Fork 后推送到我的仓库"
-\`\`\`bash
-# 1. Fork 仓库（使用 GitHub API）
-curl -X POST -H "Authorization: token ${githubToken}" \\
-  https://api.github.com/repos/原用户/原插件/forks
-
-# 2. 克隆 Fork 的仓库并推送
-git clone https://github.com/你的用户名/原插件.git
-cd 原插件
-# 修改代码
-git add .
-git commit -m "优化：${request.substring(0, 50)}"
-git push origin main
-
-# 3. 创建 Release 并上传发行版
-\`\`\`
-
-### 如果选择"作为新插件发布"
-\`\`\`bash
-# 1. 创建新仓库
-curl -X POST -H "Authorization: token ${githubToken}" \\
-  https://api.github.com/user/repos \\
-  -d '{"name":"新插件名","description":"插件描述"}'
-
-# 2. 推送代码
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/你的用户名/新插件名.git
-git push -u origin main
-
-# 3. 创建 Release 并上传发行版
-\`\`\`
-
-## 交付内容
-- 优化后的完整代码
-- 更新后的 CHANGELOG.md
-- 更新后的 metadata.yaml
-- 仓库链接
-- Release 下载链接
-
-注意保护 Token 安全，不要在日志中输出。
-`;
-
-            return prompt;
-        }
-
-        function generateExplainPrompt(sourcePath, guidePath, extraNotes, githubToken) {
-            const input = document.getElementById('explainCode').value.trim();
+        
+        function generateExplainPrompt(githubToken, guidePath, sourcePath, extraNotes) {
+            const repo = document.getElementById('explainRepo').value.trim();
             const question = document.getElementById('explainQuestion').value.trim();
             const style = document.getElementById('explainStyle').value;
-
-            if (!input) {
+            
+            if (!repo) {
                 alert('请填写插件仓库链接！');
                 return '';
             }
-
+            
             const styleMap = {
                 'simple': '简单易懂，适合新手理解',
                 'detailed': '详细深入，包含原理说明',
                 'technical': '技术专业，使用专业术语'
             };
-
-            // 格式化仓库链接
-            let repoUrl = input;
-            if (!repoUrl.startsWith('http://') && !repoUrl.startsWith('https://')) {
-                repoUrl = 'https://' + repoUrl;
-            }
-
-            let prompt = `讲解 AstrBot 插件代码。
+            
+            let prompt = `## 任务
+讲解 AstrBot 插件代码。
 
 ## GitHub Token
 \`\`\`
-${githubToken}
+${githubToken || '（未提供）'}
 \`\`\`
 
-## 参考资料请使用 Token 通过 GitHub API 获取以下资料：
+## 参考资料
+请使用 Token 通过 GitHub API 获取以下资料：
 
 1. **开发指南**：${guidePath}
    - API 文档
@@ -1316,13 +522,16 @@ ${githubToken}
    - AstrBot 核心代码
 
 ## 插件仓库
-${repoUrl}
+${repo}
 `;
-
+            
             if (question) {
-                prompt += `\n## 我的问题\n${question}\n`;
+                prompt += `
+## 我的问题
+${question}
+`;
             }
-
+            
             prompt += `
 ## 讲解风格
 ${styleMap[style]}
@@ -1334,16 +543,48 @@ ${styleMap[style]}
 4. 说明数据流向
 5. 指出需要注意的地方
 
-注意保护 Token 安全，不要在日志中输出。
+## 注意
+保护 Token 安全，不要在日志中输出。
 `;
-
+            
             if (extraNotes) {
-                prompt += `\n## 额外说明\n${extraNotes}\n`;
+                prompt += `
+## 额外说明
+${extraNotes}
+`;
             }
-
+            
             return prompt;
         }
-
+        
+        // 加载文档
+        async function loadDoc(docName) {
+            const docContent = document.getElementById('docContent');
+            docContent.innerHTML = '<p style="color: #666;">加载中...</p>';
+            
+            try {
+                const url = `https://raw.githubusercontent.com/86lbs/astrbot_plugin_dev_guide/main/${docName}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('文档加载失败');
+                }
+                
+                const text = await response.text();
+                docContent.innerHTML = `<pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">${escapeHtml(text)}</pre>`;
+                
+            } catch (error) {
+                docContent.innerHTML = `<p style="color: #e74c3c;">文档加载失败：${error.message}</p><p><a href="https://github.com/86lbs/astrbot_plugin_dev_guide/blob/main/${docName}" target="_blank">点击查看 GitHub 原文</a></p>`;
+            }
+        }
+        
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+        
         // 复制
         function copyPrompt() {
             const text = document.getElementById('outputBox').value;
@@ -1353,163 +594,26 @@ ${styleMap[style]}
                 setTimeout(() => toast.classList.remove('show'), 2000);
             });
         }
-
+        
         // 下载
         function downloadPrompt() {
             const text = document.getElementById('outputBox').value;
-            const name = currentMode === 'create' 
-                ? (document.getElementById('createName').value || 'prompt')
-                : currentMode;
             const blob = new Blob([text], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${name}_prompt.txt`;
+            a.download = `prompt_${currentMode}_${Date.now()}.txt`;
             a.click();
             URL.revokeObjectURL(url);
         }
-
+        
         // 重置
-        function resetAll() {
-            // 重置学习表单
-            document.getElementById('learnQuestion').value = '';
-
-            // 重置创建表单
-            document.getElementById('createName').value = '';
-            document.getElementById('createAuthor').value = '';
-            document.getElementById('createDesc').value = '';
-            document.getElementById('createDetail').value = '';
-            document.getElementById('createCmd').checked = true;
-            document.getElementById('createTool').checked = false;
-            document.getElementById('createEvent').checked = false;
-            document.getElementById('createConfig').checked = false;
-
-            // 重置优化表单
-            document.getElementById('optimizeCode').value = '';
-            document.getElementById('optimizeRequest').value = '';
-            document.getElementById('optimizeExpect').value = '';
-            document.getElementById('optimizePublishMode').value = 'original';
-
-            // 重置讲解表单
-            document.getElementById('explainCode').value = '';
+        function resetForm() {
+            document.getElementById('generalRequest').value = '';
+            document.getElementById('generalRepo').value = '';
+            document.getElementById('explainRepo').value = '';
             document.getElementById('explainQuestion').value = '';
-            document.getElementById('explainStyle').value = 'simple';
-
-            // 重置高级选项
-            document.getElementById('extraNotes').value = '';
-            document.getElementById('githubToken').value = '';
-
-            // 隐藏输出
             document.getElementById('outputSection').classList.remove('show');
-        }
-
-        // 标签页切换
-        function switchTab(tab) {
-            // 更新按钮样式
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // 显示对应区域
-            document.getElementById('generatorTab').classList.toggle('hidden', tab !== 'generator');
-            document.getElementById('docsTab').classList.toggle('hidden', tab !== 'docs');
-
-            // 如果切换到文档页，加载默认文档
-            if (tab === 'docs') {
-                loadDoc('AGENT_ENTRY.md');
-            }
-        }
-
-        // 加载文档
-        async function loadDoc(docName) {
-            const docContent = document.getElementById('docContent');
-            
-            // 更新按钮样式
-            document.querySelectorAll('.doc-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // 显示加载中
-            docContent.innerHTML = '<div class="doc-loading">加载中...</div>';
-
-            try {
-                // 从 GitHub 获取文档
-                const url = `https://raw.githubusercontent.com/86lbs/astrbot_plugin_dev_guide/main/${docName}`;
-                const response = await fetch(url);
-                
-                if (!response.ok) {
-                    throw new Error('文档加载失败');
-                }
-
-                const text = await response.text();
-                
-                // 简单的 Markdown 渲染
-                const html = renderMarkdown(text);
-                docContent.innerHTML = html;
-
-            } catch (error) {
-                docContent.innerHTML = `<div class="doc-error">文档加载失败：${error.message}<br><br>请直接访问 <a href="https://github.com/86lbs/astrbot_plugin_dev_guide/blob/main/${docName}" target="_blank">GitHub</a> 查看</div>`;
-            }
-        }
-
-        // 简单的 Markdown 渲染
-        function renderMarkdown(text) {
-            // 转义 HTML
-            let html = text
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;');
-
-            // 代码块
-            html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
-
-            // 行内代码
-            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-            // 标题
-            html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-            html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-            html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-
-            // 粗体和斜体
-            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-
-            // 链接
-            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-
-            // 列表
-            html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
-            html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
-
-            // 有序列表
-            html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
-
-            // 引用
-            html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
-
-            // 水平线
-            html = html.replace(/^---$/gm, '<hr>');
-
-            // 段落
-            html = html.replace(/\n\n/g, '</p><p>');
-            html = '<p>' + html + '</p>';
-
-            // 清理空段落
-            html = html.replace(/<p><\/p>/g, '');
-            html = html.replace(/<p>(<h[123]>)/g, '$1');
-            html = html.replace(/(<\/h[123]>)<\/p>/g, '$1');
-            html = html.replace(/<p>(<pre>)/g, '$1');
-            html = html.replace(/(<\/pre>)<\/p>/g, '$1');
-            html = html.replace(/<p>(<ul>)/g, '$1');
-            html = html.replace(/(<\/ul>)<\/p>/g, '$1');
-            html = html.replace(/<p>(<blockquote>)/g, '$1');
-            html = html.replace(/(<\/blockquote>)<\/p>/g, '$1');
-            html = html.replace(/<p>(<hr>)<\/p>/g, '$1');
-
-            return html;
         }
     </script>
 </body>
