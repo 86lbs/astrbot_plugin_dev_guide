@@ -246,11 +246,7 @@ git remote add origin https://github.com/你的用户名/插件名.git
 git push -u origin main
 ```
 
-### 6.2 创建 Release
-
-在 GitHub 创建 Release，添加更新说明。
-
-### 6.3 上架到插件市场
+### 6.2 上架到插件市场
 
 在 AstrBot 官方仓库提交 Issue 申请上架：
 

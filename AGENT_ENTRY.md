@@ -154,7 +154,6 @@ astrbot_version: ">=4.0.0"
 5. 发布
    - 创建 GitHub 仓库
    - 推送代码
-   - 创建 Release
 ```
 
 ---

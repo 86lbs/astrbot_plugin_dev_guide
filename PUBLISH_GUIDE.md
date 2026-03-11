@@ -75,17 +75,7 @@ git remote add origin https://<TOKEN>@github.com/your_name/my_plugin.git
 git push -u origin main
 ```
 
-### 3. 创建 Release
-
-```bash
-# 创建标签
-git tag -a v1.0.0 -m "Release v1.0.0"
-git push origin v1.0.0
-```
-
-然后在 GitHub 页面创建 Release。
-
-### 4. 安装方式
+### 3. 安装方式
 
 用户可以通过以下方式安装：
 
@@ -98,6 +88,8 @@ curl -X POST http://localhost:6185/api/plugin/install \
   -H "Content-Type: application/json" \
   -d '{"url": "https://github.com/your_name/my_plugin"}'
 ```
+
+**注意**：用户安装时直接下载仓库源码，确保仓库文件完整。
 
 ---
 
@@ -192,7 +184,6 @@ my_plugin/
 - ✅ 有完整的 `metadata.yaml`
 - ✅ 有 `README.md` 说明文档
 - ✅ 有 `CHANGELOG.md` 更新日志
-- ✅ 已创建 GitHub Release
 - ✅ 代码质量良好
 - ✅ 无恶意代码
 
@@ -239,10 +230,6 @@ curl -X POST \
 git remote add origin https://$GITHUB_TOKEN@github.com/$(git config user.name)/$PLUGIN_NAME.git
 git push -u origin main
 
-# 创建 Release
-git tag -a v1.0.0 -m "Release v1.0.0"
-git push origin v1.0.0
-
 echo "发布成功！"
 ```
 
@@ -266,7 +253,7 @@ echo "发布成功！"
     │        └── zip → 发给他人 → WebUI 上传安装
     │
     ├──▶ GitHub 发布（需要 Token）
-    │        └── git push → 创建 Release → 用户通过 URL 安装
+    │        └── git push → 用户通过 URL 安装
     │
     └──▶ 插件市场（通过 Issue）
              └── GitHub 发布 → 提交 Issue → 官方审核 → 市场可见

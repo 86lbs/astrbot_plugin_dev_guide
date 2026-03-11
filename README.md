@@ -12,96 +12,59 @@
 
 **打开在线工具：[https://86lbs.github.io/astrbot_plugin_dev_guide/prompt_generator.html](https://86lbs.github.io/astrbot_plugin_dev_guide/prompt_generator.html)**
 
-支持四种模式：
+支持两种模式：
 
-| 模式 | 说明 | 必填项 |
-|------|------|--------|
-| 📚 **学习模式** | 先了解 AstrBot 插件开发，稍后提供任务 | 无（全部可选） |
-| ✨ **创建插件** | 从零开始创建新插件 | 插件描述 |
-| 🔧 **优化插件** | 改进已有插件代码 | 插件来源 + 我的要求 |
-| 📖 **讲解插件** | 解释插件代码原理 | 插件来源 |
+| 模式 | 说明 | 适用场景 |
+|------|------|----------|
+| 🔧 **通用模式** | 描述需求即可生成提示词 | 学习、开发、优化插件 |
+| 📖 **讲解模式** | 讲解插件代码原理 | 理解已有插件 |
 
 **使用步骤：**
 
-1. 选择操作模式（默认：学习模式）
-2. 填写简单描述
+1. 选择模式（默认：通用模式）
+2. 填写需求描述
 3. （可选）填写 GitHub Token 用于发布
 4. 点击生成提示词
 5. 复制发送给 AI
 
 ---
 
-## 📚 学习模式
+## 🔧 通用模式
 
-**适用场景：** 第一次使用，或想让 Agent 先了解 AstrBot
+**适用场景：** 学习、开发、优化插件
 
-**特点：**
-- 所有字段都是可选的
-- Agent 会学习 AstrBot 插件开发知识
-- 学习完成后等待用户稍后提供具体任务
+**输入示例：**
 
-**可选内容：**
-- 学习重点：插件结构、指令开发、LLM Tool、事件监听等
-- 你的问题：想提前了解的内容
-
-**生成提示词示例：**
 ```
-学习 AstrBot 插件开发。
+# 学习
+学习 AstrBot 插件开发
 
-## 学习目标
-1. 插件的基本结构
-2. Star 基类和 Context 接口
-3. 指令开发（@filter.command）
-4. LLM Tool 开发（@filter.llm_tool）
-...
+# 开发新插件
+开发一个天气查询插件，支持 /天气 指令和 LLM Tool 调用
 
-## 注意
-- 用户将在稍后提供具体的开发任务
-- 现在只需要了解和掌握基础知识
-```
+# 优化插件
+优化 https://github.com/xxx/my_plugin，添加错误处理
 
----
-
-## ✨ 创建插件
-
-**最简输入：**
-```
-插件描述：查天气的插件
-```
-
-**完整输入：**
-```
-插件名称：weather_query（可选）
-插件描述：天气查询插件
-详细需求：
-1. 用户发送 /天气 北京 查询天气
-2. 支持 LLM Tool 自动调用
+# 理解代码
+帮我理解 https://github.com/xxx/my_plugin 的工作原理
 ```
 
 **AI 会自动：**
-- 阅读源码 → 设计结构 → 编写代码 → 测试验证 → 发布（如填写 Token）
+- 阅读开发指南了解规范
+- 参考源码了解 API
+- 编写/优化代码
+- 进行自我审查
+- 发布到 GitHub（如填写 Token）
 
 ---
 
-## 🔧 优化插件
+## 📖 讲解模式
+
+**适用场景：** 理解已有插件代码
 
 **输入示例：**
 ```
-插件来源：https://github.com/xxx/my_plugin
-我的要求：帮我添加错误处理，当 API 调用失败时给用户友好提示
-```
-
-**支持格式：**
-- 粘贴代码
-- GitHub 仓库链接
-
----
-
-## 📖 讲解插件
-
-**输入示例：**
-```
-插件来源：https://github.com/xxx/my_plugin
+插件仓库：https://github.com/xxx/my_plugin
 我的问题：这个装饰器是怎么工作的？
 ```
 
@@ -194,9 +157,8 @@
 |------|------|--------|
 | [AGENT_ENTRY.md](./AGENT_ENTRY.md) | **Agent 入口文档** - 必读，包含配置格式 | ⭐⭐⭐⭐⭐ |
 | [SOURCE_CODE_MAP.md](./SOURCE_CODE_MAP.md) | **源码地图** - API 速查表 | ⭐⭐⭐⭐⭐ |
-| [PROMPT_V5_LOCAL_SIMULATION.md](./PROMPT_V5_LOCAL_SIMULATION.md) | **开发流程** - 标准工作流 | ⭐⭐⭐⭐⭐ |
 | [SELF_REVIEW.md](./SELF_REVIEW.md) | **自我审查** - 模仿官方审核机器人 | ⭐⭐⭐⭐⭐ |
-| [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md) | **发布指南** - GitHub API 发布步骤 | ⭐⭐⭐⭐⭐ |
+| [PUBLISH_GUIDE.md](./PUBLISH_GUIDE.md) | **发布指南** - GitHub 发布步骤 | ⭐⭐⭐⭐⭐ |
 | [VERSION_MANAGEMENT.md](./VERSION_MANAGEMENT.md) | **版本管理指南** - 版本号和更新日志 | ⭐⭐⭐⭐ |
 | [MOCK_LLM_SERVER.md](./MOCK_LLM_SERVER.md) | **模拟 LLM 服务** - 测试 Tool 无需真实模型 | ⭐⭐⭐⭐⭐ |
 
@@ -275,18 +237,6 @@ python tools/mock_llm_server.py
 ## 🤝 贡献
 
 欢迎提交 Issue 和 PR 完善本指南！
-
-## 📜 致谢要求
-
-如果您使用本指南开发 AstrBot 插件，请在插件的 README.md 中添加致谢：
-
-```markdown
-## 致谢
-
-本插件使用 [AstrBot 插件开发指南](https://github.com/86lbs/astrbot_plugin_dev_guide) 开发。
-```
-
-感谢您的支持！
 
 ## 📄 许可证
 

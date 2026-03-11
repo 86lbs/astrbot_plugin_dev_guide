@@ -139,9 +139,11 @@ git tag -a v1.1.0 -m "Release v1.1.0: 新增多城市对比和预警功能"
 git push origin v1.1.0
 ```
 
-### 4. 创建 GitHub Release
+### 4. 创建 GitHub Release（可选）
 
 在 GitHub 仓库页面创建 Release，内容来自 CHANGELOG.md。
+
+**注意**：插件市场直接下载仓库源码，不需要创建 Release。Release 仅用于版本标记和分发。
 
 ---
 
